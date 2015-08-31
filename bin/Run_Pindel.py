@@ -27,6 +27,7 @@ def main():
    parser.add_argument("-o", "--outDir", action="store", dest="outdir", required=True, metavar='/somepath/output', help="Full Path to the output dir.")
    parser.add_argument("-op", "--outPrefix", action="store", dest="outprefix", required=True, metavar='TumorID', help="Id of the Tumor bam file which will be used as the prefix for Pindel output files")
    parser.add_argument("-qsub", "--qsubPath", action="store", dest="qsub", required=True, metavar='/somepath/qsub', help="Full Path to the qsub executables of SGE.")
+   parser.add_argument("-bsub", "--bsubPath", action="store", dest="bsub", required=True, metavar='/somepath/bsub', help="Full Path to the bsub executables of LSF.")
    # parser.add_argument("-tr", "--targetRegion", action="store", dest="targetRegion", required=True, metavar='/somepath/targetRegion.bed', help="Full Path to bedfile for target region.")
    
    args = parser.parse_args()
@@ -40,6 +41,10 @@ def main():
 def ProcessArgs(args):
     if(args.verbose):
         print "I am currently processing the arguments.\n"
+    #Check qsub and bsub
+    if(args.qsub and args.bsub):
+        print "Pleas give either qsub or bsub arguments. Script does not allow usage of both\n"
+        sys.exit(1)           
     tumorBam = '' 
     with open(args.config, 'r') as filecontent:
         for line in filecontent:
@@ -79,18 +84,24 @@ def RunPindel(args, wd, vcfoutName, tag):
     pindel = os.path.join(args.PINDEL, "pindel")
     pindel2vcf = os.path.join(args.PINDEL, "pindel2vcf")
     vcfOutPath = os.path.join(args.outdir, vcfoutName)
+    cl_cmd = ''
+    mem = args.threads * 6
+    maxmem = mem+6
     # myPid = str(myPid)
     if(args.verbose):
-        print "I am running Pindel for ", args.patientId, " using SGE"
+        print "I am running Pindel for ", args.patientId, " using SGE/LSF"
     
     # Setting Job for SGE   
     if(tag):
         cmd = pindel + " -i " + args.config + " -f " + args.ref + " -c " + args.chr + " -o " + args.outprefix + " -r false -t false -I false"
         # print "CMD==>",cmd,"\n"
-        qsub_cmd = args.qsub + " -q " + args.queue + " -N " + "Pindel_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stderr" + " -V -l h_vmem=6G,virtual_free=6G -pe smp " + args.threads + " -wd " + wd + " -sync y " + " -b y " + cmd 
-        print "QSUB_CMD==>", qsub_cmd , "\n"
-        qsub_args = shlex.split(qsub_cmd)
-        proc = Popen(qsub_args)
+        if(args.qsub):
+            cl_cmd = args.qsub + " -q " + args.queue + " -N " + "Pindel_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stderr" + " -V -l h_vmem=6G,virtual_free=6G -pe smp " + args.threads + " -wd " + wd + " -sync y " + " -b y " + cmd 
+        else:
+            cl_cmd = args.bsub + " -q " + args.queue + " -J " + "Pindel_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stderr" + " -We 24:00 -R \"rusage[mem=" + mem + "]\" -M " + maxmem + " -n " + args.threads + " -cwd " + wd + " -K " + cmd 
+        print "Cluster_CMD==>", cl_cmd , "\n"
+        cl_args = shlex.split(cl_cmd)
+        proc = Popen(cl_args)
         proc.wait()
         retcode = proc.returncode
     else:
@@ -102,9 +113,13 @@ def RunPindel(args, wd, vcfoutName, tag):
             retcode = 1
         else:
             p2v_cmd = pindel2vcf + " --pindel_output_root " + args.outprefix + " --reference " + args.ref + " --reference_name hg19 --reference_date " + today + " --vcf " + vcfOutPath + " -b true --gatk_compatible"         
-            p2v_qsub = args.qsub + " -q " + args.queue + " -N " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stderr" + " -V -l h_vmem=8G,virtual_free=8G -pe smp 1 " + " -wd " + wd + " -sync y " + " -b y " + p2v_cmd 
-            print "P2V cmd: ", p2v_qsub
-            p2v_args = shlex.split(p2v_qsub)
+            if(args.qsub):
+                p2v_cl = args.qsub + " -q " + args.queue + " -N " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stderr" + " -V -l h_vmem=8G,virtual_free=8G -pe smp 1 " + " -wd " + wd + " -sync y " + " -b y " + p2v_cmd 
+            else:
+                p2v_cl = args.bsub + " -q " + args.queue + " -N " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stderr" +  " -We 24:00 -R \"rusage[mem=8]\" -M 16 -n 1" + " -cwd " + wd + " -K " + p2v_cmd 
+           
+            print "P2V cmd: ", p2v_cl
+            p2v_args = shlex.split(p2v_cl)
             proc = Popen(p2v_args)
             proc.wait()
             retcode = proc.returncode

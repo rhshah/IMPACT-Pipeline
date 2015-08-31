@@ -37,7 +37,7 @@ $logger->start_local();
 
 #--This variable holds the current time 
 my $now = time;
-my ($filteredMutationVcfFile,$bamFile,$deleteFiles,$QSUB,$refFile,$mbq,$mmq,$pathToSamtools,$outdir,$outFile,$pathToBedtools,$mpileUpOutFile,$bamId,$queue,$typeOfSample);
+my ($filteredMutationVcfFile,$bamFile,$deleteFiles,$QSUB,$BSUB,$refFile,$mbq,$mmq,$pathToSamtools,$outdir,$outFile,$pathToBedtools,$mpileUpOutFile,$bamId,$queue,$typeOfSample);
 if (@ARGV < 3 or !GetOptions (
 	    'FilteredMutationListVcf|fmv:s'     => \$filteredMutationVcfFile,
 	    'BamFile|bam:s'                     => \$bamFile,
@@ -51,6 +51,7 @@ if (@ARGV < 3 or !GetOptions (
 	    'mpileUpOutFile|mof:s'              => \$mpileUpOutFile,
 	    'bamId|bi:s'                        => \$bamId,
 	    'qsub:s'			      	=> \$QSUB,
+	    'bsub:s'			      	=> \$BSUB,
             'queue|q:s'                         => \$queue,
             'typeOfSample|tos:s'                => \$typeOfSample,
 	    'outdir|o:s'                        => \$outdir))
@@ -150,27 +151,35 @@ if(!defined $mpileUpOutFile)
 #Check  for qsub
 if(!defined $QSUB)
 {
-    $logger->warn("Path to QSUB command not given\n");
-    $QSUB = "/common/sge/bin/lx-amd64/qsub";
+    $logger->warn("Path to QSUB command not given, Assuming we will run LSF");
 }
 else
 {
     $logger->info( "SGE QSUB:$QSUB\n");
 }
+#Check  for bsub
+if(!defined $BSUB)
+{
+    $logger->warn("Path to BSUB command not given, Assuming we will run SGE");
+}
+else
+{
+    $logger->info( "LSF BSUB:$BSUB\n");
+}
 #Check  for queue
 if(!defined $queue)
 {
-    $logger->warn("Name of the SGE queue not given default (all.q) will be used.\n");
+    $logger->warn("Name of the SGE/LSF queue not given default (all.q) will be used.\n");
     $queue = "all.q";
 }
 else
 {
-    $logger->info( "SGE Queue:$queue\n");
+    $logger->info( "SGE/LSF Queue:$queue\n");
 }
 #Check  for type of Sample
 if(!defined $typeOfSample)
 {
-    $logger->warn("Type of Sampel Not given defaule (Tumor) will be used.\n");
+    $logger->warn("Type of Sample not given default (Tumor) will be used.\n");
     $typeOfSample = "Tumor";
 }
 &MakeCSH($outdir);
@@ -219,7 +228,9 @@ sub Usage
         [--outdir|o                        S Path where all the output files will be written (optional) [default:current working directory]]
         [--outFile|of                      S Name of the allele depth output file (optional) [default:BamFame-.bam+_mpileup.alleledepth]]
         [--bamId|bi                        S Bam Id to be used (optional) [default:bamfile name]]
-        [--queue|q                         S Name of the Sun Grd Engine Queue where the pipeline needs to run (default:all.q,optional)]
+        [--queue|q                         S Name of the SGE / LSF Queue where the pipeline needs to run (default:all.q,optional)]
+        [--qsub                            S Path to qsub executable for SGE(default:None,optional)]
+        [--bsub                            S Path to bsub executable for LSF(default:None,required)]
         [--mpileUpOutFile|mof              S Name of samtools mpileup output file (optional) [default:BamFile-.bam+.mpileup]]
         [--typeOfSample|tos                S Type of Sample (default:Tumor,optional)]
 	\n";
@@ -420,11 +431,22 @@ sub RunMpileup
     else
     {
 	eval{
+		if(defined $QSUB){
+			
+
 	my $cmd = "$QSUB -q $queue -wd $outdir -V -N RunPileup.$bamId.$$ -o $mpileUpOutFile -e RunPileup.$bamId.$$.stderr -l h_vmem=5G,virtual_free=5G -pe smp 1 -b y $pathToSamtools $command";
 	$logger->debug($cmd);
 	`$QSUB -q $queue -wd $outdir -V -N RunPileup.$bamId.$$ -o $mpileUpOutFile -e RunPileup.$bamId.$$.stderr -l h_vmem=5G,virtual_free=5G -pe smp 1 -b y $pathToSamtools $command`;
 	`$QSUB -q $queue -V -wd $outdir -hold_jid RunPileup.$bamId.$$ -N NotifyMpileup.$bamId.$$ -e /dev/null -o NotifyMpileup.$bamId.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-            };
+           	}
+           	else
+           	{
+           		my $cmd = "$BSUB -q $queue -J RunPileup.$bamId.$$ -cwd $outdir -e RunPileup.$bamId.$$.%J.stderr -o $mpileUpOutFile -R \"rusage[mem=5]\" -M 8 -n 1 \"$pathToSamtools $command\"";
+           		$logger->debug($cmd);
+           		`$BSUB -q $queue -J RunPileup.$bamId.$$ -cwd $outdir -e RunPileup.$bamId.$$.%J.stderr -o $mpileUpOutFile -R "rusage[mem=5]" -M 8 -n 1 "$pathToSamtools $command"`;
+				`$BSUB -q $queue -cwd $outdir -w "done(RunPileup.$bamId.$$) -J NotifyMpileup.$bamId.$$ -e NotifyMpileup.$bamId.$$.%J.stderr -o NotifyMpileup.$bamId.$$.stat -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;	
+           	}
+		};
 	if($@){
 	    $logger->fatal("RunMpileup: Job submission failed. Error: $@\n");
 	}
