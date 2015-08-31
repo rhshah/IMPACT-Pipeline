@@ -30,7 +30,14 @@ def main():
    parser.add_argument("-q", "--queue", action="store", dest="queue", required=True, metavar='all.q or clin.q', help="Name of the SGE queue")
    parser.add_argument("-o", "--outDir", action="store", dest="outdir", required=True, metavar='/somepath/output', help="Full Path to the output dir.")
    parser.add_argument("-qsub", "--qsubPath", action="store", dest="qsub", required=True, metavar='/somepath/qsub', help="Full Path to the qsub executables of SGE.")
+   parser.add_argument("-bsub", "--bsubPath", action="store", dest="bsub", required=True, metavar='/somepath/bsub', help="Full Path to the bsub executables of LSF.")
+   
    args = parser.parse_args()
+   #Check qsub and bsub
+   if(args.qsub and args.bsub):
+       print "Pleas give either qsub or bsub arguments. Script does not allow usage of both\n"
+       sys.exit(1)           
+    
    if(args.verbose):
        print "Running the FindCoveredIntervals for the re-alignment process."
    (listFile) = RunFindCoveredIntervals(args)
@@ -42,17 +49,24 @@ def main():
 def RunFindCoveredIntervals(args):
     outFile = args.outdir + "/" + args.outFilePrefix + "_covered.list"
     outFileSrt = args.outdir + "/" + args.outFilePrefix + "_covered_srt.list"
+    cl_cmd = ''
+    mem = args.threads * 5
+    maxmem = mem+5
     if(os.path.isfile(outFileSrt)):
        if(args.verbose):
            print outFileSrt, " already exists\n"
     else:
         cmd = args.JAVA + " -Xmx20g -jar " + args.GATK + " -T FindCoveredIntervals -R " + args.ref + " -I " + args.bamList + " -minBQ " + str(args.mbq) + " -minMQ " + str(args.mmq) + " -cov " + str(args.dp) + " -o " + outFile + " -rf FailsVendorQualityCheck -rf BadMate -rf UnmappedRead -rf BadCigar"
         myPid = os.getpid()
-        qsub_cmd = args.qsub + " -q " + args.queue + " -N " + "FindCoveredIntervals_" + str(myPid) + " -o " + "FindCoveredIntervals_" + str(myPid) + ".stdout" + " -e " + "FindCoveredIntervals_"+ str(myPid) +".stderr" + " -V -l h_vmem=8G,virtual_free=8G -pe smp " + str(args.threads) + " -wd " + args.outdir + " -sync y " + " -b y " + cmd 
+        if(args.qsub):
+            cl_cmd = args.qsub + " -q " + args.queue + " -N " + "FindCoveredIntervals_" + str(myPid) + " -o " + "FindCoveredIntervals_" + str(myPid) + ".stdout" + " -e " + "FindCoveredIntervals_"+ str(myPid) +".stderr" + " -V -l h_vmem=8G,virtual_free=8G -pe smp " + str(args.threads) + " -wd " + args.outdir + " -sync y " + " -b y " + cmd 
+        else:
+            cl_cmd = args.bsub + " -q " + args.queue + " -J " + "FindCoveredIntervals_" + str(myPid) + " -o " + "FindCoveredIntervals_" + str(myPid) + ".stdout" + " -e " + "FindCoveredIntervals_"+ str(myPid) +".stderr" + " -We 24:00 -R \"rusage[mem=" + mem + "]\" -M " + maxmem + " -n " + str(args.threads) + " -cwd " + args.outdir + " -K " + cmd 
+   
         if(args.verbose):
-            print "QSUB_CMD==>", qsub_cmd , "\n"
-            qsub_args = shlex.split(qsub_cmd)
-            proc = Popen(qsub_args)
+            print "Cluster_CMD==>", cl_cmd , "\n"
+            cl_args = shlex.split(cl_cmd)
+            proc = Popen(cl_args)
         proc.wait()
         retcode = proc.returncode
         if(retcode >= 0):

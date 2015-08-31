@@ -25,6 +25,9 @@
 ##09/10/2013
 # AZ: Added option for canonical exon coverage file
 #############################
+##08/27/2015
+# RS: Added option for using bsub
+#############################
 
 use strict;
 use warnings;
@@ -38,7 +41,7 @@ my $logger = MSKCC_DMP_Logger->get_logger('COMPILE_QC_METRICS');
 $logger->start_local();
 #--This variable holds the current time
 my $now = time;
-my ($bamList,$titleFile,$allMetrics,$loessNorm,$QSUB,$RHOME,$RLIBS,$bestCN,$nvnCN,$outdir,$gcbiasfile,$histnormdir, $stdnormloess_tm, $stdnormloess_nvn, $queue, $exonIntervals, $MetricsScript);
+my ($bamList,$titleFile,$allMetrics,$loessNorm,$QSUB,$BSUB,$PERL,$RHOME,$RLIBS,$bestCN,$nvnCN,$outdir,$gcbiasfile,$histnormdir, $stdnormloess_tm, $stdnormloess_nvn, $queue, $exonIntervals, $MetricsScript);
 my ($geneIntervalAnn,$tilingIntervalAnn);
 
 if (@ARGV < 1 or !GetOptions (
@@ -48,6 +51,7 @@ if (@ARGV < 1 or !GetOptions (
 	    'LoessNorm|ln:s'    	=> \$loessNorm,
 	    'BestCN|cn:s'       	=> \$bestCN,
 	    'NormVsNormCN|ncn:s'  	=> \$nvnCN,
+	    'PERL|p:s'       		=> \$PERL,
 	    'RHOME|rh:s'       		=> \$RHOME,
 	    'RLIBS|rl:s'  			=> \$RLIBS,
             'GCBias|gcb:s'      => \$gcbiasfile,
@@ -57,6 +61,7 @@ if (@ARGV < 1 or !GetOptions (
 	    'TilingIntervalAnn|tia:s' => \$tilingIntervalAnn,
 	    'HistNorm|his:s'    => \$histnormdir,
 	    'qsub:s'						=> \$QSUB,
+	    'bsub:s'						=> \$BSUB,
 	    'queue|q:s'         => \$queue,
 	    'canonicalExons|ce:s' => \$exonIntervals,
 	    'metricsScript|ms:s'   => \$MetricsScript,
@@ -96,6 +101,11 @@ if (!defined $nvnCN)
 {
     $logger->warn("NormVsNormCN script not supplied, default (/home/chengd1/Analysis/LabPipeline/CopyNumberWork/CopyNumber_d2.1.normal_vs_normal.R) will be used.\n");
     $nvnCN = "/home/chengd1/Analysis/LabPipeline/CopyNumberWork/CopyNumber_d2.1.normal_vs_normal.R";
+}
+if (!defined $PERL)
+{
+    $logger->warn("PERL not supplied, default(/usr/bin/perl) will be used.\n");
+    $PERL = "/usr/bin/perl";
 }
 if (!defined $RHOME)
 {
@@ -145,21 +155,36 @@ if(!defined $exonIntervals){
 if(!defined $QSUB)
 {
     $logger->warn("Path to QSUB command not given\n");
-    $QSUB = "/common/sge/bin/lx-amd64/qsub";
+    $logger->warn("Path to BSUB command not given. Will assume we are running BSUB");
 }
 else
 {
     $logger->info( "SGE QSUB:$QSUB\n");
 }
+#Check  for qsub
+if(!defined $BSUB)
+{
+    $logger->warn("Path to BSUB command not given. Will assume we are running QSUB");
+}
+else
+{
+    $logger->info( "LSF BSUB:$BSUB\n");
+}
+if(defined $BSUB && defined $QSUB){
+	$logger->fatal("Please provide path either for BSUB or QSUB not of both. See Usage");
+	Usage();
+	exit(1);
+	
+}
 #Check  for queue
 if(!defined $queue)
 {
-    $logger->warn("Name of the SGE queue not given default will be used\n");
+    $logger->warn("Name of the SGE/LSF queue not given default will be used\n");
     $queue = "all.q";
 }
 else
 {
-     $logger->info("SGE Queue:$queue will be used\n");
+     $logger->info("SGE/LSF Queue:$queue will be used\n");
 }
 
 #Read Title File
@@ -197,6 +222,8 @@ sub Usage
         [--GCBias|gcb      S Path to GC bias file (optional;default:/home/chengd1/Analysis/LabPipeline/All-2013Apr16th/v4_hg19_all_GC200bp.txt)]
         [--HistNorm|his    S Path to Directory with all historical normal files (/home/chengd1/Analysis/LabPipeline/CopyNumberWork/GoodNormals)]
         [--queue|q         S Name of the Sun Grd Engine Queue where the pipeline needs to run (default:all.q,optional)]
+        [--qsub            S Path to qsub executable for SGE(default:None,optional)]
+        [--bsub            S Path to bsub executable for LSF(default:None,required)]
         [--metricsScript|ms         S Name of the script used to generate .html and .pdf files]
         [--outdir|o        S Path where all the output files will be written (optional) [default:cwd]]
 	\n";
@@ -1785,21 +1812,43 @@ sub PlotGraphs
 	$logger->warn("Can not change the permissions on PostCompileWrapper.sh\n");
     }
     #my $cmd = "$QSUB -q $queue -v R_LIBS_USER=$RLIBS -wd $outdir -N PCW.$$ -b y -o /dev/null -e /dev/null -l h_vmem=5G,virtual_free=5G -pe smp 1 $outdir/PostCompileWrapper.csh";
+    if(defined $QSUB)
+    {
     my $cmd = "$QSUB -q $queue -wd $outdir -N PCW.$$ -b y -l h_vmem=5G,virtual_free=5G -pe smp 1 $outdir/PostCompileWrapper.csh";
     $logger->debug( "COMMAND: $cmd");
     eval{
 	`$QSUB -q $queue -wd $outdir -N PCW.$$ -b y -l h_vmem=5G,virtual_free=5G -pe smp 1 "$outdir/PostCompileWrapper.csh"`;
 	`$QSUB -q $queue -V -wd $outdir -hold_jid PCW.$$ -N NotifyPCW.$$ -e /dev/null -o NotifyPCW.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
     };
+ 
         if ($@) {
         $logger->fatal(
             "PostCompileWrapper:Cannot run PostCompileWrapper Error:$@"
         );
         exit(1);
     }
+    }
+    else
+    {
+    	my $cmd = "$BSUB -q $queue -J PCW.$$ -cwd $outdir -e PCW.$$.%J.stderr -o PCW.$$.%J.stdout -We 24:00 -R \"rusage[mem=5]\" -M 10 -n 1 \"$outdir/PostCompileWrapper.csh\"";
+    	$logger->debug( "COMMAND: $cmd");
+    	eval{
+    		`$BSUB -q $queue -J PCW.$$ -cwd $outdir -e PCW.$$.%J.stderr -o PCW.$$.%J.stdout -We 24:00 -R "rusage[mem=5]" -M 10 -n 1 "$outdir/PostCompileWrapper.csh"`;
+			`$BSUB -q $queue -cwd $outdir -w "done(PCW.$$) -J NotifyPCW.$$ -e NotifyPCW.$$.%J.stderr -o NotifyPCW.$$.stat -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;	
+           
+    	};
+    	if ($@) {
+        $logger->fatal(
+            "PostCompileWrapper:Cannot run PostCompileWrapper Error:$@"
+        );
+        exit(1);
+    }
+    }
 
     push(@notifynames,"NotifyPCW.$$.stat");
-    $cmd = "$QSUB -q $queue -wd $outdir -N PreparePDF.$$ -b y -o PreparePDF.$$.stdout -e PreparePDF.$$.stderr -l h_vmem=5G,virtual_free=5G -pe smp 1 perl $MetricsScript $basename $R";
+    if(defined $QSUB)
+    {
+    my $cmd = "$QSUB -q $queue -wd $outdir -N PreparePDF.$$ -b y -o PreparePDF.$$.stdout -e PreparePDF.$$.stderr -l h_vmem=5G,virtual_free=5G -pe smp 1 $PERL $MetricsScript $basename $R";
      $logger->debug( "COMMAND: $cmd");
  eval{
     `$QSUB -q $queue -wd $outdir -N PreparePDF.$$ -b y -o PreparePDF.$$.stdout -e PreparePDF.$$.stderr -l h_vmem=5G,virtual_free=5G -pe smp 1 "perl $MetricsScript $basename $R"`;
@@ -1811,7 +1860,22 @@ sub PlotGraphs
         );
         exit(1);
     }
-    
+    }
+    else{
+    	my $cmd = "";
+    	$logger->debug( "COMMAND: $cmd");
+    	eval{
+    		`$BSUB -q $queue -J PreparePDF.$$ -cwd $outdir -e PreparePDF.$$.%J.stderr -o PreparePDF.$$.%J.stdout -We 24:00 -R "rusage[mem=5]" -M 10 -n 1 "$PERL $MetricsScript $basename $R"`;
+			`$BSUB -q $queue -cwd $outdir -w "done(PreparePDF.$$) -J NotifyPreparePDF.$$ -e NotifyPreparePDF.$$.%J.stderr -o NotifyPreparePDF.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;	
+           
+    	};
+    	if ($@) {
+        $logger->fatal(
+            "PreParePDF:Cannot run PreparePdf Error:$@"
+        );
+        exit(1);
+    }
+    }
     push(@notifynames,"NotifyPreparePDF.$$.stat");
     WaitToFinish($outdir,@notifynames);
     

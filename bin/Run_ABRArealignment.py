@@ -32,6 +32,8 @@ def main():
    parser.add_argument("-q", "--queue", action="store", dest="queue", required=False, metavar='all.q or clin.q', help="Name of the SGE queue")
    parser.add_argument("-o", "--outDir", action="store", dest="outdir", required=True, metavar='/somepath/output', help="Full Path to the output dir.")
    parser.add_argument("-qsub", "--qsubPath", action="store", dest="qsub", required=True, metavar='/somepath/qsub', help="Full Path to the qsub executables of SGE.")
+   parser.add_argument("-bsub", "--bsubPath", action="store", dest="bsub", required=True, metavar='/somepath/bsub', help="Full Path to the bsub executables of LSF.")
+   
    args = parser.parse_args()
    print "Running the ABRA re-alignment process."
    (inBamList,outBamList,kmers,tmpdir)= ProcessArgs(args)
@@ -49,6 +51,11 @@ def ProcessArgs(args):
     kmers = ""
     if(args.verbose):
         print "Going to see how many bam files are there for us to run the analysis."
+    #Check qsub and bsub
+    if(args.qsub and args.bsub):
+        print "Pleas give either qsub or bsub arguments. Script does not allow usage of both\n"
+        sys.exit(1)           
+    
     #Open fof of bam and make a list
     with open(args.bamList, 'r') as filecontent:
         for line in filecontent:
@@ -87,7 +94,7 @@ def ProcessArgs(args):
     tmpdir = os.path.join(args.tmpDir,tmpDir_name)
     if os.path.isdir(tmpdir):
         shutil.rmtree(tmpdir,onerror = remShut)
-                
+    
     return(inBamList,outBamList,kmers,tmpdir)
    
 def RunABRA(args,inBamList,outBamList,kmers,tmpdir):
@@ -104,21 +111,27 @@ def RunABRA(args,inBamList,outBamList,kmers,tmpdir):
     cmd = args.JAVA + " -Xmx40g -jar " + args.ABRA + " --in " + inBamList + " --out " + outBamList + " --ref " + args.ref + " --targets " + args.targetRegion + " --threads "  + args.threads + " --mad " + str(args.dp) + " --kmer " + kmers + " --working " + tmpdir
     #print "CMD==>",cmd,"\n"
     os.environ["PATH"] = os.environ["PATH"] + ":" + args.BWA
-    qsub_cmd = args.qsub + " -q " + args.queue + " -N " + "ABRA_"+args.patientId+"_"+str(myPid) + " -o " + "ABRA_"+ args.patientId+"_"+str(myPid)+".stdout" + " -e " + "ABRA_"+args.patientId+"_"+str(myPid)+".stderr" + " -V -l h_vmem=5G,virtual_free=5G -pe smp " + args.threads + " -wd " + args.outdir + " -sync y " + " -b y " + cmd 
-    print "QSUB_CMD==>", qsub_cmd , "\n"
-    qsub_args = shlex.split(qsub_cmd)
-    proc = Popen(qsub_args)
+    cl_cmd = ''
+    mem = args.threads * 5
+    maxmem = mem+5
+    if(args.qsub):
+        cl_cmd = args.qsub + " -q " + args.queue + " -N " + "ABRA_"+args.patientId+"_"+str(myPid) + " -o " + "ABRA_"+ args.patientId+"_"+str(myPid)+".stdout" + " -e " + "ABRA_"+args.patientId+"_"+str(myPid)+".stderr" + " -V -l h_vmem=5G,virtual_free=5G -pe smp " + args.threads + " -wd " + args.outdir + " -sync y " + " -b y " + cmd 
+    else:
+        cl_cmd = args.bsub + " -q " + args.queue + " -J " + "ABRA_"+args.patientId+"_"+str(myPid) + " -o " + "ABRA_"+ args.patientId+"_"+str(myPid)+".stdout" + " -e " + "ABRA_"+args.patientId+"_"+str(myPid)+".stderr" + " -We 24:00 -R \"rusage[mem=" + mem + "]\" -M " + maxmem + " -n " + args.threads + " -cwd " + args.outdir + " -K " + cmd
+    print "CLUSTER_CMD==>", cl_cmd , "\n"
+    cl_args = shlex.split(cl_cmd)
+    proc = Popen(cl_args)
     proc.wait()
     retcode = proc.returncode
     if(retcode >= 0):
         if(args.verbose):
-            print "Finished Running ABRA realignment for ", args.patientId, " using SGE"
+            print "Finished Running ABRA realignment for ", args.patientId, " using SGE/LSF"
     else:
         if(args.verbose):
             print "ABRA is either still running or it errored out with return code", retcode,"\n" 
 def RunHouseKeeping(args,tmpdir):
     if(args.verbose):
-        print "Removing Temporary Directroy:", tmpdir,"\n"
+        print "Removing Temporary Directory:", tmpdir,"\n"
     if os.path.isdir(tmpdir):
         shutil.rmtree(tmpdir,onerror = remShut)
 def remShut(*args):
