@@ -444,7 +444,7 @@ sub RunMpileup
            		my $cmd = "$BSUB -q $queue -J RunPileup.$bamId.$$ -cwd $outdir -e RunPileup.$bamId.$$.%J.stderr -o $mpileUpOutFile -R \"rusage[mem=5]\" -M 8 -n 1 \"$pathToSamtools $command\"";
            		$logger->debug($cmd);
            		`$BSUB -q $queue -J RunPileup.$bamId.$$ -cwd $outdir -e RunPileup.$bamId.$$.%J.stderr -o $mpileUpOutFile -R "rusage[mem=5]" -M 8 -n 1 "$pathToSamtools $command"`;
-				`$BSUB -q $queue -cwd $outdir -w "post_done(RunPileup.$bamId.$$) -J NotifyMpileup.$bamId.$$ -e NotifyMpileup.$bamId.$$.%J.stderr -o NotifyMpileup.$bamId.$$.stat -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;	
+				`$BSUB -q $queue -cwd $outdir -w "post_done(RunPileup.$bamId.$$)" -J NotifyMpileup.$bamId.$$ -e NotifyMpileup.$bamId.$$.%J.stderr -o NotifyMpileup.$bamId.$$.stat -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;	
            	}
 		};
 	if($@){
