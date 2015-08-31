@@ -1259,7 +1259,7 @@ sub GetConfiguration
 		$coverageThreshold    = $parameters{"Coverage_threshold_darwin_report"};
 		$mailID               = $parameters{"Email"};
 		$queue                = $parameters{"QUEUE_NAME"};
-		$CLUSTER              = $parameters{"CLUSTER_NAME"};
+		$CLUSTER              = $parameters{"CLUSTER"};
 		$deleteIntermediateFiles = $parameters{"DeleteIntermediateFiles"};
 		$PON_AD_threshold        = $parameters{"PON_AD_Threshold"};
 		$PON_TPVF_threshold      = $parameters{"PON_TPVF_Threshold"};
