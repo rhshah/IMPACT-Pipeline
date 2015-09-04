@@ -115,12 +115,12 @@ def RunABRA(args,inBamList,outBamList,kmers,tmpdir):
     #print "CMD==>",cmd,"\n"
     os.environ["PATH"] = os.environ["PATH"] + ":" + args.BWA
     cl_cmd = ''
-    mem = args.threads * 5
-    maxmem = mem+5
+    mem = int(args.threads) * 5
+    maxmem = int(mem)+5
     if(args.qsub):
         cl_cmd = args.qsub + " -q " + args.queue + " -N " + "ABRA_"+args.patientId+"_"+str(myPid) + " -o " + "ABRA_"+ args.patientId+"_"+str(myPid)+".stdout" + " -e " + "ABRA_"+args.patientId+"_"+str(myPid)+".stderr" + " -V -l h_vmem=5G,virtual_free=5G -pe smp " + args.threads + " -wd " + args.outdir + " -sync y " + " -b y " + cmd 
     else:
-        cl_cmd = args.bsub + " -q " + args.queue + " -J " + "ABRA_"+args.patientId+"_"+str(myPid) + " -o " + "ABRA_"+ args.patientId+"_"+str(myPid)+".stdout" + " -e " + "ABRA_"+args.patientId+"_"+str(myPid)+".stderr" + " -We 24:00 -R \"rusage[mem=" + mem + "]\" -M " + maxmem + " -n " + args.threads + " -cwd " + args.outdir + " -K " + cmd
+        cl_cmd = args.bsub + " -q " + args.queue + " -J " + "ABRA_"+args.patientId+"_"+str(myPid) + " -o " + "ABRA_"+ args.patientId+"_"+str(myPid)+".stdout" + " -e " + "ABRA_"+args.patientId+"_"+str(myPid)+".stderr" + " -We 24:00 -R \"rusage[mem=" + str(mem) + "]\" -M " + str(maxmem) + " -n " + args.threads + " -cwd " + args.outdir + " -K " + cmd
     print "CLUSTER_CMD==>", cl_cmd , "\n"
     cl_args = shlex.split(cl_cmd)
     proc = Popen(cl_args)

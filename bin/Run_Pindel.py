@@ -88,8 +88,8 @@ def RunPindel(args, wd, vcfoutName, tag):
     pindel2vcf = os.path.join(args.PINDEL, "pindel2vcf")
     vcfOutPath = os.path.join(args.outdir, vcfoutName)
     cl_cmd = ''
-    mem = args.threads * 6
-    maxmem = mem+6
+    mem = int(args.threads) * 6
+    maxmem = int(mem)+6
     # myPid = str(myPid)
     if(args.verbose):
         print "I am running Pindel for ", args.patientId, " using SGE/LSF"
@@ -101,7 +101,7 @@ def RunPindel(args, wd, vcfoutName, tag):
         if(args.qsub):
             cl_cmd = args.qsub + " -q " + args.queue + " -N " + "Pindel_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stderr" + " -V -l h_vmem=6G,virtual_free=6G -pe smp " + args.threads + " -wd " + wd + " -sync y " + " -b y " + cmd 
         else:
-            cl_cmd = args.bsub + " -q " + args.queue + " -J " + "Pindel_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stderr" + " -We 24:00 -R \"rusage[mem=" + mem + "]\" -M " + maxmem + " -n " + args.threads + " -cwd " + wd + " -K " + cmd 
+            cl_cmd = args.bsub + " -q " + args.queue + " -J " + "Pindel_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stderr" + " -We 24:00 -R \"rusage[mem=" + str(mem) + "]\" -M " + str(maxmem) + " -n " + args.threads + " -cwd " + wd + " -K " + cmd 
         print "Cluster_CMD==>", cl_cmd , "\n"
         cl_args = shlex.split(cl_cmd)
         proc = Popen(cl_args)
