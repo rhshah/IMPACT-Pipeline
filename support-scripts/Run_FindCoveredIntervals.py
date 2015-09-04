@@ -34,10 +34,12 @@ def main():
    
    args = parser.parse_args()
    #Check qsub and bsub
-   if(args.qsub or args.bsub):
-       print "Pleas give either qsub or bsub arguments. Script does not allow usage of both\n"
+   if(args.qsub and args.bsub):
+       print "Please give either qsub or bsub arguments. Script does not allow usage of both\n"
        sys.exit(1)           
-    
+   if((not args.qsub) and (not args.bsub)): 
+       print "Please give either qsub or bsub arguments. None are provided\n"
+       sys.exit(1)   
    if(args.verbose):
        print "Running the FindCoveredIntervals for the re-alignment process."
    (listFile) = RunFindCoveredIntervals(args)

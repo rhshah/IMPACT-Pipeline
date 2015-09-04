@@ -42,9 +42,12 @@ def ProcessArgs(args):
     if(args.verbose):
         print "I am currently processing the arguments.\n"
     #Check qsub and bsub
-    if(args.qsub or args.bsub):
-        print "Pleas give either qsub or bsub arguments. Script does not allow usage of both\n"
-        sys.exit(1)           
+    if(args.qsub and args.bsub):
+       print "Please give either qsub or bsub arguments. Script does not allow usage of both\n"
+       sys.exit(1)           
+   if((not args.qsub) and (not args.bsub)): 
+       print "Please give either qsub or bsub arguments. None are provided\n"
+       sys.exit(1)      
     tumorBam = '' 
     with open(args.config, 'r') as filecontent:
         for line in filecontent:
