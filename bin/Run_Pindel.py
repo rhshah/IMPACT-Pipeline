@@ -26,8 +26,8 @@ def main():
    parser.add_argument("-q", "--queue", action="store", dest="queue", required=False, metavar='all.q or clin.q', help="Name of the SGE queue")
    parser.add_argument("-o", "--outDir", action="store", dest="outdir", required=True, metavar='/somepath/output', help="Full Path to the output dir.")
    parser.add_argument("-op", "--outPrefix", action="store", dest="outprefix", required=True, metavar='TumorID', help="Id of the Tumor bam file which will be used as the prefix for Pindel output files")
-   parser.add_argument("-qsub", "--qsubPath", action="store", dest="qsub", required=True, metavar='/somepath/qsub', help="Full Path to the qsub executables of SGE.")
-   parser.add_argument("-bsub", "--bsubPath", action="store", dest="bsub", required=True, metavar='/somepath/bsub', help="Full Path to the bsub executables of LSF.")
+   parser.add_argument("-qsub", "--qsubPath", action="store", dest="qsub", required=False, metavar='/somepath/qsub', help="Full Path to the qsub executables of SGE.")
+   parser.add_argument("-bsub", "--bsubPath", action="store", dest="bsub", required=False, metavar='/somepath/bsub', help="Full Path to the bsub executables of LSF.")
    # parser.add_argument("-tr", "--targetRegion", action="store", dest="targetRegion", required=True, metavar='/somepath/targetRegion.bed', help="Full Path to bedfile for target region.")
    
    args = parser.parse_args()
@@ -42,7 +42,7 @@ def ProcessArgs(args):
     if(args.verbose):
         print "I am currently processing the arguments.\n"
     #Check qsub and bsub
-    if(args.qsub and args.bsub):
+    if(args.qsub or args.bsub):
         print "Pleas give either qsub or bsub arguments. Script does not allow usage of both\n"
         sys.exit(1)           
     tumorBam = '' 
