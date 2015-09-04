@@ -55,9 +55,9 @@ def ProcessArgs(args):
     if(args.qsub and args.bsub):
        print "Please give either qsub or bsub arguments. Script does not allow usage of both\n"
        sys.exit(1)           
-   if((not args.qsub) and (not args.bsub)): 
-       print "Please give either qsub or bsub arguments. None are provided\n"
-       sys.exit(1)       
+    if((not args.qsub) and (not args.bsub)):
+        print "Please give either qsub or bsub arguments. None are provided\n"
+        sys.exit(1)       
     
     #Open fof of bam and make a list
     with open(args.bamList, 'r') as filecontent:
