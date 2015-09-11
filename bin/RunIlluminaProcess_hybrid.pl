@@ -5078,7 +5078,7 @@ sub RunBwaMem
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J bwaMem.$id.$$ -R \"rusage[mem=10]\" -M 40 -n 4 -o $outFilename \"$BWA mem -t 4 -PM -R \'\@RG\tID:$basename\tLB:$id\tSM:$sampleId\tPL:Illumina\tPU:$barcode\tCN:BergerLab_MSKCC\' $Reference $fastq1 $fastq2\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J bwaMem.$id.$$ -We 24:00 -R "rusage[mem=10]" -M 24 -n 40 -o $outFilename "$BWA mem -t 4 -PM -R \'\@RG\tID:$basename\tLB:$id\tSM:$sampleId\tPL:Illumina\tPU:$barcode\tCN:BergerLab_MSKCC\' $Reference $fastq1 $fastq2"`;
+`$BSUB -q $queue -cwd $outdir -J bwaMem.$id.$$ -We 24:00 -R "rusage[mem=10]" -M 40 -n 4 -o $outFilename "$BWA mem -t 4 -PM -R \'\@RG\tID:$basename\tLB:$id\tSM:$sampleId\tPL:Illumina\tPU:$barcode\tCN:BergerLab_MSKCC\' $Reference $fastq1 $fastq2"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(bwaMem.$id.$$)" -J NotifyBwaMem.$id.$$ -We 24:00 -R "rusage[mem=2]" -M 2 -n 1 -o NotifyBwaMem.$id.$$.stat "$outdir/Notify.csh"`;
 			}
 		};
