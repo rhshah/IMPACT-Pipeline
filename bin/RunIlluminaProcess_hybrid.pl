@@ -5432,9 +5432,9 @@ sub PrintBQSRreads
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J PrintBQSR.$id.%J.$$ -o PrintBQSR.$id.$$.%J.stdout -e PrintBQSR.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 30 -n 3 \"$JAVA_1_7 -Xmx4g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T PrintReads -I $file -R $Reference -baq RECALCULATE -BQSR $BQSRtable -nct 8 -EOQ -o $outFilename\"";
+"$BSUB -q $queue -cwd $outdir -J PrintBQSR.$id.$$ -o PrintBQSR.$id.$$.%J.stdout -e PrintBQSR.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 30 -n 3 \"$JAVA_1_7 -Xmx4g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T PrintReads -I $file -R $Reference -baq RECALCULATE -BQSR $BQSRtable -nct 8 -EOQ -o $outFilename\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J PrintBQSR.$id.%J.$$ -o PrintBQSR.$id.$$.%J.stdout -e PrintBQSR.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 30 -n 3 "$JAVA_1_7 -Xmx4g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T PrintReads -I $file -R $Reference -baq RECALCULATE -BQSR $BQSRtable -nct 8 -EOQ -o $outFilename"`;
+`$BSUB -q $queue -cwd $outdir -J PrintBQSR.$id.$$ -o PrintBQSR.$id.$$.%J.stdout -e PrintBQSR.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 30 -n 3 "$JAVA_1_7 -Xmx4g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T PrintReads -I $file -R $Reference -baq RECALCULATE -BQSR $BQSRtable -nct 8 -EOQ -o $outFilename"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(PrintBQSR.$id.$$)" -J NotifyPrintBQSR.$id.$$ -e NotifyPrintBQSR.$id.$$.stderr -o NotifyPrintBQSR.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
