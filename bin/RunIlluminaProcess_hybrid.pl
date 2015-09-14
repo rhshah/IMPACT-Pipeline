@@ -5672,9 +5672,9 @@ sub RunMetricsCalculations
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J CanonicalExonCoverage.$id.$$ -o CanonicalExonCoverage.$id.$$.%J.stdout -e CanonicalExonCoverage.$id.$$.%J.stderr -R \"rusage[mem=8000000]\" -M 12000000 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $canonicalExonCoverage -L $canonicalExonIntervalsFile -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
+"$BSUB -q $queue -cwd $outdir -J CanonicalExonCoverage.$id.$$ -o CanonicalExonCoverage.$id.$$.%J.stdout -e CanonicalExonCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $canonicalExonCoverage -L $canonicalExonIntervalsFile -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J CanonicalExonCoverage.$id.$$ -o CanonicalExonCoverage.$id.$$.%J.stdout -e CanonicalExonCoverage.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8000000]" -M 12000000 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $canonicalExonCoverage -L $canonicalExonIntervalsFile -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
+`$BSUB -q $queue -cwd $outdir -J CanonicalExonCoverage.$id.$$ -o CanonicalExonCoverage.$id.$$.%J.stdout -e CanonicalExonCoverage.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $canonicalExonCoverage -L $canonicalExonIntervalsFile -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(CanonicalExonCoverage.$id.$)" -J NotifyCanonicalExonCoverage.$id.$$ -e NotifyCanonicalExonCoverage.$id.$$.%J.stderr -o NotifyCanonicalExonCoverage.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
