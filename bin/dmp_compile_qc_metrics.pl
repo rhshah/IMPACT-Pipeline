@@ -1290,6 +1290,7 @@ sub RunFPGenotypeMetrics
 	chomp($refFile);
 	my($refbarcode) = $refFile =~ m/.*_(bc\d+).*/g;
 	$Cheader = $Cheader . "\t$refbarcode";
+	print "REFGENO:$refFile\n";
 	open (FH, "<$refFile") or die $logger->fatal("Can't open $refFile. Error: $!\n");
 	tie (my %refGenotypes, 'Tie::IxHash');
 	my $refCount = 0;
