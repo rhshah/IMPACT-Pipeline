@@ -5591,9 +5591,9 @@ sub RunMetricsCalculations
 				$logger->debug("COMMAND: $cmd");
 `$BSUB -q $queue -cwd $outdir -J GeneCoverage.$id.$$ -o GeneCoverage.$id.$$.%J.stdout -e GeneCoverage.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $geneCoverage -L $GeneInterval  -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
 				$cmd =
-				  \"$BSUB -q $queue -cwd $outdir -w \"done(GeneCoverage.$id.$$)\" -J ExonToGeneCov.$id.$$ -o $geneCount -e ExonToGeneCov.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord\"";
+				  \"$BSUB -q $queue -cwd $outdir -w \"done(GeneCoverage.$id.$$)\" -J ExonToGeneCov.$id.$$ -o ExonToGeneCov.$id.$$.%J.stdout -e ExonToGeneCov.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord > $geneCount\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -w "post_done(GeneCoverage.$id.$$)" -J ExonToGeneCov.$id.$$ -o $geneCount -e ExonToGeneCov.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(GeneCoverage.$id.$$)" -J ExonToGeneCov.$id.$$ -o ExonToGeneCov.$id.$$.%J.stdout -e ExonToGeneCov.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord > $geneCount"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(ExonToGeneCov.$id.$$)" -J NotifyGeneCoverage.$id.$$ -e NotifyGeneCoverage.$id.$$.stderr -o NotifyGeneCoverage.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
@@ -5799,9 +5799,9 @@ sub RunMetricsCalculations
 				$logger->debug("COMMAND: $cmd");
 `$BSUB -q $queue -cwd $outdir -J FingerPrint.$id.$$ -o FingerPrint.$id.$$.%J.stdout -e FingerPrint.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $fingerprintCounts -L $FingerPrintInterval -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitIntervals -baseCounts"`;
 				$cmd =
-"$BSUB -q $queue -cwd $outdir -w \"done(FingerPrint.$id.$$)\" -J FingerPrintSummary.$id.$$ -o $fingerprintSummary -e FingerPrint.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $FPGenotypesScript $fingerprintCounts $FP_genotypes\"";
+"$BSUB -q $queue -cwd $outdir -w \"done(FingerPrint.$id.$$)\" -J FingerPrintSummary.$id.$$ -o FingerPrint.$id.$$.%J.stdout -e FingerPrint.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $FPGenotypesScript $fingerprintCounts $FP_genotypes > $fingerprintSummary\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -w "post_done(FingerPrint.$id.$$)" -J FingerPrintSummary.$id.$$ -o $fingerprintSummary -e FingerPrint.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $FPGenotypesScript $fingerprintCounts $FP_genotypes"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(FingerPrint.$id.$$)" -J FingerPrintSummary.$id.$$ -o FingerPrint.$id.$$.%J.stdout -e FingerPrint.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $FPGenotypesScript $fingerprintCounts $FP_genotypes > $fingerprintSummary"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(FingerPrintSummary.$id.$$)" -J NotifyFingerPrintSummary.$id.$$ -e NotifyFingerPrintSummary.$id.$$.%J.stderr -o NotifyFingerPrintSummary.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
