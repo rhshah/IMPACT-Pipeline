@@ -5498,7 +5498,7 @@ sub RunMetricsCalculations
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J HSmetrics.$id.$$ -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/CalculateHsMetrics.jar I=$bamFile O=$HSmetricsFilename BI=$BaitInterval TI=$TargetInterval REFERENCE_SEQUENCE=$Reference PER_TARGET_COVERAGE=$perTargetCoverageFilename TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J HSmetrics.$id.$$ -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/CalculateHsMetrics.jar I=$bamFile O=$HSmetricsFilename BI=$BaitInterval TI=$TargetInterval REFERENCE_SEQUENCE=$Reference PER_TARGET_COVERAGE=$perTargetCoverageFilename TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT"`;
+`$BSUB -q $queue -cwd $outdir -J HSmetrics.$id.$$ -o HSmetrics.$id.$$.stdout -e HSmetrics.$id.$$.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/CalculateHsMetrics.jar I=$bamFile O=$HSmetricsFilename BI=$BaitInterval TI=$TargetInterval REFERENCE_SEQUENCE=$Reference PER_TARGET_COVERAGE=$perTargetCoverageFilename TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(HSmetrics.$id.$$)" -J NotifyHSmetrics.$id.$$ -o NotifyHSmetrics.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
