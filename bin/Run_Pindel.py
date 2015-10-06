@@ -111,7 +111,7 @@ def RunPindel(args, wd, vcfoutName, tag):
         retcode = 1
     if(retcode >= 0):
         if(args.verbose):
-            print "I have finished running Pindel for ", args.patientId, " using SGE"
+            print "I have finished running Pindel for ", args.patientId, " using SGE/LSF"
         if(os.path.isfile(vcfOutPath)):
             retcode = 1
         else:
