@@ -6027,11 +6027,11 @@ sub RunMutect_SomaticIndelDetector
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J MuTect.$id.$$ -o MuTect.$id.$$.%J.stdout -e MuTect.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_6 -Xmx4g -jar $Mutect -T MuTect --input_file:normal $normalBamFile --input_file:tumor $tumorBamFile --reference_sequence $Reference --dbsnp $dbSNP --cosmic $COSMIC -o $MutationVerboseOutFilename -vcf $MutationOutFilename --enable_extended_output  -dcov 50000 -rf BadCigar -rf MappingQuality -mmq $MAPQ\"";
+"$BSUB -q $queue -cwd $outdir -J MuTect.$id.$$ -o MuTect.$id.$$.%J.stdout -e MuTect.$id.$$.%J.stderr -We 24:00 -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_6 -Xmx4g -jar $Mutect -T MuTect --input_file:normal $normalBamFile --input_file:tumor $tumorBamFile --reference_sequence $Reference --dbsnp $dbSNP --cosmic $COSMIC -o $MutationVerboseOutFilename -vcf $MutationOutFilename --enable_extended_output  -dcov 50000 -rf BadCigar -rf MappingQuality -mmq $MAPQ\"";
 				$logger->debug("COMMAND: $cmd");
 `$BSUB -q $queue -cwd $outdir -J MuTect.$id.$$ -o MuTect.$id.$$.%J.stdout -e MuTect.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_6 -Xmx4g -jar $Mutect -T MuTect --input_file:normal $normalBamFile --input_file:tumor $tumorBamFile --reference_sequence $Reference --dbsnp $dbSNP --cosmic $COSMIC -o $MutationVerboseOutFilename -vcf $MutationOutFilename --enable_extended_output  -dcov 50000 -rf BadCigar -rf MappingQuality -mmq $MAPQ"`;
 				$cmd =
-"$BSUB -q $queue -cwd $outdir -w \"done(MuTect.$id.$$)\" -J Triallelic.$id.$$ -o Triallelic.$id.$$.%J.stdout -e Triallelic.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $triallelic_fix --output_dir $outdir --mutect_raw_file $MutationVerboseOutFilename --mutect_vcf_file $MutationOutFilename\"";
+"$BSUB -q $queue -cwd $outdir -w \"done(MuTect.$id.$$)\" -J Triallelic.$id.$$ -o Triallelic.$id.$$.%J.stdout -e Triallelic.$id.$$.%J.stderr -We 24:00 -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $triallelic_fix --output_dir $outdir --mutect_raw_file $MutationVerboseOutFilename --mutect_vcf_file $MutationOutFilename\"";
 				$logger->debug("COMMAND: $cmd");
 `$BSUB -q $queue -cwd $outdir -w "post_done(MuTect.$id.$$)" -J Triallelic.$id.$$ -o Triallelic.$id.$$.%J.stdout -e Triallelic.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $triallelic_fix --output_dir $outdir --mutect_raw_file $MutationVerboseOutFilename --mutect_vcf_file $MutationOutFilename"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(MuTect.$id.$$) && post_done(Triallelic.$id.$$)" -J NotifyMT.$id.$$ -e NotifyMT.$id.$$.%J.stderr -o NotifyMT.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
