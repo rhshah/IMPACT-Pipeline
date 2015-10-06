@@ -84,8 +84,8 @@ def RunPindel(args, wd, vcfoutName, tag):
     day = date.today()
     today = day.isoformat()
     today = today.replace("-", "")
-    pindel = os.path.join(args.PINDEL, "/pindel")
-    pindel2vcf = os.path.join(args.PINDEL, "/pindel2vcf")
+    pindel = os.path.join(args.PINDEL, "pindel")
+    pindel2vcf = os.path.join(args.PINDEL, "pindel2vcf")
     vcfOutPath = os.path.join(args.outdir, vcfoutName)
     cl_cmd = ''
     mem = int(args.threads) * 6
