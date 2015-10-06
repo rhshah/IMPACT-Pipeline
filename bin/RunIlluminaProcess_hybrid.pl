@@ -5591,7 +5591,7 @@ sub RunMetricsCalculations
 				$logger->debug("COMMAND: $cmd");
 `$BSUB -q $queue -cwd $outdir -J GeneCoverage.$id.$$ -o GeneCoverage.$id.$$.%J.stdout -e GeneCoverage.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $geneCoverage -L $GeneInterval  -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
 				$cmd =
-				  \"$BSUB -q $queue -cwd $outdir -w \"done(GeneCoverage.$id.$$)\" -J ExonToGeneCov.$id.$$ -o ExonToGeneCov.$id.$$.%J.stdout -e ExonToGeneCov.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord > $geneCount\"";
+				  "$BSUB -q $queue -cwd $outdir -w \"done(GeneCoverage.$id.$$)\" -J ExonToGeneCov.$id.$$ -o ExonToGeneCov.$id.$$.%J.stdout -e ExonToGeneCov.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord > $geneCount\"";
 				$logger->debug("COMMAND: $cmd");
 `$BSUB -q $queue -cwd $outdir -w "post_done(GeneCoverage.$id.$$)" -J ExonToGeneCov.$id.$$ -o ExonToGeneCov.$id.$$.%J.stdout -e ExonToGeneCov.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord > $geneCount"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(ExonToGeneCov.$id.$$)" -J NotifyGeneCoverage.$id.$$ -e NotifyGeneCoverage.$id.$$.stderr -o NotifyGeneCoverage.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
@@ -5942,7 +5942,7 @@ sub RunUnifiedGenotyper
 "$BSUB -q $queue -cwd $outdir -J UGI.$id.$$ -o UGI.$id.$$.%J.stdout -e UGI.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T UnifiedGenotyper -R $Reference -I $bamFile -o $outFilename2  -rf BadCigar --dbsnp $dbSNP -glm INDEL -dcov 50000 -L $GeneInterval\"";
 				$logger->debug("COMMAND: $cmd");
 `$BSUB -q $queue -cwd $outdir -J UGI.$id.$$ -o UGI.$id.$$.%J.stdout -e UGI.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T UnifiedGenotyper -R $Reference -I $bamFile -o $outFilename2  -rf BadCigar --dbsnp $dbSNP -glm INDEL -dcov 50000 -L $GeneInterval"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(UGM.$id.$$,UGI.$id.$$)" -J NotifyUG.$id.$$ -e NotifyUG.$id.$$.%J.stderr -o NotifyUG.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(UGM.$id.$$) && post_done(UGI.$id.$$)" -J NotifyUG.$id.$$ -e NotifyUG.$id.$$.%J.stderr -o NotifyUG.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -6034,7 +6034,7 @@ sub RunMutect_SomaticIndelDetector
 "$BSUB -q $queue -cwd $outdir -w \"done(MuTect.$id.$$)\" -J Triallelic.$id.$$ -o Triallelic.$id.$$.%J.stdout -e Triallelic.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $triallelic_fix --output_dir $outdir --mutect_raw_file $MutationVerboseOutFilename --mutect_vcf_file $MutationOutFilename\"";
 				$logger->debug("COMMAND: $cmd");
 `$BSUB -q $queue -cwd $outdir -w "post_done(MuTect.$id.$$)" -J Triallelic.$id.$$ -o Triallelic.$id.$$.%J.stdout -e Triallelic.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $triallelic_fix --output_dir $outdir --mutect_raw_file $MutationVerboseOutFilename --mutect_vcf_file $MutationOutFilename"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(MuTect.$id.$$,Triallelic.$id.$$)" -J NotifyMT.$id.$$ -e NotifyMT.$id.$$.%J.stderr -o NotifyMT.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(MuTect.$id.$$) && post_done(Triallelic.$id.$$)" -J NotifyMT.$id.$$ -e NotifyMT.$id.$$.%J.stderr -o NotifyMT.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
