@@ -84,8 +84,8 @@ def RunPindel(args, wd, vcfoutName, tag):
     day = date.today()
     today = day.isoformat()
     today = today.replace("-", "")
-    pindel = os.path.join(args.PINDEL, "pindel")
-    pindel2vcf = os.path.join(args.PINDEL, "pindel2vcf")
+    pindel = os.path.join(args.PINDEL, "/pindel")
+    pindel2vcf = os.path.join(args.PINDEL, "/pindel2vcf")
     vcfOutPath = os.path.join(args.outdir, vcfoutName)
     cl_cmd = ''
     mem = int(args.threads) * 6
@@ -119,7 +119,7 @@ def RunPindel(args, wd, vcfoutName, tag):
             if(args.qsub):
                 p2v_cl = args.qsub + " -q " + args.queue + " -N " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stderr" + " -V -l h_vmem=8G,virtual_free=8G -pe smp 1 " + " -wd " + wd + " -sync y " + " -b y " + p2v_cmd 
             else:
-                p2v_cl = args.bsub + " -q " + args.queue + " -N " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stderr" +  " -We 24:00 -R \"rusage[mem=8]\" -M 16 -n 1" + " -cwd " + wd + " -K " + p2v_cmd 
+                p2v_cl = args.bsub + " -q " + args.queue + " -J " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stderr" +  " -We 24:00 -R \"rusage[mem=8]\" -M 16 -n 1" + " -cwd " + wd + " -K " + p2v_cmd 
            
             print "P2V cmd: ", p2v_cl
             p2v_args = shlex.split(p2v_cl)

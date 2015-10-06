@@ -67,8 +67,8 @@ def RunFindCoveredIntervals(args):
    
         if(args.verbose):
             print "Cluster_CMD==>", cl_cmd , "\n"
-            cl_args = shlex.split(cl_cmd)
-            proc = Popen(cl_args)
+        cl_args = shlex.split(cl_cmd)
+        proc = Popen(cl_args)
         proc.wait()
         retcode = proc.returncode
         if(retcode >= 0):
