@@ -6102,7 +6102,7 @@ sub RunMutect_SomaticIndelDetector
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J PID.$id.$$ -o PID.$id.$$.%J.stdout -e PID.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$PYTHON $PindelWrapper -i $pconfig -pId $tFileId -t 5 -r $Reference -p $PINDELBIN -chr ALL -q $queue -bsub $BSUB -o $outdir -op $tFileId\"";
+"$BSUB -q $queue -cwd $outdir -J PID.$id.$$ -o PID.$id.$$.%J.stdout -e PID.$id.$$.%J.stderr -We 24:00 -R \"rusage[mem=8]\" -M 12 -n 1 \"$PYTHON $PindelWrapper -i $pconfig -pId $tFileId -t 5 -r $Reference -p $PINDELBIN -chr ALL -q $queue -bsub $BSUB -o $outdir -op $tFileId\"";
 				$logger->debug("COMMAND: $cmd");
 `$BSUB -q $queue -cwd $outdir -J PID.$id.$$ -o PID.$id.$$.%J.stdout -e PID.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$PYTHON $PindelWrapper -i $pconfig -pId $tFileId -t 5 -r $Reference -p $PINDELBIN -chr ALL -q $queue -bsub $BSUB -o $outdir -op $tFileId"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(PID.$id.$$)" -J NotifyPID.$id.$$ -e NotifyPID.$id.$$.%J.stderr -o NotifyPID.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
