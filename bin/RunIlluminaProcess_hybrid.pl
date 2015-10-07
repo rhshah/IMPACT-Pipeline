@@ -4725,7 +4725,7 @@ sub AnnotateSNPsAndIndels
 		$logger->debug("COMMAND : $cmd");
 		@notifyNames = ();
 `$BSUB -q $queue -cwd $outdir -J FilterExonicVariants.$$ -o FilterVariants.$$.%J.stdout -e FilterVariants.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(FilterVariants.$$)" -J NotifyFV.$$ -e NotifyFV.$$.%J.stderr -o NotifyFV.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(FilterExonicVariants.$$)" -J NotifyFV.$$ -e NotifyFV.$$.%J.stderr -o NotifyFV.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 	}
 	push( @notifyNames, "NotifyFV.$$.stat" );
 	&WaitToFinish( $outdir, @notifyNames );
