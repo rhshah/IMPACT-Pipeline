@@ -1017,8 +1017,8 @@ sub Usage
 {
 	print "Unknow option: @_\n" if (@_);
 	print "\nUsage : RunIlluminaProcess.pl [options]
-        [--config|c                        S Path to configration file(optional;default:/home/shahr2/Scripts/All/configration_(script_version).txt)]
-        [--svConfig|sc                     S Path to structural variant configration file(optional;default:none)]
+        [--config|c                        S Path to configration file(required)]
+        [--svConfig|sc                     S Path to structural variant configration file(optional)]
         [--symLinkFlag|sf           	   I Flag for Keeping or removing the symolic links(1:Remove;2:Keep)(default:2)]
         [--dataDirectory|d                 S Path where all the files to be processed are located (required)]
         [--outputDirectory|o               S Path where all the output files will be written (required)]
@@ -1057,7 +1057,7 @@ sub Usage
         AD_Tthreshold_indel_low_AnnotationFilter    I Low Tumor Allele depth threshold for indels(default:3,optional)
         VF_Tthreshold_indel_high_AnnotationFilter   F High Tumor Varaint Frequency threshold for indels(default:0.1,optional) 
         VF_Tthreshold_indel_high_AnnotationFilter   F Low Tumor Varaint Frequency threshold for indels(default:0.02,optional) 
-        QUEUE_NAME                                 S Name of the SGE/LSF Queue where the pipeline needs to run (default:all.q,optional)
+        QUEUE_NAME                                 S Name of the Queue where the pipeline needs to run (default:all.q,optional)
 	\n";
 	
 	print "For any question please contact Ronak Shah (shahr2\@mskcc.org)\n";

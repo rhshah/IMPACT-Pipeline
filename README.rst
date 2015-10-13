@@ -31,3 +31,12 @@ Tools Used
 :Somatic INDEL calling: `SomaticIndelDetector GATK v2.3-9 <http://www.broadinstitute.org/gatk/download>`_
 :Somatic INDEL calling: `PINDEL v0.2.5a7 <https://github.com/genome/pindel/tree/v0.2.5a7>`_
 :Somatic Structural Variant Framework: `IMPACT-SV v1.0.1 <https://github.com/rhshah/IMPACT-SV/tree/1.0.1>`_
+
+Usage
+=====
+Usage : RunIlluminaProcess.pl [options]
+        [--config|c                        S Path to configration file(required)]
+        [--svConfig|sc                     S Path to structural variant configration file(optional)]
+        [--symLinkFlag|sf           	   I Flag for Keeping or removing the symolic links(1:Remove;2:Keep)(default:2)]
+        [--dataDirectory|d                 S Path where all the files to be processed are located (required)]
+        [--outputDirectory|o               S Path where all the output files will be written (required)]
