@@ -28,4 +28,4 @@ Tools Used
 :Somatic SNV calling: `MuTect v1.1.4 <https://github.com/broadinstitute/mutect/tree/1.1.4>`_
 :Somatic INDEL calling: `SomaticIndelDetector GATK v2.3-9 <http://www.broadinstitute.org/gatk/download>`_
 :Somatic INDEL calling: `PINDEL v0.2.5a7 <https://github.com/genome/pindel/tree/v0.2.5a7>`_
-:Somatic Structural Variant Calling: `DELLY v0.6.1 <https://github.com/tobiasrausch/delly/tree/v0.6.1>`_
+:Somatic Structural Variant Framework: `IMPACT-SV v1.0.1 <https://github.com/rhshah/IMPACT-SV/tree/1.0.1>`_
