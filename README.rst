@@ -1,7 +1,7 @@
 IMPACT-Pipeline: MSK-IMPACT assay data analysis framework to process data on LSF/SGE
 ====================================================================================
 
-:Author: `Ronak H Shah <https://github.com/rhshah>`_, Donavan Cheng, `Ahmet Zehir <https://github.com/ahmetz>`_, Aijaz Syed,`Raghu Chandramohan <https://github.com/rghu>`_, Meera Prasad et.al
+:Author: `Ronak H Shah <https://github.com/rhshah>`_, Donavan Cheng, `Ahmet Zehir <https://github.com/ahmetz>`_, Aijaz Syed, `Raghu Chandramohan <https://github.com/rghu>`_, Meera Prasad et.al
 :Contact: rons.shah@gmail.com
 :Source code: http://github.com/rhshah/IMPACT-Pipeline
 :License: `Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0>`_
