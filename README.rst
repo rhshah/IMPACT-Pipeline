@@ -12,7 +12,9 @@ It is designed for use with hybrid capture, including both whole-exome and custo
 Citation
 ========
 
-If you use this software in a publication, please cite our paper `Memorial Sloan Kettering-Integrated Mutation Profiling of Actionable Cancer Targets (MSK-IMPACT): A Hybridization Capture-Based Next-Generation Sequencing Clinical Assay for Solid Tumor Molecular Oncology <http://www.sciencedirect.com/science/article/pii/S1525157815000458>`_.
+If you use this software in a publication, please cite our paper 
+
+`Memorial Sloan Kettering-Integrated Mutation Profiling of Actionable Cancer Targets (MSK-IMPACT): A Hybridization Capture-Based Next-Generation Sequencing Clinical Assay for Solid Tumor Molecular Oncology <http://www.sciencedirect.com/science/article/pii/S1525157815000458>`_.
 
 Requirements
 ============
