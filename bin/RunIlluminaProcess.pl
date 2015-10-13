@@ -1057,16 +1057,9 @@ sub Usage
         AD_Tthreshold_indel_low_AnnotationFilter    I Low Tumor Allele depth threshold for indels(default:3,optional)
         VF_Tthreshold_indel_high_AnnotationFilter   F High Tumor Varaint Frequency threshold for indels(default:0.1,optional) 
         VF_Tthreshold_indel_high_AnnotationFilter   F Low Tumor Varaint Frequency threshold for indels(default:0.02,optional) 
-        moveFiles_StrVar                            I 2 => Skip Making Folders & Moving Files. 1 => Make Folders and Move Files. (default:1,optional,for structural variant pipeline)
-        NumberOfChromosomes_StrVar                  I Number of chromosomes on which analysis needs to be done for structural variants.eg: 25 => 1-22,X,Y,MT (default:25,optional)
-        NumberOfProcessors_StrVar                   I Number of processors to use for analysis for structural variants (default:1,optional)
-        FOF_StrVar                                S Name of the files with there path for structural variants. (fof:Paired files;one per line;one after another) (optional)
-        databaseUserId_StrVar                     S MySQL DB user id for structural variant pipeline (optional;default:dmp_prod)
-        databasePassword_StrVar                   S MySQL DB password for structural variant pipeline. (optional;default:password of dmp_prod)
-        databaseName_StrVar                       S MySQL DB name for structural variant pipeline. (optional;default:rnd_dmp)
-        databaseLocationString_StrVar             S MySQL DB location for structural variant pipeline. (optional;default:unagi.cbio.private)
-        SGE_QUEUE                                 S Name of the Sun Grd Engine Queue where the pipeline needs to run (default:all.q,optional)
+        QUEUE_NAME                                 S Name of the SGE/LSF Queue where the pipeline needs to run (default:all.q,optional)
 	\n";
+	
 	print "For any question please contact Ronak Shah (shahr2\@mskcc.org)\n";
 	print "!~!~! Comments, flames and suggestion are welcome !~!~!\n";
 	exit();
