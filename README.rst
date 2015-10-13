@@ -1,7 +1,7 @@
 IMPACT-Pipeline: Running the MSK-IMPACT Pipeline on LSF/SGE
 ================================================================
 
-:Author: Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijaz Syed, Raghu Chandramohan
+:Author: Ronak H Shah <https://github.com/rhshah>, Donavan Cheng, Ahmet Zehir <https://github.com/ahmetz>, Aijaz Syed, Raghu Chandramohan <https://github.com/rghu> et.al
 :Contact: rons.shah@gmail.com
 :Source code: http://github.com/rhshah/IMPACT-Pipeline
 :License: `Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0>`_
