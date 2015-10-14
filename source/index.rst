@@ -18,44 +18,16 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
+   
+   requirements
+   usage
 
-itation
+Citation
 ========
 
 If you use this software in a publication, please cite our paper 
 
 `Memorial Sloan Kettering-Integrated Mutation Profiling of Actionable Cancer Targets (MSK-IMPACT): A Hybridization Capture-Based Next-Generation Sequencing Clinical Assay for Solid Tumor Molecular Oncology <http://www.sciencedirect.com/science/article/pii/S1525157815000458>`_.
-
-Requirements
-============
-
-Please See template.conf file in the configuration folder.
-
-:perl: `v5.20.2 <http://perl5.git.perl.org/perl.git/tag/2c93aff028f866699beb26e5e7504e531c31b284>`_
-:python: `v2.7.8 <https://www.python.org/download/releases/2.7.8/>`_
-:R: `v3.1.2 <http://cran.r-project.org/src/base/R-3/R-3.1.2.tar.gz>`_
-
-Tools Used
-==========
-:Somatic SNV calling: `MuTect v1.1.4 <https://github.com/broadinstitute/mutect/tree/1.1.4>`_
-:Somatic INDEL calling: `SomaticIndelDetector GATK v2.3-9 <http://www.broadinstitute.org/gatk/download>`_
-:Somatic INDEL calling: `PINDEL v0.2.5a7 <https://github.com/genome/pindel/tree/v0.2.5a7>`_
-:Somatic Structural Variant Framework: `IMPACT-SV v1.0.1 <https://github.com/rhshah/IMPACT-SV/tree/1.0.1>`_
-
-Usage
-=====
-**RunIlluminaProcess.pl [options]**
-	
-	--config | -c                        S Path to configration file(required)
-	
-	--svConfig | -sc                     S Path to structural variant configration file(optional)
-	
-	--symLinkFlag | -sf           	   I Flag for Keeping or removing the symolic links(1:Remove;2:Keep)(default:2)
-	
-	--dataDirectory | -d                 S Path where all the files to be processed are located (required)
-	
-	--outputDirectory | -o               S Path where all the output files will be written (required)
-	
 
 
 Indices and tables
