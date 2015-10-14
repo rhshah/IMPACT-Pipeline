@@ -36,12 +36,39 @@ Usage
 =====
 **RunIlluminaProcess.pl [options]**
 	
-	--config | c                        S Path to configration file(required)
+	--config | -c                        S Path to configration file(required)
 	
-	--svConfig | sc                     S Path to structural variant configration file(optional)
+	--svConfig | -sc                     S Path to structural variant configration file(optional)
 	
-	--symLinkFlag | sf           	   I Flag for Keeping or removing the symolic links(1:Remove;2:Keep)(default:2)
+	--symLinkFlag | -sf           	   I Flag for Keeping or removing the symolic links(1:Remove;2:Keep)(default:2)
 	
-	--dataDirectory | d                 S Path where all the files to be processed are located (required)
+	--dataDirectory | -d                 S Path where all the files to be processed are located (required)
 	
-	--outputDirectory | o               S Path where all the output files will be written (required)
+	--outputDirectory | -o               S Path where all the output files will be written (required)
+	
+Inside the config file
+----------------------
+
+There are three sections:
+
++-----------+-----------+-----------+
+| Section 1 | Section 2 | Section 3 |
++===========+===========+===========+
+| Locations | Parameters| Versions  |
++-----------+-----------+-----------+
+
+Inside Location Here are the things that need to be set:
+
+:ZCAT: Location of the ``zcat`` program on linux 
+:TMPDIR: Set the temporary directory for all tools please set somthing other then ``/tmp``
+:JAVA_1_6: Set JAVA version 1.6
+:JAVA_1_7: Set JAVA version 1.7
+:GATK_SomaticIndel: Path to GATK somatic indel detector (GATK version 2.3-9)
+:GATK: Path to GATK (GATK version 3.3.0)
+:Reference: Path to fasta referece file to be used (GRCh37)
+:Refseq: Path to refgene file to be used
+:PICARD: Path to picard tools (Picard version 1.19)
+
+Set the parameters to different file/folders/values required by the IMPACT pipeline
+
+Inside the version there are version that are being used for each tool. This is just for consistency in reports.
