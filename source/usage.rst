@@ -1,6 +1,9 @@
 =====
 Usage
 =====
+
+Quick Usage
+===========
 **RunIlluminaProcess.pl [options]**
 	
 	--config | -c                        S Path to configration file(required)
