@@ -1,9 +1,3 @@
-IMPACT-Pipeline: MSK-IMPACT assay data analysis framework to process data on LSF/SGE
-====================================================================================
-
-.. toctree::
-   :maxdepth: 4
-   
 Usage
 =====
 **RunIlluminaProcess.pl [options]**
