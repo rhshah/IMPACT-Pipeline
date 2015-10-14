@@ -104,6 +104,48 @@ Parameters
 
 Set the parameters to different file/folders/values required by the IMPACT pipeline
 
+:StdNormalForMutationCalling: = Path to standard normal to be used for mutation calling
+:ListOfFiles: File of Files(FOF) for different steps for the pipeline (only required when the process dont start from merging fastq)
+:Process: Which process to run the pipeline on ( can be 1,2,3,4,5,6,7 independently or continuous combination in ascending order )
+:FastqSource: Where are the fastq file from (can be ``GCL`` or ``DMP``)
+:MAPQ: Mapping Quality Threshold (Used by DMP-IMPACT:0.2)0
+:BASQ: Base Quality Threshold (Used by DMP-IMPACT:0.2)
+:MergeDinucleotide: = Flag to Merge di-nucleotide mutation(can be 1(True) or 2(False))
+:MoveFiles: Flag to Move file in folders (can be 1(True) or 2(False))
+:DeleteIntermediateFiles: Flag ti Delete Intermediate Files (can be 1(True) or 2(False))
+:TNfreqRatio_MutectStdFilter: TN freq Ratio for mutect std filter (Used by DMP-IMPACT:5)
+:TNfreqRatio_SomIndelStdFilter: TN freq Ratio for SID std filter (Used by DMP-IMPACT:5)
+:VF_threshold_hotspot: = Variant Frequency threshold for SNV hotspot (Used by DMP-IMPACT:0.01)
+:AD_SomIndelSTDFilter: = Allele Depth Threshold for SID standard filter (Used by DMP-IMPACT:5)
+:DP_SomIndelSTDFilter: = Total Depth Threshold for SID standard filter (Used by DMP-IMPACT:0)
+:VF_SomIndelSTDilter: Variant Frequency Threshold for SID standard filter (Used by DMP-IMPACT:0.01)
+:AD_MutectSTDFilter: Allele Depth Threshold for Mutect standard filter (Used by DMP-IMPACT:5)
+:DP_MutectSTDFilter: Total Depth Threshold for Mutect standard filter (Used by DMP-IMPACT:0)
+:VF_MutectSTDFilter: Variant Frequency Threshold for Mutect standard filter (Used by DMP-IMPACT:0.01)
+:TNfreqRatio_AnnotationFilter: Tumor to Normal frequency ratio therehold for Annotation (Used by DMP-IMPACT:5)
+:PON_AD_Threshold: Panel of Normal Allele Depth Threshold (Used by DMP-IMPACT:3)
+:PON_TPVF_Threshold: Panel of Normal TPVF Threshold (Used by DMP-IMPACT:10)
+:Pindel_Min_Indel_Len: Minimum Length of INDEL called by PINDEL(Used by DMP-IMPACT:25)
+:Pindel_Max_Indel_Len: Maximum Length of INDEL called by PINDEL (Used by DMP-IMPACT:2000)
+:MAFthreshold_AnnotationFilter: = Maf threshold for Annotation (Used by DMP-IMPACT:0.01)
+:minimumDPforSNV: Minimum Total Depth for Novel SNVs  (Used by DMP-IMPACT:20)
+:minimumADforSNV: Minimum Allele Depth for Novel SNVs (Used by DMP-IMPACT:10)
+:minimumVFforSNV: Minimum Variant Frequency for Novel SNVs (Used by DMP-IMPACT:0.05)
+:minimumDPforSNVhs: Minimum Total Depth for Hotspot SNVs (Used by DMP-IMPACT:20)
+:minimumADforSNVhs: Minimum Allele Depth for Hotspot SNVs (Used by DMP-IMPACT:8)
+:minimumVFforSNVhs: Minimum Variant Frequency for Hotspot SNVs (Used by DMP-IMPACT:0.02)
+:minimumDPforINDEL: Minimum Total Depth for Novel INDELs (Used by DMP-IMPACT:20)
+:minimumADforINDEL: Minimum Allele Depth for Novel INDELs (Used by DMP-IMPACT:10)
+:minimumVFforINDEL: Minimum Variant Frequency for Novel INDELs (Used by DMP-IMPACT:0.05)
+:minimumDPforINDELhs: Minimum Total Depth for Hotspot INDELs (Used by DMP-IMPACT:20)
+:minimumADforINDELhs: Minimum Allele Depth for Hotspot INDELs (Used by DMP-IMPACT:8)
+:minimumVFforINDELhs: Minimum Variant Frequnecy for Hotspot INDELs (Used by DMP-IMPACT:0.02)
+:occurrencePercent: Minimum Percentage For Occurrence In Other Normals (Used by DMP-IMPACT:0.2)
+:Coverage_threshold_darwin_report: Coverage threshold for darwin reports(good coverage vs bad coverage) (Used by DMP-IMPACT:100)
+:QUEUE_NAME: Name of the queue on the SGE or LSF
+:CLUSTER: Flag for what cluster to be used (can ``SGE`` or ``LSF``)
+:runABRA: Flag to whether use ABRA or GATK indel realignment(can be 1(True) or 2(False))
+
 Versions
 --------
 Inside the version there are version that are being used for each tool. This is just for consistency in reports. 
