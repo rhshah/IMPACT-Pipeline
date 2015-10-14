@@ -1,3 +1,4 @@
+============
 Requirements
 ============
 
@@ -15,7 +16,7 @@ Tools Used
 :Somatic Structural Variant Framework: `IMPACT-SV v1.0.1 <https://github.com/rhshah/IMPACT-SV/tree/1.0.1>`_
 
 Inside the config file
-----------------------
+======================
 
 There are three sections:
 
@@ -27,7 +28,11 @@ There are three sections:
 
 All of this section start with ``>`` sign.
 
-Inside Location Here are the things that need to be set:
+
+Inside each of the section here are the things that need to be set:
+
+Locations
+---------
 
 :ZCAT: Location of the ``zcat`` program on linux 
 :TMPDIR: Set the temporary directory for all tools please set somthing other then ``/tmp``
@@ -94,8 +99,13 @@ Inside Location Here are the things that need to be set:
 :AdaptorKey: Path to adaptor key file
 :StandardNormalsDirectory: Directory where the standard normals are stored
 
+Parameters
+----------
+
 Set the parameters to different file/folders/values required by the IMPACT pipeline
 
+Versions
+--------
 Inside the version there are version that are being used for each tool. This is just for consistency in reports. 
 Note that this section is just to print what version of things you are using so you can have all the dependencies with the respective versions listed here.
 
