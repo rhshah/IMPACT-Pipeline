@@ -173,8 +173,8 @@ Versions
 Inside the version there are version that are being used for each tool. This is just for consistency in reports. 
 
 
-Description of title_file.txt
-=============================
+Description for title_file.txt
+==============================
 
 Headers for this tab-delimited file should be exactly with this names:
 
@@ -222,8 +222,8 @@ Headers for this tab-delimited file should be exactly with this names:
 For analysis to start the **outputDirectory** will be required to have this file with ``SampleSheet.csv`` as the name or this file needs to be present in the **configuration** file with ``SampleSheet.csv`` as the name.
 
 
-Description of adaptor file in the config file
-==============================================
+Description for adaptor file in the configuration file
+======================================================
 
 The adaptor file is the tab-delimited file with two columns:
 1. Barcode Key to which the adaptor belongs which should always start with ``bc``
@@ -238,8 +238,8 @@ For Example:
 	+-------+-----------------------------------------------------------------------+
 	
 	
-Description of barcode file in the config file
-==============================================
+Description for barcode file in the configuration file
+======================================================
 
 The barcode file is the tab-delimited file with two columns:
 1. Barcode Sequece
