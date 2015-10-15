@@ -18,7 +18,9 @@ Quick Usage
 	
 Assuming you have setup the configuration file properly and you have SampleSheet.csv and title_file.txt in the **dataDirectory** you can run:
 
-``nohup perl RunIlluminaProcess.pl -c configuration.txt -sc configuration_sc.txt -d /path/to/fastq/files -o /path/to/output/directory``
+.. code-block:: sh
+
+	nohup perl RunIlluminaProcess.pl -c configuration.txt -sc configuration_sc.txt -d /path/to/fastq/files -o /path/to/output/directory
 
 Detailed Usage
 ==============
