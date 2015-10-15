@@ -76,7 +76,7 @@ Using different Process to run Pipeline
 	:ListOfFiles: RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)
 	:Process: 5,6,7
 	
-.. sidebar:**Note:**
+.. sidebar:: Note:
 
 	For this to be sucessfull you should hve the files from step 4 in the **outputDirectory**
 	
@@ -84,7 +84,7 @@ Using different Process to run Pipeline
 	:ListOfFiles: RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)
 	:Process: 6,7
 
-.. sidebar:**Note:** 
+.. sidebar:: Note: 
 
 	For this to be sucessfull you should hve the files from step 5 in the **outputDirectory**
 	
@@ -92,7 +92,7 @@ Using different Process to run Pipeline
 	:ListOfFiles: RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)
 	:Process: 7
 	
-.. sidebar::**Note:** 
+.. sidebar:: Note: 
 			
 	For this to be sucessfull you should hve the files from step 6 in the **outputDirectory**
 	
@@ -139,6 +139,6 @@ Which looks like this:
 	echo qsub -q test.q -wd ${WorkingDir} -N ${ProjectName} -l hvmem=2G,virtual_free=2G -pe smp 1 -b y \"${Perl} ${PipelineScript} -c ${CONFIGFILE} -d ${DATADIR} -o ${OUTDIR}\"
 	qsub -q test.q -wd ${WorkingDir} -N ${ProjectName} -l hvmem=2G,virtual_free=2G -pe smp 1 -b y \"${Perl} ${PipelineScript} -c ${CONFIGFILE} -d ${DATADIR} -o ${OUTDIR}\"
 	
-.. sidebar::**Note:** 
+.. sidebar:: Note: 
 	
 	Please comment out the lines using (``#``) according to the cluster type and analysis type.
