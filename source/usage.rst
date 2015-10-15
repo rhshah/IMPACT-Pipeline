@@ -63,27 +63,27 @@ Using different Process to run Pipeline
 	
 3. To run from the **Process 3 to 7**. Set the following in the configuration file:
 	
-	:ListOfFile: SortedBam.list #where SortedBam.list contains all the sorted bam files from Process 2 to be processed
+	:ListOfFile: SortedBam.list (where SortedBam.list contains all the sorted bam files from Process 2 to be processed)
 	:Process: 3,4,5,6,7
 	
 4. To run from the **Process 4 to 7**. Set the following in the configuration file:
-	:ListOfFile: RecalibratedBam.list #where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed
+	:ListOfFile: RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)
 	:Process: 4,5,6,7
 
 5. To run from the **Process 5 to 7**. Set the following in the configuration file:
-	:ListOfFile: RecalibratedBam.list #where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed
+	:ListOfFile: RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)
 	:Process: 5,6,7
 	
-	**Note:** For this to be sucessfull you should hve the files from step 4 in the **outputDirectory** 
+	**Note:** For this to be sucessfull you should hve the files from step 4 in the **outputDirectory**
 	
 6. To run from the **Process 6 to 7**. Set the following in the configuration file:
-	:ListOfFile: RecalibratedBam.list #where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed
+	:ListOfFile: RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)
 	:Process: 6,7
 	
 	**Note:** For this to be sucessfull you should hve the files from step 5 in the **outputDirectory**
 	
 7.  To run from the **Process 7**. Set the following in the configuration file:
-	:ListOfFile: RecalibratedBam.list #where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed
+	:ListOfFile: RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)
 	:Process: 7
 	
 	**Note:** For this to be sucessfull you should hve the files from step 6 in the **outputDirectory**
