@@ -25,7 +25,7 @@ Purpose and Tools Used
 :Somatic Structural Variant Framework: `IMPACT-SV v1.0.1 <https://github.com/rhshah/IMPACT-SV/tree/1.0.1>`_
 
 .. sidebar::**Note:**
-	For Timmomatic we are using a custom old version which uses `cutadapt v1.1 <https://cutadapt.readthedocs.org>`_ internally. To get this please contact us.
+		For Timmomatic we are using a custom old version which uses `cutadapt v1.1 <https://cutadapt.readthedocs.org>`_ internally. To get this please contact us.
 
 Inside the config file
 ======================
