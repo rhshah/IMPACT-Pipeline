@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Description of sub-scripts &mdash; IMPACT-Pipeline 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.3.4/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.3.4/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="IMPACT-Pipeline 1.0.1 documentation" href="index.html" />
+    <link rel="prev" title="Usage" href="usage.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          IMPACT-Pipeline</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Description of sub-scripts</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Description of sub-scripts</a><ul>
+<li><a class="reference internal" href="#script-in-the-bin-folder">Script in the bin folder</a><ul>
+<li><a class="reference internal" href="#compiling-qc-metrics-generating-qc-report-and-running-copynumber-analysis">Compiling QC metrics, Generating QC-Report and running copynumber analysis</a></li>
+<li><a class="reference internal" href="#genotyping-variants-across-multiple-samples">Genotyping Variants across multiple samples</a></li>
+<li><a class="reference internal" href="#running-indel-realignment-using-abra">Running Indel Realignment using ABRA</a></li>
+<li><a class="reference internal" href="#call-indels-25bp-using-pindel">Call Indels &gt; 25bp using Pindel</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#script-in-the-support-scripts-folder">Script in the support-scripts folder</a><ul>
+<li><a class="reference internal" href="#calculate-intervals-from-bam-file-that-have-some-minimum-coverage">Calculate intervals from bam file that have some minimum coverage</a></li>
+<li><a class="reference internal" href="#annotating-variants-in-merged-variant-file">Annotating variants in merged variant file</a></li>
+<li><a class="reference internal" href="#filter-variants-after-annotation">Filter variants after annotation</a></li>
+<li><a class="reference internal" href="#filter-indels-from-somaticindeldetector-before-genotyping">Filter indels from SomaticIndelDetector before genotyping</a></li>
+<li><a class="reference internal" href="#filter-snv-from-mutect-before-genotyping">Filter snv from MuTect before genotyping</a></li>
+<li><a class="reference internal" href="#filter-indels-from-pindel-before-genotyping">Filter indels from PINDEL before genotyping</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="usage.html" title="Previous Chapter: Usage"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Usage</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/subscripts.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="description-of-sub-scripts">
+<h1>Description of sub-scripts<a class="headerlink" href="#description-of-sub-scripts" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="script-in-the-bin-folder">
+<h2>Script in the bin folder<a class="headerlink" href="#script-in-the-bin-folder" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="compiling-qc-metrics-generating-qc-report-and-running-copynumber-analysis">
+<h3>Compiling QC metrics, Generating QC-Report and running copynumber analysis<a class="headerlink" href="#compiling-qc-metrics-generating-qc-report-and-running-copynumber-analysis" title="Permalink to this headline">¶</a></h3>
+<p><strong>dmp_compile_qc_metrics.pl [options]</strong></p>
+<blockquote>
+<div><p>&#8211;bamList | -i       S File of files having list of all bam files (required)</p>
+<p class="attribution">&mdash;titleFile | -t     S tab-delimited title file for the samples (required and submit with full path)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;AllMetrics | -am   S Path to AllMetrics script (required)</p>
+<p class="attribution">&mdash;LoessNorm | -ln    S Path to Loess Normalization Script  (required)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;BestCN | -cn       S Path to Best Copy Number Script (required)</p>
+<p class="attribution">&mdash;GCBias | -gcb      S Path to GC bias file (required)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;HistNorm | -his    S Path to Directory with all historical normal files (required)</p>
+<p class="attribution">&mdash;queue | -q         S Name of the Sun Grd Engine Queue where the pipeline needs to run (required)</p>
+</div></blockquote>
+<blockquote>
+<div><table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">--qsub</span></kbd></td>
+<td>S Path to qsub executable for SGE(default:None,optional)</td></tr>
+</tbody>
+</table>
+<p class="attribution">&mdash;bsub            S Path to bsub executable for LSF(default:None,required)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;metricsScript | -ms         S Name of the script used to generate .html and .pdf files</p>
+<p class="attribution">&mdash;outdir | -o        S Path where all the output files will be written (optional) [default:cwd]</p>
+</div></blockquote>
+</div>
+<div class="section" id="genotyping-variants-across-multiple-samples">
+<h3>Genotyping Variants across multiple samples<a class="headerlink" href="#genotyping-variants-across-multiple-samples" title="Permalink to this headline">¶</a></h3>
+<p><strong>dmp_genotype_allele.pl [options]</strong></p>
+<blockquote>
+<div><p>&#8211;FilteredMutationVcfFile | -fmv     S vcf file describing details about the mutations (required)</p>
+<p class="attribution">&mdash;BamFile | -bam                     S bam file to be used for genotyping (required)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;RefFile | -rf                      S Path to genome reference file (required)</p>
+<p class="attribution">&mdash;samtools | -s                      S Path to samtools (required)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;bedtools | -b                      S Path to bedtools (required)</p>
+<p class="attribution">&mdash;MinBaseQualit | -mbq              I Min. Base Quality Threshold (optional;default:5)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;MinMappingQuality | -mmq           I Min. Mapping Quality Threshold (optional;default:5)</p>
+<p class="attribution">&mdash;deleteUnwantedFiles | -d           I 2=&gt;To delete files 1=&gt; To keep files (default:2,optional)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;outdir | -o                        S Path where all the output files will be written (optional;default:current working directory)</p>
+<p class="attribution">&mdash;outFile | -of                      S Name of the allele depth output file (optional;default:BamFame-.bam+_mpileup.alleledepth)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;bamId | -bi                        S Bam Id to be used (optional;default:bamfile name)</p>
+<p class="attribution">&mdash;queue | -q                         S Name of the SGE / LSF Queue where the pipeline needs to run (required)</p>
+</div></blockquote>
+<blockquote>
+<div><table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">--qsub</span></kbd></td>
+<td>S Path to qsub executable for SGE(default:None,optional)</td></tr>
+</tbody>
+</table>
+<p class="attribution">&mdash;bsub                            S Path to bsub executable for LSF(default:None,required)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;mpileUpOutFile | -mof              S Name of samtools mpileup output file (optional;default:BamFile-.bam+.mpileup)</p>
+<p class="attribution">&mdash;typeOfSample | -tos                S Type of Sample (optional;default:Tumor;canbe Tumor or Normal)</p>
+</div></blockquote>
+</div>
+<div class="section" id="running-indel-realignment-using-abra">
+<h3>Running Indel Realignment using ABRA<a class="headerlink" href="#running-indel-realignment-using-abra" title="Permalink to this headline">¶</a></h3>
+<p><strong>usage: Run_AbraRealignment.py [options]</strong></p>
+<p>Run ABRA Indel Realignment</p>
+<dl class="docutils">
+<dt>arguments:</dt>
+<dd><table class="first docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>-i BamFile.list, &#8211;bamList BamFile.list</dt>
+<dd>Full path to the tumor bam files as a fof.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-p <var>PatientID</var></span>, <span class="option">--patientId <var>PatientID</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Id of the Patient for which the bam files are to be
+realigned</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-v</span>, <span class="option">--verbose</span></kbd></td>
+<td>make lots of noise [default]</td></tr>
+</tbody>
+</table>
+<p>-t 5, &#8211;threads 5     Number of Threads to be used to run ABRA
+-d, &#8211;mdp             Threshold for downsampling depth to run ABRA
+-k [43 [43 ...]], &#8211;kmers [43 [43 ...]]</p>
+<blockquote>
+<div>Number of k-mers to be used to run ABRA; Multiple
+k-mers are separated by space</div></blockquote>
+<dl class="last docutils">
+<dt>-temp /somepath/tmpdir, &#8211;temporaryDirectory /somepath/tmpdir</dt>
+<dd>Full Path to temporary directory</dd>
+<dt>-r /somepath/Homo_Sapeins_hg19.fasta, &#8211;referenceFile /somepath/Homo_Sapeins_hg19.fasta</dt>
+<dd>Full Path to the reference file with the bwa index.</dd>
+<dt>-a /somepath/ABRA.jar, &#8211;abraJar /somepath/ABRA.jar</dt>
+<dd>Full Path to the ABRA jar file.</dd>
+<dt>-tr /somepath/targetRegion.bed, &#8211;targetRegion /somepath/targetRegion.bed</dt>
+<dd>Full Path to the target region bed file</dd>
+<dt>-j /somepath/java, &#8211;javaPATH /somepath/java</dt>
+<dd>Path to java executable.</dd>
+<dt>-b /somepath/bin, &#8211;bwaPATH /somepath/bin</dt>
+<dd>Path to the bin of bwa executable.</dd>
+<dt>-q all.q or clin.q, &#8211;queue all.q or clin.q</dt>
+<dd>Name of the SGE queue</dd>
+<dt>-o /somepath/output, &#8211;outDir /somepath/output</dt>
+<dd>Full Path to the output dir.</dd>
+<dt>-qsub /somepath/qsub, &#8211;qsubPath /somepath/qsub</dt>
+<dd>Full Path to the qsub executables of SGE.</dd>
+<dt>-bsub /somepath/bsub, &#8211;bsubPath /somepath/bsub</dt>
+<dd>Full Path to the bsub executables of LSF.</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="call-indels-25bp-using-pindel">
+<h3>Call Indels &gt; 25bp using Pindel<a class="headerlink" href="#call-indels-25bp-using-pindel" title="Permalink to this headline">¶</a></h3>
+<p><strong>usage: Run_Pindel.py [options]</strong></p>
+<p>Run Pindel for Long Indels &amp; MNPS (32bp-350bp)</p>
+<dl class="docutils">
+<dt>optional arguments:</dt>
+<dd><table class="first docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>-i pindel.conf, &#8211;pindelConfig pindel.conf</dt>
+<dd>Full path to the pindel configuration</dd>
+<dt>-pId PatientID, &#8211;patientId PatientID</dt>
+<dd>Id of the Patient for which the bam files are to be
+realigned</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-v</span>, <span class="option">--verbose</span></kbd></td>
+<td>make lots of noise [default]</td></tr>
+</tbody>
+</table>
+<p>-t 5, &#8211;threads 5     Number of Threads to be used to run Pindel
+-r /somepath/Homo_Sapeins_hg19.fasta, &#8211;referenceFile /somepath/Homo_Sapeins_hg19.fasta</p>
+<blockquote>
+<div>Full Path to the reference file with the bwa index.</div></blockquote>
+<dl class="last docutils">
+<dt>-p /somepath/pindel/bin, &#8211;pindelDir /somepath/pindel/bin</dt>
+<dd>Full Path to the Pindel executables.</dd>
+<dt>-chr ALL, &#8211;chromosomes ALL</dt>
+<dd>Which chr/fragment. Pindel will process reads for one
+chromosome each time. ChrName must be the same as in
+reference sequence and in read file.</dd>
+<dt>-q all.q or clin.q, &#8211;queue all.q or clin.q</dt>
+<dd>Name of the SGE queue</dd>
+<dt>-o /somepath/output, &#8211;outDir /somepath/output</dt>
+<dd>Full Path to the output dir.</dd>
+<dt>-op TumorID, &#8211;outPrefix TumorID</dt>
+<dd>Id of the Tumor bam file which will be used as the
+prefix for Pindel output files</dd>
+<dt>-qsub /somepath/qsub, &#8211;qsubPath /somepath/qsub</dt>
+<dd>Full Path to the qsub executables of SGE.</dd>
+<dt>-bsub /somepath/bsub, &#8211;bsubPath /somepath/bsub</dt>
+<dd>Full Path to the bsub executables of LSF.</dd>
+</dl>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="script-in-the-support-scripts-folder">
+<h2>Script in the support-scripts folder<a class="headerlink" href="#script-in-the-support-scripts-folder" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="calculate-intervals-from-bam-file-that-have-some-minimum-coverage">
+<h3>Calculate intervals from bam file that have some minimum coverage<a class="headerlink" href="#calculate-intervals-from-bam-file-that-have-some-minimum-coverage" title="Permalink to this headline">¶</a></h3>
+<p><strong>usage: Run_FindCoveredInterval.py [options]</strong></p>
+<p>This will run find covered interval program from GATK.</p>
+<dl class="docutils">
+<dt>optional arguments:</dt>
+<dd><table class="first docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>-i BamFile.list, &#8211;bamList BamFile.list</dt>
+<dd>Full path to the tumor bam files as a fof.</dd>
+<dt>-of OutFilePrefix, &#8211;outFilePrefix OutFilePrefix</dt>
+<dd>Output Covered Interval File Prefix for the bam files.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-v</span>, <span class="option">--verbose</span></kbd></td>
+<td>make lots of noise [default]</td></tr>
+</tbody>
+</table>
+<dl class="last docutils">
+<dt>-t 5, &#8211;threads 5     Number of Threads to be used to run</dt>
+<dd>FindCoveredIntervals</dd>
+<dt>-dp 20, &#8211;totaldepth 20</dt>
+<dd>Total depth threshold</dd>
+<dt>-mbq 20, &#8211;minbasequality 20</dt>
+<dd>Threshold for minimum base quality for Running Find
+Covered Interval</dd>
+<dt>-mmq 20, &#8211;minmappingquality 20</dt>
+<dd>Threshold for minimum mapping quality for Running Find
+Covered Interval</dd>
+<dt>-r /somepath/Homo_Sapeins_hg19.fasta, &#8211;referenceFile /somepath/Homo_Sapeins_hg19.fasta</dt>
+<dd>Full Path to the reference file with the bwa index.</dd>
+<dt>-g /somepath/GenomeAnalysisTK.jar, &#8211;gatkJar /somepath/GenomeAnalysisTK.jar</dt>
+<dd>Full Path to the GATK jar file.</dd>
+<dt>-j /somepath/java, &#8211;javaPATH /somepath/java</dt>
+<dd>Path to java executable.</dd>
+<dt>-q all.q or clin.q, &#8211;queue all.q or clin.q</dt>
+<dd>Name of the SGE queue</dd>
+<dt>-o /somepath/output, &#8211;outDir /somepath/output</dt>
+<dd>Full Path to the output dir.</dd>
+<dt>-qsub /somepath/qsub, &#8211;qsubPath /somepath/qsub</dt>
+<dd>Full Path to the qsub executables of SGE.</dd>
+<dt>-bsub /somepath/bsub, &#8211;bsubPath /somepath/bsub</dt>
+<dd>Full Path to the bsub executables of LSF.</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="annotating-variants-in-merged-variant-file">
+<h3>Annotating variants in merged variant file<a class="headerlink" href="#annotating-variants-in-merged-variant-file" title="Permalink to this headline">¶</a></h3>
+<p><strong>dmp_annotate_variants.pl [options]</strong></p>
+<blockquote>
+<div><p>&#8211;SomaticMutIndelFile | -si          S File containing mutations (required and submit with full path,Ex:/SomePath/Some_SomaticMutIndel.txt)</p>
+<p class="attribution">&mdash;ConfigurationFile | -c             S Configuration file that contains the locations for the programs and the databases (required and submit with full path)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;titleFile | -t                     S tab-delimited title file for the samples (required and submit with full path)</p>
+<p class="attribution">&mdash;outdir | -o                        S Path where all the output files will be written (optional;default:cwd)</p>
+</div></blockquote>
+<blockquote>
+<div><blockquote>
+<div><p>&#8211;exonCoverageFile | -ec             S Path where the all exon coverage file is located (full path]</p>
+<p class="attribution">&mdash;geneCoverageFile | -gc             S Path where the gene coverage file is located (full path)]</p>
+</div></blockquote>
+<p class="attribution">&mdash;deleteUnwantedFiles | -d           I 2=&gt;To delete files 1=&gt; To keep files (default:2,optional)</p>
+</div></blockquote>
+</div>
+<div class="section" id="filter-variants-after-annotation">
+<h3>Filter variants after annotation<a class="headerlink" href="#filter-variants-after-annotation" title="Permalink to this headline">¶</a></h3>
+<p><strong>dmp_filter_genotyped_variants.pl [options]</strong></p>
+<blockquote>
+<div><p>&#8211;input | -i                                            S  File containing mutations with genotype information (required)</p>
+<p class="attribution">&mdash;hotspots | -h                                                                                 S  File containing the list of hotspots (required)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;clinicalExons | -ce                                                                   S  File containing the list of clinical exons (required)</p>
+<p class="attribution">&mdash;titleFile | -t                                                                            S  Title file (required)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;minimumDPforSNVs | -dp_snv                            I  Minumum accepted DP for novel SNVs (default: 20)</p>
+<p class="attribution">&mdash;minimumADforSNVs | -ad_snv                            I  Minimum accepted AD for novel SNVs (default: 10)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;minimumVFforSNVs | -vf_snv                            F  Minimum accepted VF for novel SNVs (default: 0.05)</p>
+<p class="attribution">&mdash;minimumDPforSNVhotspot | -dp_snvHS                    I  Minumum accepted DP for Hotspot SNVs (default: 20)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;minimumADforSNVhotspot | -ad_snvHS                    I  Minimum accepted AD for Hotspot SNVs (default: 8)</p>
+<p class="attribution">&mdash;minimumVFforSNVhotspot | -vf_snvHS                    F  Minimum accepted VF for Hotspot SNVs (default: 0.02)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;minimumDPforINDELs | -dp_indel                        I  Minumum accepted DP for novel INDELs (default: 20)</p>
+<p class="attribution">&mdash;minimumADforINDELs | -ad_indel                        I  Minimum accepted AD for novel INDELs (default: 10)</p>
+</div></blockquote>
+<blockquote>
+<div><blockquote>
+<div><p>&#8211;minimumVFforINDELs | -vf_indel                        I  Minimum accepted VF for novel INDELs (default: 0.05)</p>
+<p class="attribution">&mdash;minimumDPforINDELhotspot | -dp_indelHS                F  Minumum accepted DP for Hotspot INDELs (default: 20)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;minimumADforINDELhotspot | -ad_indelHS                I  Minimum accepted AD for Hotspot INDELs (default: 8)</p>
+<p class="attribution">&mdash;minimumVFforINDELhotspot | -vf_indelHS                F  Minimum accepted VF for Hotspot INDELs (default: 0.02)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;minimumOccurrencePercent | -occurrence                S  Minimum accepted value of occurrence in other normals, in percent (default: 20)</p>
+<p class="attribution">&mdash;TNfreqRatioThreshold | -tn_ratio                                          S  Minimum value for VFt/VFn value (default: 5)</p>
+</div></blockquote>
+<blockquote>
+<div>&#8211;MAFthreshold | -mt                                                    F Minimum accepted MAF values for unmatched variant calls (default : 0.01)</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="filter-indels-from-somaticindeldetector-before-genotyping">
+<h3>Filter indels from SomaticIndelDetector before genotyping<a class="headerlink" href="#filter-indels-from-somaticindeldetector-before-genotyping" title="Permalink to this headline">¶</a></h3>
+<p><strong>dmp_filter_indel.pl [options]</strong></p>
+<blockquote>
+<div><p>&#8211;IndelTxtFile|t              S tab-delimted Indel file describing details about the mutations (required)</p>
+<p class="attribution">&mdash;IndelVcfFile|v              S VCF format Indel file describing details about the mutations (required)</p>
+</div></blockquote>
+<blockquote>
+<div><blockquote>
+<div><p>&#8211;sampleName|s                S Name of the sample (required)</p>
+<p class="attribution">&mdash;totaldepth|dp               I Tumor total depth threshold for Somatic Indel Detector(default:0,optional)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;alleledepth|ad              I Tumor Allele depth threshold for Somatic Indel Detector(default:3,optional)</p>
+<p class="attribution">&mdash;variantfreq|vf              F Tumor variant frequency threshold for Somatic Indel Detector(default:0.01,optional)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;TNratio|tnr                 I Tumor-Normal variant frequency ratio threshold for Somatic Indel Detector(default:5,optional)</p>
+<p class="attribution">&mdash;outdir|o                    S Path where all the output files will be written (optional) default:current working directory</p>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="filter-snv-from-mutect-before-genotyping">
+<h3>Filter snv from MuTect before genotyping<a class="headerlink" href="#filter-snv-from-mutect-before-genotyping" title="Permalink to this headline">¶</a></h3>
+<p><strong>dmp_filter_mutect.pl [options]</strong></p>
+<blockquote>
+<div><p>&#8211;MutationTxtFile|t              S tab-delimted Mutect file describing details about the mutations (required)</p>
+<blockquote>
+<div><p>&#8211;MutationVcfFile|v              S VCF format Mutect file describing details about the mutations (required)</p>
+<p class="attribution">&mdash;sampleName|s                   S Name of the sample (required)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;totaldepth|dp                  I Tumor total depth threshold for Mutect(default:0,optional).</p>
+<p class="attribution">&mdash;alleledepth|ad                 I Tumor Allele depth threshold for Mutect(default:3,optional).</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;variantfreq|vf                 F Tumor variant frequency threshold for Mutect(default:0.01,optional).</p>
+<p class="attribution">&mdash;TNratio|tnr                    I Tumor-Normal variant frequency ratio threshold for Mutect(default:5,optional).</p>
+</div></blockquote>
+<blockquote>
+<div>&#8211;outdir|o                       S Path where all the output files will be written (optional) default:current working directory</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="filter-indels-from-pindel-before-genotyping">
+<h3>Filter indels from PINDEL before genotyping<a class="headerlink" href="#filter-indels-from-pindel-before-genotyping" title="Permalink to this headline">¶</a></h3>
+<p><strong>usage: dmp_filter_pindel.py [options]</strong></p>
+<p>Filter Indels from the output of pindel</p>
+<dl class="docutils">
+<dt>optional arguments:</dt>
+<dd><table class="first docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-v</span>, <span class="option">--verbose</span></kbd></td>
+<td>make lots of noise [default]</td></tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>-i SomeID.vcf, -inputVcf SomeID.vcf</dt>
+<dd>Input vcf freebayes file which needs to be filtered</dd>
+<dt>-tsn SomeName, &#8211;tsampleName SomeName</dt>
+<dd>Name of the tumor Sample</dd>
+<dt>-dp 0, &#8211;totaldepth 0</dt>
+<dd>Tumor total depth threshold</dd>
+<dt>-ad 3, &#8211;alleledepth 3</dt>
+<dd>Tumor allele depth threshold</dd>
+</dl>
+<p>-tnr 5, &#8211;tnRatio 5   Tumor-Normal variant frequency ratio threshold
+-vf 0.01, &#8211;variantfrequency 0.01</p>
+<blockquote>
+<div>Tumor variant frequency threshold</div></blockquote>
+<dl class="last docutils">
+<dt>-o /somepath/output, &#8211;outDir /somepath/output</dt>
+<dd>Full Path to the output dir.</dd>
+<dt>-min 25, &#8211;min_var_len 25</dt>
+<dd>Minimum length of the Indels</dd>
+<dt>-max 500, &#8211;max_var_len 500</dt>
+<dd>Max length of the Indels</dd>
+</dl>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijazuddin Syed, Raghu Chandramohan, Meera Prasad.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

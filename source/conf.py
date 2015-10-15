@@ -44,7 +44,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'IMPACT-Pipeline'
-copyright = u'2015, Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijaz Syed, Raghu Chandramohan, Meera Prasad'
+copyright = u'2015, Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijazuddin Syed, Raghu Chandramohan, Meera Prasad'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
