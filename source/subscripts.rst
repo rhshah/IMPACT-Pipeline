@@ -259,3 +259,74 @@ Filter Variants after annotation
     
 	--MAFthreshold | -mt                 					F Minimum accepted MAF values for unmatched variant calls (default : 0.01)
     
+
+Filter Indels from SomaticIndelDetector before genotyping
+=========================================================
+	
+**dmp_filter_indel.pl [options]**
+
+        --IndelTxtFile|t              S tab-delimted Indel file describing details about the mutations (required)
+		
+        --IndelVcfFile|v              S VCF format Indel file describing details about the mutations (required)
+        
+		--sampleName|s                S Name of the sample (required)
+        
+		--totaldepth|dp               I Tumor total depth threshold for Somatic Indel Detector(default:0,optional)
+        
+		--alleledepth|ad              I Tumor Allele depth threshold for Somatic Indel Detector(default:3,optional)
+        
+		--variantfreq|vf              F Tumor variant frequency threshold for Somatic Indel Detector(default:0.01,optional)
+        
+		--TNratio|tnr                 I Tumor-Normal variant frequency ratio threshold for Somatic Indel Detector(default:5,optional)
+        
+		--outdir|o                    S Path where all the output files will be written (optional) default:current working directory
+
+Filter SNVs from mutect before genotyping
+=========================================
+	
+**dmp_filter_mutect.pl [options]**
+
+        --MutationTxtFile|t              S tab-delimted Mutect file describing details about the mutations (required)
+        
+		--MutationVcfFile|v              S VCF format Mutect file describing details about the mutations (required)
+        
+		--sampleName|s                   S Name of the sample (required)
+        
+		--totaldepth|dp                  I Tumor total depth threshold for Mutect(default:0,optional).
+        
+		--alleledepth|ad                 I Tumor Allele depth threshold for Mutect(default:3,optional).
+        
+		--variantfreq|vf                 F Tumor variant frequency threshold for Mutect(default:0.01,optional).
+        
+		--TNratio|tnr                    I Tumor-Normal variant frequency ratio threshold for Mutect(default:5,optional).
+        
+		--outdir|o                       S Path where all the output files will be written (optional) default:current working directory
+
+
+Filter Indels from PINDEL before genotyping
+===========================================
+
+**usage: dmp_filter_pindel.py [options]**
+
+Filter Indels from the output of pindel
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --verbose         make lots of noise [default]
+  -i SomeID.vcf, -inputVcf SomeID.vcf
+                        Input vcf freebayes file which needs to be filtered
+  -tsn SomeName, --tsampleName SomeName
+                        Name of the tumor Sample
+  -dp 0, --totaldepth 0
+                        Tumor total depth threshold
+  -ad 3, --alleledepth 3
+                        Tumor allele depth threshold
+  -tnr 5, --tnRatio 5   Tumor-Normal variant frequency ratio threshold
+  -vf 0.01, --variantfrequency 0.01
+                        Tumor variant frequency threshold
+  -o /somepath/output, --outDir /somepath/output
+                        Full Path to the output dir.
+  -min 25, --min_var_len 25
+                        Minimum length of the Indels
+  -max 500, --max_var_len 500
+                        Max length of the Indels
