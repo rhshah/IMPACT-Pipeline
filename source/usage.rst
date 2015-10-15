@@ -17,6 +17,7 @@ Quick Usage
 	--outputDirectory | -o               S Path where all the output files will be written (required)
 	
 Assuming you have setup the configuration file properly and you have SampleSheet.csv and title_file.txt in the **dataDirectory**you can run:
+
 ``perl RunIlluminaProcess.pl -c configuration.txt -sc configuration_sc.txt -d /path/to/fastq/files -o /path/to/output/directory``
 
 Detailed Usage
@@ -26,24 +27,30 @@ The behaviour of the prgram depends on the inputs in the configuration file:
 
 In the configuration file the **Process** variable in section **>Parameters** tells pipeline following:
 
-+---------+-----------------------------------------------------------------------------------------------+
-| Process | Things Pipeline will do                                                                       |
-+=========+===============================================================================================+
-| 1       | Merge Fastq 																				  |
-+---------+-----------------------------------------------------------------------------------------------+
-| 2       | Trimming, Mapping & sorting of SAM file giving you a BAM file								  |
-+---------+-----------------------------------------------------------------------------------------------+
-| 3       | Mark Duplicates, Indel Reaglinment, Base Quality Recalibration 								  |
-+---------+-----------------------------------------------------------------------------------------------+
-| 4       | Metrics Calculation, QC Report Genaration and launching IMPACT-SV if given -sc flag specified |
-+---------+-----------------------------------------------------------------------------------------------+
-| 5       | Variant Calling 																		      |
-+---------+-----------------------------------------------------------------------------------------------+
-| 6       | Variant Filtering and Genotyping 															  |
-+---------+-----------------------------------------------------------------------------------------------+
-| 7       | Variant Annotation and Variant Filtering 													  |
-+---------+-----------------------------------------------------------------------------------------------+
+What does each number represent
+-------------------------------
 
++---------+------------------------+
+| Process | Things Pipeline will do|
++=========+========================+
+| 1 | Merge Fastq |
++---+-------------+
+| 2 | Trimming, Mapping & sorting of SAM file giving you a BAM file |
++---+---------------------------------------------------------------+
+| 3 | Mark Duplicates, Indel Reaglinment, Base Quality Recalibration |
++---+----------------------------------------------------------------+
+| 4 | Metrics Calculation, QC Report Genaration and launching IMPACT-SV if given -sc flag specified |
++---+-----------------------------------------------------------------------------------------------+
+| 5 | Variant Calling |
++---+-----------------+
+| 6 | Variant Filtering and Genotyping |
++---+----------------------------------+
+| 7 | Variant Annotation and Variant Filtering |
++---+------------------------------------------+
+
+
+Using different Process to run Pipeline
+---------------------------------------
 
 1. To run the complete pipeline. Set the following in the configuration file:
 	
