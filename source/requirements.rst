@@ -162,5 +162,73 @@ Versions
 Inside the version there are version that are being used for each tool. This is just for consistency in reports. 
 Note that this section is just to print what version of things you are using so you can have all the dependencies with the respective versions listed here.
 
-   
-   
+Description of title_file.txt
+=============================
+
+
+Headers for this tab-delimited file should be exactly with this names:
+
+:Barcode: Has to start with bc and end with any number [for example: bc01 or bc101 should match the **adaptor & barcode** file mentioned in configuration file
+:Pool:	Can be any string **joined by ``-``** and **not ``_``** and all entries should be from same pool
+:Sample_ID:	Can be any string **joined by ``-``** and **not ``_``** 
+:Collab_ID: Can be any string or ``-``
+:Patient_ID: Can be any string **joined by ``-``** and **not ``_``** [**Note:** Patient with multiple samples should have **same Patient_ID**]
+:Class: Can be Tumor or Normal.
+:Sample_type: Can be any string or ``-``
+:Input_ng: Can be any float or ``-``
+:Library_yield:	Can be float or ``-``
+:Pool_input: Can be float or ``-``
+:Bait_version: Can be any string or ``-``
+:Gender: Can be any Male/Female or ``-``
+:PatientName: Can be any string or ``-``
+:MAccession: Can be any string or ``-``
+:Extracted_DNA_Yield: Can be a float or ``-``
+
+For analysis to start the **outputDirectory** will be required to have this file with ``title_file.txt`` as the name or this file needs to be present in the **configuration** file with either ``title_file.txt`` as then name or ``Pool_title.txt`` as the name where **Pool** is the string used above for that category.
+
+Description for SampleSheet.csv
+===============================
+
+This is a comma separated file is created by the illumina sequencer and it is used to merge the fastq files. 
+
+Headers for this tab-delimited file should be exactly with this names:
+
+:FCID: Flowcell ID (required)
+:Lane: Lane Number, this is used to merge the fastq files across lanes (required)
+:SampleID: Sample ID, this is used to merge the files (required)
+:SampleRef: Sample Reference is from [example:HUMAN]
+:Index: Index used to sequence the sample (require)
+:Description: Description of the samples
+:Control: Can be any string or ``-``
+:Recipe: Can be any string or ``-``
+:Operator: Can be any string or ``-``
+:SampleProject: Can be any string or ``-``
+
+For analysis to start the **outputDirectory** will be required to have this file with ``SampleSheet.csv`` as the name or this file needs to be present in the **configuration** file with ``SampleSheet.csv`` as the name.
+
+
+Description of adaptor file in the config file
+==============================================
+
+The adaptor file is the tab-delimited file with two columns:
+1. Barcode Key to which the adaptor belongs which should always start with ``bc``
+2. Adaptor sequence itself
+
+There is **no header** in this file.
+
+For Example:
+bc01	GATCGGAAGAGCACACGTCTGAACTCCAGTCACAACGTGATATCTCGTATGCCGTCTTCTGCTTG
+
+Description of barcode file in the config file
+==============================================
+
+The barcode file is the tab-delimited file with two columns:
+1. Barcode Sequece
+2. Barcode Number that sequence represent.
+
+There is a header in this file.
+
+For Example:
+Sequence	TruSeqBarcode
+AACGTGAT	bc01
+
