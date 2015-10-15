@@ -12,6 +12,8 @@ Please see template.conf file in the configuration folder.
 
 Purpose and Tools Used
 ======================
+
+:Trimming: `Trimmomatic <http://www.usadellab.org/cms/?page=trimmomatic>`_
 :Alignment: `BWA v0.7.5a <https://github.com/lh3/bwa/tree/0.7.5a>`_
 :Somatic SNV calling: `MuTect v1.1.4 <https://github.com/broadinstitute/mutect/tree/1.1.4>`_
 :Somatic INDEL calling: `SomaticIndelDetector in GATK v2.3-9 <http://www.broadinstitute.org/gatk/download>`_
@@ -21,6 +23,8 @@ Purpose and Tools Used
 :Base Quality Recalibration and Find Covered Intervals: `GATK v3.3.0 <http://www.broadinstitute.org/gatk/download>`_
 :Genotyping Position: `SAMTOOLS v0.1.19 <https://github.com/samtools/samtools/tree/0.1.19>`_
 :Somatic Structural Variant Framework: `IMPACT-SV v1.0.1 <https://github.com/rhshah/IMPACT-SV/tree/1.0.1>`_
+
+**Note:** For Timmomatic we are using a custom old version which uses `cutadapt v1.1 <https://cutadapt.readthedocs.org>`_ internally. To get this please contact us.
 
 Inside the config file
 ======================
