@@ -117,13 +117,18 @@ Which looks like this:
 	##Path to structural variants pipeline configuration file
 	export SV_ConfigFile=<Path to SV detection configuration file>
 
-	##Run both IMPACT & SV Process on Luna LSF
+	##Run both IMPACT-Pipeline & SV Process on LSF
 	echo bsub -q sol -cwd ${WorkingDir} -J ${ProjectName} -e${ProjectName}.stderr -o ${ProjectName}.stdout -We 24:00 -R "rusage[mem=2]" -M 4 \"${Perl} ${PipelineScript} -c ${CONFIGFILE} -sc {$SV_ConfigFile} -d ${DATADIR} -o ${OUTDIR}\"
-
 	bsub -q sol -cwd ${WorkingDir} -J ${PoolName} -e${ProjectName}.stderr -o ${ProjectName}.stdout -We 24:00 -R "rusage[mem=2]" -M 4 \"${Perl} ${PipelineScript} -c ${CONFIGFILE} -sc {$SV_ConfigFile} -d ${DATADIR} -o ${OUTDIR}\"
+	##Run IMPACT-Pipeline on LSF
+	echo bsub -q sol -cwd ${WorkingDir} -J ${ProjectName} -e${ProjectName}.stderr -o ${ProjectName}.stdout -We 24:00 -R "rusage[mem=2]" -M 4 \"${Perl} ${PipelineScript} -c ${CONFIGFILE} -d ${DATADIR} -o ${OUTDIR}\"
+	bsub -q sol -cwd ${WorkingDir} -J ${PoolName} -e${ProjectName}.stderr -o ${ProjectName}.stdout -We 24:00 -R "rusage[mem=2]" -M 4 \"${Perl} ${PipelineScript} -c ${CONFIGFILE} -d ${DATADIR} -o ${OUTDIR}\"
 
-	##Run both IMPACT & SV Process on SGE
+	##Run both IMPACT-Pipeline & SV Process on SGE
 	echo qsub -q test.q -wd ${WorkingDir} -N ${ProjectName} -l hvmem=2G,virtual_free=2G -pe smp 1 -b y \"${Perl} ${PipelineScript} -c ${CONFIGFILE} -sc ${SV_ConfigFile} -d ${DATADIR} -o ${OUTDIR}\"
-	qsub -q test.q -wd ${WorkingDir} -N ${ProjectName} -l hvmem=2G,virtual_free=2G -pe smp 1 -b y \"${Perl} ${PipelineScript} -c ${CONFIGFILE} -sc ${SV_ConfigFile} -d ${DATADIR} -o ${OUTDIR}\"
+	qsub -q test.q -wd ${WorkingDir} -N ${ProjectName} -l hvmem=2G,virtual_free=2G -pe smp 1 -b y \"${Perl} ${PipelineScript} -c ${CONFIGFILE} -sc ${SV_ConfigFile} -d ${DATADIR} -o ${OUTDIR
+	##Run both IMPACT-Pipeline on SGE
+	echo qsub -q test.q -wd ${WorkingDir} -N ${ProjectName} -l hvmem=2G,virtual_free=2G -pe smp 1 -b y \"${Perl} ${PipelineScript} -c ${CONFIGFILE} -d ${DATADIR} -o ${OUTDIR}\"
+	qsub -q test.q -wd ${WorkingDir} -N ${ProjectName} -l hvmem=2G,virtual_free=2G -pe smp 1 -b y \"${Perl} ${PipelineScript} -c ${CONFIGFILE} -d ${DATADIR} -o ${OUTDIR}\"
 	
-**Note** Comment out the commands according to the cluster type.
+**Note:** Please comment out the lines using (``#``) according to the cluster type and analysis type.
