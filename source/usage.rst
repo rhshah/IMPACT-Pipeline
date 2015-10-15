@@ -37,7 +37,7 @@ What does each number represent
 +---------+-----------------------------------------------------------------------------------------------+
 | 2       | Trimming, Mapping & sorting of SAM file giving you a BAM file				  |				  
 +---------+-----------------------------------------------------------------------------------------------+
-| 3       | Mark Duplicates, Indel Reaglinment, Base Quality Recalibration 				  |
+| 3       | Mark Duplicates, Indel Realignment, Base Quality Recalibration 				  |
 +---------+-----------------------------------------------------------------------------------------------+
 | 4       | Metrics Calculation, QC Report Genaration and launching IMPACT-SV if given -sc flag specified |
 +---------+-----------------------------------------------------------------------------------------------+
