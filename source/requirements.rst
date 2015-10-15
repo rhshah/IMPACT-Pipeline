@@ -24,7 +24,8 @@ Purpose and Tools Used
 :Genotyping Position: `SAMTOOLS v0.1.19 <https://github.com/samtools/samtools/tree/0.1.19>`_
 :Somatic Structural Variant Framework: `IMPACT-SV v1.0.1 <https://github.com/rhshah/IMPACT-SV/tree/1.0.1>`_
 
-**Note:** For Timmomatic we are using a custom old version which uses `cutadapt v1.1 <https://cutadapt.readthedocs.org>`_ internally. To get this please contact us.
+.. sidebar::**Note:**
+	For Timmomatic we are using a custom old version which uses `cutadapt v1.1 <https://cutadapt.readthedocs.org>`_ internally. To get this please contact us.
 
 Inside the config file
 ======================
@@ -217,7 +218,9 @@ The adaptor file is the tab-delimited file with two columns:
 There is **no header** in this file.
 
 For Example:
-bc01	GATCGGAAGAGCACACGTCTGAACTCCAGTCACAACGTGATATCTCGTATGCCGTCTTCTGCTTG
+
+.. code-block:: sh
+	bc01	GATCGGAAGAGCACACGTCTGAACTCCAGTCACAACGTGATATCTCGTATGCCGTCTTCTGCTTG
 
 Description of barcode file in the config file
 ==============================================
@@ -229,6 +232,8 @@ The barcode file is the tab-delimited file with two columns:
 There is a header in this file.
 
 For Example:
-Sequence	TruSeqBarcode
-AACGTGAT	bc01
+
+.. code-block:: sh
+	Sequence	TruSeqBarcode
+	AACGTGAT	bc01
 
