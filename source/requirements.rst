@@ -2,11 +2,13 @@
 Requirements
 ============
 
-Please See template.conf file in the configuration folder.
+Please see template.conf file in the configuration folder.
 
 :perl: `v5.20.2 <http://perl5.git.perl.org/perl.git/tag/2c93aff028f866699beb26e5e7504e531c31b284>`_
 :python: `v2.7.8 <https://www.python.org/download/releases/2.7.8/>`_
 :R: `v3.1.2 <http://cran.r-project.org/src/base/R-3/R-3.1.2.tar.gz>`_
+
+**Note:** This will only run on any Linux system that has an SGE or LSF cluster.
 
 Purpose and Tools Used
 ======================

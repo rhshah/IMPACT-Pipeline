@@ -4,7 +4,7 @@ Usage
 
 Quick Usage
 ===========
-**RunIlluminaProcess.pl -c configuration.txt -sc configuration_sc.txt -d /path/to/fastq/files -o /path/to/output/directory [options]**
+**RunIlluminaProcess.pl [options]**
 	
 	--config | -c                        S Path to configration file(required)
 	
@@ -16,9 +16,9 @@ Quick Usage
 	
 	--outputDirectory | -o               S Path where all the output files will be written (required)
 	
-Assuming you have setup the configuration file properly and you have SampleSheet.csv and title_file.txt in the **dataDirectory**you can run:
+Assuming you have setup the configuration file properly and you have SampleSheet.csv and title_file.txt in the **dataDirectory** you can run:
 
-``perl RunIlluminaProcess.pl -c configuration.txt -sc configuration_sc.txt -d /path/to/fastq/files -o /path/to/output/directory``
+``nohup perl RunIlluminaProcess.pl -c configuration.txt -sc configuration_sc.txt -d /path/to/fastq/files -o /path/to/output/directory``
 
 Detailed Usage
 ==============
