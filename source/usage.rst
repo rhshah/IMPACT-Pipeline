@@ -76,20 +76,25 @@ Using different Process to run Pipeline
 	:ListOfFiles: RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)
 	:Process: 5,6,7
 	
-	**Note:** For this to be sucessfull you should hve the files from step 4 in the **outputDirectory**
+.. sidebar:**Note:**
+
+	For this to be sucessfull you should hve the files from step 4 in the **outputDirectory**
 	
 6. To run from the **Process 6 to 7**. Set the following in the configuration file:
 	:ListOfFiles: RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)
 	:Process: 6,7
-	
-	**Note:** For this to be sucessfull you should hve the files from step 5 in the **outputDirectory**
+
+.. sidebar:**Note:** 
+
+	For this to be sucessfull you should hve the files from step 5 in the **outputDirectory**
 	
 7.  To run from the **Process 7**. Set the following in the configuration file:
 	:ListOfFiles: RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)
 	:Process: 7
 	
 .. sidebar::**Note:** 
-			For this to be sucessfull you should hve the files from step 6 in the **outputDirectory**
+			
+	For this to be sucessfull you should hve the files from step 6 in the **outputDirectory**
 	
 If you want to run each Process separetly that is also possible but you need to make sure that files from previous procss are present in the **outputDirectory**
 
@@ -135,4 +140,5 @@ Which looks like this:
 	qsub -q test.q -wd ${WorkingDir} -N ${ProjectName} -l hvmem=2G,virtual_free=2G -pe smp 1 -b y \"${Perl} ${PipelineScript} -c ${CONFIGFILE} -d ${DATADIR} -o ${OUTDIR}\"
 	
 .. sidebar::**Note:** 
+	
 	Please comment out the lines using (``#``) according to the cluster type and analysis type.
