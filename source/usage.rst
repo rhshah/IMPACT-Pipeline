@@ -30,23 +30,23 @@ In the configuration file the **Process** variable in section **>Parameters** te
 What does each number represent
 -------------------------------
 
-+---------+------------------------+
-| Process | Things Pipeline will do|
-+=========+========================+
-| 1 | Merge Fastq |
-+---+-------------+
-| 2 | Trimming, Mapping & sorting of SAM file giving you a BAM file |
-+---+---------------------------------------------------------------+
-| 3 | Mark Duplicates, Indel Reaglinment, Base Quality Recalibration |
-+---+----------------------------------------------------------------+
-| 4 | Metrics Calculation, QC Report Genaration and launching IMPACT-SV if given -sc flag specified |
-+---+-----------------------------------------------------------------------------------------------+
-| 5 | Variant Calling |
-+---+-----------------+
-| 6 | Variant Filtering and Genotyping |
-+---+----------------------------------+
-| 7 | Variant Annotation and Variant Filtering |
-+---+------------------------------------------+
++---------+-----------------------------------------------------------------------------------------------+
+| Process | Things Pipeline will do                                                                       |
++=========+===============================================================================================+
+| 1       | Merge Fastq 										  |										  
++---------+-----------------------------------------------------------------------------------------------+
+| 2       | Trimming, Mapping & sorting of SAM file giving you a BAM file				  |				  
++---------+-----------------------------------------------------------------------------------------------+
+| 3       | Mark Duplicates, Indel Reaglinment, Base Quality Recalibration 				  |
++---------+-----------------------------------------------------------------------------------------------+
+| 4       | Metrics Calculation, QC Report Genaration and launching IMPACT-SV if given -sc flag specified |
++---------+-----------------------------------------------------------------------------------------------+
+| 5       | Variant Calling 										  |
++---------+-----------------------------------------------------------------------------------------------+
+| 6       | Variant Filtering and Genotyping 						                  |
++---------+-----------------------------------------------------------------------------------------------+
+| 7       | Variant Annotation and Variant Filtering 							  |
++---------+-----------------------------------------------------------------------------------------------+
 
 
 Using different Process to run Pipeline
