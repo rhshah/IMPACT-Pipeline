@@ -2,19 +2,24 @@
 Requirements
 ============
 
+.. sidebar:: Note:
+
+	 This will only run on any Linux system that has an SGE or LSF cluster.
+
 Please see template.conf file in the configuration folder.
 
 :perl: `v5.20.2 <http://perl5.git.perl.org/perl.git/tag/2c93aff028f866699beb26e5e7504e531c31b284>`_
 :python: `v2.7.8 <https://www.python.org/download/releases/2.7.8/>`_
 :R: `v3.1.2 <http://cran.r-project.org/src/base/R-3/R-3.1.2.tar.gz>`_
 
-.. sidebar:: Note:
-
-	 This will only run on any Linux system that has an SGE or LSF cluster.
 
 Purpose and Tools Used
 ======================
 
+.. sidebar:: Note:
+
+	For Timmomatic we are using a custom old version which uses `cutadapt v1.1 <https://cutadapt.readthedocs.org>`_ internally. To get this please contact us.
+	
 :Trimming: `Trimmomatic <http://www.usadellab.org/cms/?page=trimmomatic>`_
 :Alignment: `BWA v0.7.5a <https://github.com/lh3/bwa/tree/0.7.5a>`_
 :Somatic SNV calling: `MuTect v1.1.4 <https://github.com/broadinstitute/mutect/tree/1.1.4>`_
@@ -25,10 +30,6 @@ Purpose and Tools Used
 :Base Quality Recalibration and Find Covered Intervals: `GATK v3.3.0 <http://www.broadinstitute.org/gatk/download>`_
 :Genotyping Position: `SAMTOOLS v0.1.19 <https://github.com/samtools/samtools/tree/0.1.19>`_
 :Somatic Structural Variant Framework: `IMPACT-SV v1.0.1 <https://github.com/rhshah/IMPACT-SV/tree/1.0.1>`_
-
-.. sidebar:: Note:
-
-	For Timmomatic we are using a custom old version which uses `cutadapt v1.1 <https://cutadapt.readthedocs.org>`_ internally. To get this please contact us.
 
 
 Inside the config file
@@ -164,11 +165,13 @@ Set the parameters to different file/folders/values required by the IMPACT pipel
 
 Versions
 --------
-Inside the version there are version that are being used for each tool. This is just for consistency in reports. 
 
 .. sidebar:: Note: 
 
 	This section is just to print what version of things you are using so you can have all the dependencies with the respective versions listed here.
+
+Inside the version there are version that are being used for each tool. This is just for consistency in reports. 
+
 
 Description of title_file.txt
 =============================
@@ -179,12 +182,12 @@ Headers for this tab-delimited file should be exactly with this names:
 :Pool:	Can be any string **joined by ``-``** and **not ``_``** and all entries should be from same pool
 :Sample_ID:	Can be any string **joined by ``-``** and **not ``_``** 
 :Collab_ID: Can be any string or ``-``
-:Patient_ID: Can be any string **joined by ``-``** and **not ``_``** 
 
 .. sidebar:: Note: 
 
 	Patient with multiple samples should have **same Patient_ID**
 	
+:Patient_ID: Can be any string **joined by ``-``** and **not ``_``** 
 :Class: Can be Tumor or Normal.
 :Sample_type: Can be any string or ``-``
 :Input_ng: Can be any float or ``-``
@@ -230,11 +233,11 @@ There is **no header** in this file.
 
 For Example:
 
-..
-
-
-	bc01	GATCGGAAGAGCACACGTCTGAACTCCAGTCACAACGTGATATCTCGTATGCCGTCTTCTGCTTG
-
+	+-------+-----------------------------------------------------------------------+
+	| bc01  |     GATCGGAAGAGCACACGTCTGAACTCCAGTCACAACGTGATATCTCGTATGCCGTCTTCTGCTTG |
+	+-------+-----------------------------------------------------------------------+
+	
+	
 Description of barcode file in the config file
 ==============================================
 
@@ -245,10 +248,8 @@ The barcode file is the tab-delimited file with two columns:
 There is **a header** in this file.
 
 For Example:
-
-..
-
-
-	Sequence	TruSeqBarcode
-	AACGTGAT	bc01
-
+	+---------+--------------+
+	|Sequence | TruSeqBarcode|
+	+=========+==============+
+	|AACGTGAT |       bc01   |
+	+---------+--------------+
