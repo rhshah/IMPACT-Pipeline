@@ -94,12 +94,12 @@ If you want to run each Process separetly that is also possible but you need to 
 
 Shell Script to run pipeline
 ----------------------------
-There is also a **helper shell script (Run_Pipeline.sh)** in the bin directory which will help to run the framework.
+There is also a **helper shell script (Run_Pipeline_Example.sh)** in the bin directory which will help to run the framework.
 Which looks like this:
 
 .. code-block:: sh
 
-	##Run_Pipeline.sh
+	##Run_Pipeline_Example.sh
 	#author:Ronak H Shah
 	#v1.0.1
 	##Path where the fastq are stored
