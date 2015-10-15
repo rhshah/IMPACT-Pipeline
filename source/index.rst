@@ -17,10 +17,11 @@ It is designed for use with hybrid capture, including both whole-exome and custo
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    
    requirements
    usage
+   subscripts
 
 Citation
 ========

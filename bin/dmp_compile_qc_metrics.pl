@@ -213,7 +213,7 @@ sub Usage
 {
     print "Unknow option: @_\n" if (@_);
 
-	print "\nUsage : RunIlluminaProcess.pl [options]
+	print "\nUsage : dmp_compile_qc_metrics.pl [options]
         [--bamList|i       S File of files having list of all bam files (required)]
         [--titleFile|t     S tab-delimited title file for the samples (required and submit with full path)]
         [--AllMetrics|am   S Path to AllMetrics script (optional;default:/home/shahr2/Scripts/All/AllMetrics_v1.2.r)]
