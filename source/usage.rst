@@ -25,6 +25,7 @@ Detailed Usage
 The behaviour of the prgram depends on the inputs in the configuration file:
 
 In the configuration file the **Process** variable in section **>Parameters** tells pipeline following:
+
 +---------+-----------------------------------------------------------------------------------------------+
 | Process | Things Pipeline will do                                                                       |
 +=========+===============================================================================================+
