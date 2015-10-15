@@ -116,8 +116,8 @@ arguments:
                         Full Path to the bsub executables of LSF.
 
 
-Call Indels > 25 bp using Pindel
-================================
+Call Indels > 25bp using Pindel
+===============================
 
 **usage: Run_Pindel.py [options]**
 
@@ -157,7 +157,7 @@ optional arguments:
 Script in the support-scripts folder
 ------------------------------------
 
-Calculate Intervals from BAM file that have some minimum coverage
+Calculate intervals from bam file that have some minimum coverage
 =================================================================
 
 **usage: Run_FindCoveredInterval.py [options]**
@@ -196,7 +196,7 @@ optional arguments:
   -bsub /somepath/bsub, --bsubPath /somepath/bsub
                         Full Path to the bsub executables of LSF.
 
-Annotating Variants All Merged Variant File
+Annotating variants in merged variant file
 ============================================
 
 **dmp_annotate_variants.pl [options]**
@@ -216,7 +216,7 @@ Annotating Variants All Merged Variant File
         --deleteUnwantedFiles | -d           I 2=>To delete files 1=> To keep files (default:2,optional)
 
 
-Filter Variants after annotation
+Filter variants after annotation
 =================================
 
 **dmp_filter_genotyped_variants.pl [options]**
@@ -260,7 +260,7 @@ Filter Variants after annotation
 	--MAFthreshold | -mt                 					F Minimum accepted MAF values for unmatched variant calls (default : 0.01)
     
 
-Filter Indels from SomaticIndelDetector before genotyping
+Filter indels from SomaticIndelDetector before genotyping
 =========================================================
 	
 **dmp_filter_indel.pl [options]**
@@ -281,7 +281,7 @@ Filter Indels from SomaticIndelDetector before genotyping
         
 		--outdir|o                    S Path where all the output files will be written (optional) default:current working directory
 
-Filter SNVs from mutect before genotyping
+Filter snv from MuTect before genotyping
 =========================================
 	
 **dmp_filter_mutect.pl [options]**
@@ -303,7 +303,7 @@ Filter SNVs from mutect before genotyping
 		--outdir|o                       S Path where all the output files will be written (optional) default:current working directory
 
 
-Filter Indels from PINDEL before genotyping
+Filter indels from PINDEL before genotyping
 ===========================================
 
 **usage: dmp_filter_pindel.py [options]**
