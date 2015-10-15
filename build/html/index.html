@@ -1,15 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to IMPACT-Pipeline’s documentation! &mdash; IMPACT-Pipeline 1.0.1 documentation</title>
+    <title>IMPACT-Pipeline: MSK-IMPACT assay data analysis framework to process data on LSF/SGE &mdash; IMPACT-Pipeline 1.0.1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.3.4/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.3.4/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -23,87 +25,197 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="IMPACT-Pipeline 1.0.1 documentation" href="#" /> 
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="IMPACT-Pipeline 1.0.1 documentation" href="#" />
+    <link rel="next" title="Requirements" href="requirements.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
   </head>
   <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li><a href="#">IMPACT-Pipeline 1.0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+          IMPACT-Pipeline</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
             
-  <div class="section" id="welcome-to-impact-pipeline-s-documentation">
-<h1>Welcome to IMPACT-Pipeline&#8217;s documentation!<a class="headerlink" href="#welcome-to-impact-pipeline-s-documentation" title="Permalink to this headline">¶</a></h1>
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subscripts.html">Description of sub-scripts</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">IMPACT-Pipeline: MSK-IMPACT assay data analysis framework to process data on LSF/SGE</a></li>
+<li><a class="reference internal" href="#citation">Citation</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="requirements.html" title="Next Chapter: Requirements"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Requirements &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/index.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="impact-pipeline-msk-impact-assay-data-analysis-framework-to-process-data-on-lsf-sge">
+<h1>IMPACT-Pipeline: MSK-IMPACT assay data analysis framework to process data on LSF/SGE<a class="headerlink" href="#impact-pipeline-msk-impact-assay-data-analysis-framework-to-process-data-on-lsf-sge" title="Permalink to this headline">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body"><a class="reference external" href="https://github.com/rhshah">Ronak H Shah</a>, Donavan Cheng, <a class="reference external" href="https://github.com/ahmetz">Ahmet Zehir</a>, Aijazuddin Syed, <a class="reference external" href="https://github.com/rghu">Raghu Chandramohan</a>, Meera Prasad et.al</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:rons&#46;shah&#37;&#52;&#48;gmail&#46;com">rons<span>&#46;</span>shah<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Source code:</th><td class="field-body"><a class="reference external" href="http://github.com/rhshah/IMPACT-Pipeline">http://github.com/rhshah/IMPACT-Pipeline</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body"><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a></td>
+</tr>
+</tbody>
+</table>
+<p>IMPACT-Pipeline is a Perl/Python/R command-line software toolkit to process data, call somatic aberrations (SNV,INDELS,SV,CNV) generated by NGS based MSK-IMPACT assay.
+It is designed for use with hybrid capture, including both whole-exome and custom target panels, and short-read sequencing platforms such as Illumina.</p>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
-<ul class="simple">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html#purpose-and-tools-used">Purpose and Tools Used</a></li>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html#inside-the-config-file">Inside the config file</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="requirements.html#locations">Locations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="requirements.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="requirements.html#versions">Versions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html#description-for-title-file-txt">Description for title_file.txt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html#description-for-samplesheet-csv">Description for SampleSheet.csv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html#description-for-adaptor-file-in-the-configuration-file">Description for adaptor file in the configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html#description-for-barcode-file-in-the-configuration-file">Description for barcode file in the configuration file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#quick-usage">Quick Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#detailed-usage">Detailed Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#what-does-each-number-represent">What does each number represent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#using-different-process-to-run-pipeline">Using different Process to run Pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#shell-script-to-run-pipeline">Shell Script to run pipeline</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="subscripts.html">Description of sub-scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="subscripts.html#script-in-the-bin-folder">Script in the bin folder</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="subscripts.html#compiling-qc-metrics-generating-qc-report-and-running-copynumber-analysis">Compiling QC metrics, Generating QC-Report and running copynumber analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="subscripts.html#genotyping-variants-across-multiple-samples">Genotyping Variants across multiple samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="subscripts.html#running-indel-realignment-using-abra">Running Indel Realignment using ABRA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="subscripts.html#call-indels-25bp-using-pindel">Call Indels &gt; 25bp using Pindel</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="subscripts.html#script-in-the-support-scripts-folder">Script in the support-scripts folder</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="subscripts.html#calculate-intervals-from-bam-file-that-have-some-minimum-coverage">Calculate intervals from bam file that have some minimum coverage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="subscripts.html#annotating-variants-in-merged-variant-file">Annotating variants in merged variant file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="subscripts.html#filter-variants-after-annotation">Filter variants after annotation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="subscripts.html#filter-indels-from-somaticindeldetector-before-genotyping">Filter indels from SomaticIndelDetector before genotyping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="subscripts.html#filter-snv-from-mutect-before-genotyping">Filter snv from MuTect before genotyping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="subscripts.html#filter-indels-from-pindel-before-genotyping">Filter indels from PINDEL before genotyping</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
-</ul>
+<div class="section" id="citation">
+<h1>Citation<a class="headerlink" href="#citation" title="Permalink to this headline">¶</a></h1>
+<p>If you use this software in a publication, please cite our paper</p>
+<p><a class="reference external" href="http://www.sciencedirect.com/science/article/pii/S1525157815000458">Memorial Sloan Kettering-Integrated Mutation Profiling of Actionable Cancer Targets (MSK-IMPACT): A Hybridization Capture-Based Next-Generation Sequencing Clinical Assay for Solid Tumor Molecular Oncology</a>.</p>
 </div>
 
 
-          </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Welcome to IMPACT-Pipeline&#8217;s documentation!</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
-</ul>
-
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li><a href="#">IMPACT-Pipeline 1.0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer">
-        &copy; Copyright 2015, Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijaz Syed, Raghu Chandramohan, Meera Prasad.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
-    </div>
+    <p>
+        &copy; Copyright 2015, Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijazuddin Syed, Raghu Chandramohan, Meera Prasad.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.<br/>
+    </p>
+  </div>
+</footer>
   </body>
 </html>

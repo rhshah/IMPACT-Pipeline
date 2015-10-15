@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Requirements &mdash; IMPACT-Pipeline 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.3.4/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.3.4/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="IMPACT-Pipeline 1.0.1 documentation" href="index.html" />
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="IMPACT-Pipeline: MSK-IMPACT assay data analysis framework to process data on LSF/SGE" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          IMPACT-Pipeline</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subscripts.html">Description of sub-scripts</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Requirements</a><ul>
+<li><a class="reference internal" href="#purpose-and-tools-used">Purpose and Tools Used</a></li>
+<li><a class="reference internal" href="#inside-the-config-file">Inside the config file</a><ul>
+<li><a class="reference internal" href="#locations">Locations</a></li>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#versions">Versions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#description-for-title-file-txt">Description for title_file.txt</a></li>
+<li><a class="reference internal" href="#description-for-samplesheet-csv">Description for SampleSheet.csv</a></li>
+<li><a class="reference internal" href="#description-for-adaptor-file-in-the-configuration-file">Description for adaptor file in the configuration file</a></li>
+<li><a class="reference internal" href="#description-for-barcode-file-in-the-configuration-file">Description for barcode file in the configuration file</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="index.html" title="Previous Chapter: IMPACT-Pipeline: MSK-IMPACT assay data analysis framework to process data on LSF/SGE"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; IMPACT-Pipeli...</span>
+    </a>
+  </li>
+  <li>
+    <a href="usage.html" title="Next Chapter: Usage"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Usage &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/requirements.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="requirements">
+<h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
+<div class="sidebar">
+<p class="first sidebar-title">Note:</p>
+<p class="last">This will only run on any Linux system that has an SGE or LSF cluster.</p>
+</div>
+<p>Please see template.conf file in the configuration folder.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">perl:</th><td class="field-body"><a class="reference external" href="http://perl5.git.perl.org/perl.git/tag/2c93aff028f866699beb26e5e7504e531c31b284">v5.20.2</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">python:</th><td class="field-body"><a class="reference external" href="https://www.python.org/download/releases/2.7.8/">v2.7.8</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">R:</th><td class="field-body"><a class="reference external" href="http://cran.r-project.org/src/base/R-3/R-3.1.2.tar.gz">v3.1.2</a></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="purpose-and-tools-used">
+<h2>Purpose and Tools Used<a class="headerlink" href="#purpose-and-tools-used" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">Note:</p>
+<p class="last">For Timmomatic we are using a custom old version which uses <a class="reference external" href="https://cutadapt.readthedocs.org">cutadapt v1.1</a> internally. To get this please contact us.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Trimming:</th><td class="field-body"><a class="reference external" href="http://www.usadellab.org/cms/?page=trimmomatic">Trimmomatic</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Alignment:</th><td class="field-body"><a class="reference external" href="https://github.com/lh3/bwa/tree/0.7.5a">BWA v0.7.5a</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Somatic SNV calling:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><a class="reference external" href="https://github.com/broadinstitute/mutect/tree/1.1.4">MuTect v1.1.4</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Somatic INDEL calling:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><a class="reference external" href="http://www.broadinstitute.org/gatk/download">SomaticIndelDetector in GATK v2.3-9</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Somatic INDEL calling:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><a class="reference external" href="https://github.com/genome/pindel/tree/v0.2.5a7">PINDEL v0.2.5a7</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Indel Realignment:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><a class="reference external" href="https://github.com/mozack/abra/tree/v0.92">ABRA v0.92</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Mark Duplicates and Various Statistics:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><a class="reference external" href="https://github.com/broadinstitute/picard/tree/1.96">Picard Tools v1.96</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Base Quality Recalibration and Find Covered Intervals:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><a class="reference external" href="http://www.broadinstitute.org/gatk/download">GATK v3.3.0</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Genotyping Position:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><a class="reference external" href="https://github.com/samtools/samtools/tree/0.1.19">SAMTOOLS v0.1.19</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Somatic Structural Variant Framework:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><a class="reference external" href="https://github.com/rhshah/IMPACT-SV/tree/1.0.1">IMPACT-SV v1.0.1</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="inside-the-config-file">
+<h2>Inside the config file<a class="headerlink" href="#inside-the-config-file" title="Permalink to this headline">¶</a></h2>
+<p>There are three sections:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Section 1</th>
+<th class="head">Section 2</th>
+<th class="head">Section 3</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Locations</td>
+<td>Parameters</td>
+<td>Versions</td>
+</tr>
+</tbody>
+</table>
+<p>All of this section start with <tt class="docutils literal"><span class="pre">&gt;</span></tt> sign.</p>
+<p>Inside each of the section here are the things that need to be set:</p>
+<div class="section" id="locations">
+<h3>Locations<a class="headerlink" href="#locations" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ZCAT:</th><td class="field-body">Location of the <tt class="docutils literal"><span class="pre">zcat</span></tt> program on linux</td>
+</tr>
+<tr class="field-even field"><th class="field-name">TMPDIR:</th><td class="field-body">Set the temporary directory for all tools please set somthing other then <tt class="docutils literal"><span class="pre">/tmp</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">JAVA_1_6:</th><td class="field-body">Set JAVA version 1.6</td>
+</tr>
+<tr class="field-even field"><th class="field-name">JAVA_1_7:</th><td class="field-body">Set JAVA version 1.7</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">GATK_SomaticIndel:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Path to GATK somatic indel detector (GATK version 2.3-9)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">GATK:</th><td class="field-body">Path to GATK (GATK version 3.3.0)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Reference:</th><td class="field-body">Path to fasta referece file to be used (GRCh37)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Refseq:</th><td class="field-body">Path to refgene file to be used</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">PICARD:</th><td class="field-body">Path to picard tools (Picard version 1.19)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Mutect:</th><td class="field-body">Path to MuTect (MuTect version 1.1.4)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">BaitInterval:</th><td class="field-body">Bait file to be used for analysis. Please make the interval file based on Picard&#8217;s HSmetrics tool format.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">TargetInterval:</th><td class="field-body">Target file to be used for analysis. Please make the interval file based on Picard&#8217;s HSmetrics tool format.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">ABRA:</th><td class="field-body">Path to ABRA (ABRA version 0.92)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">TargetRegionLIST:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Target File in GATK&#8217;s List format.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">PINDELBIN:</th><td class="field-body">Path to pindel installation (Pindel version 0.2.5a7)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">SVpipeline:</th><td class="field-body">Path to structural variant framework (only required if running the structural variant detection framework)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">CAT:</th><td class="field-body">Location of <tt class="docutils literal"><span class="pre">cat</span></tt> program on Linux</td>
+</tr>
+<tr class="field-even field"><th class="field-name">PYTHON:</th><td class="field-body">Location of <tt class="docutils literal"><span class="pre">python</span></tt> program on Linux (Python version 2.7.8)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">TrimGalore:</th><td class="field-body">Path to trimgalore tool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">PERL:</th><td class="field-body">Location of <tt class="docutils literal"><span class="pre">perl</span></tt> program on Linux (Perl version 5.20.2)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">BWA:</th><td class="field-body">Path to bwa tool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">GeneInterval:</th><td class="field-body">Gene interval file</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">GeneIntervalAnn:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Gene interval annotated file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">GeneCoord:</th><td class="field-body">Path to Gene Coordinate file</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">TilingInterval:</th><td class="field-body">= Path to tiling intervals</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">TilingIntervalAnn:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Path to tiling intervals - annotated for cytoband, for copy number</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">FingerPrintInterval:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Path to FingerPrint Interval file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">dbSNP:</th><td class="field-body">Path to db snp vcf file</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">COSMIC:</th><td class="field-body">Path to cosmic vcf (version 0.68)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Mills_1000G_Indels:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Path to Mills 1000G Indels</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">dbSNP_bitset:</th><td class="field-body">Path to dbsnp bitset file</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">AnnotateAssessFilterVariants:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Path to Annotate Assess and Filter variants script</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">LoessNormalization:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Path ot Loess Normalization for copynumber</td>
+</tr>
+<tr class="field-even field"><th class="field-name">GCBiasFile:</th><td class="field-body">Path to GCbias file for copy number</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">HistNormDir:</th><td class="field-body">Path to Historiacal Normal dir for Copy number</td>
+</tr>
+<tr class="field-even field"><th class="field-name">BestCopyNumber:</th><td class="field-body">Path to Copy number script</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">NormVsNormCopyNumber:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Path to Normal vs. Normal Copy number script</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">StdNormalLoess_TM:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Standard Normals for copy number analysis - FFPE for tumor samples#</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">StdNormalLoess_NVN:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Standard Normals for copy number normal vs normal analysis</td>
+</tr>
+<tr class="field-even field"><th class="field-name">AllMetrics:</th><td class="field-body">Path to all metrics R script</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">SAMTOOLS:</th><td class="field-body">Path to samtools</td>
+</tr>
+<tr class="field-even field"><th class="field-name">BEDTOOLS:</th><td class="field-body">Path to bedtools</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">GenotypeAllele:</th><td class="field-body">Path to Genotype allele script</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">CosmicHotspotVcf:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Path to cosmic hotspot vcf</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Annovar:</th><td class="field-body">Path to Annovar script</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Annovar_db:</th><td class="field-body">Path to Annovar DB</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Canonical_refFlat_file:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Path to canonical reflat file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">IGVtools:</th><td class="field-body">Path to IGV tools</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">TranslationFolder:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Path to translation folder</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">HotSpot_mutations:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Path to hotspot mutations for 2 tiered filtering</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">clinicalExons:</th><td class="field-body">ListOfClinicalExon</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Validated_Exons:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">File with List Of Clinically Validated Exons</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tumor_supressor_list:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Path to list of tumor supressor genes</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Canonical_Exon_Interval_table_with_aa:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Path to exon interval table</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Canonical_Exon_Interval_list:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Path to canonical exon interval table for DoC</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">NormalVariantsVCF:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Path to compiled variants found in mixed normals</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">QSUB:</th><td class="field-body">Path to qsub for SGE</td>
+</tr>
+<tr class="field-even field"><th class="field-name">BSUB:</th><td class="field-body">Path to bsub for LSF</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">RHOME:</th><td class="field-body">Path to R bin directory</td>
+</tr>
+<tr class="field-even field"><th class="field-name">RLIBS:</th><td class="field-body">Path to R library directory</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">RSYNC:</th><td class="field-body">Path to <tt class="docutils literal"><span class="pre">rsyn</span></tt> on system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">BarcodeKey:</th><td class="field-body">Path to barcode key file</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">AdaptorKey:</th><td class="field-body">Path to adaptor key file</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">StandardNormalsDirectory:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Directory where the standard normals are stored</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<p>Set the parameters to different file/folders/values required by the IMPACT pipeline</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">StdNormalForMutationCalling:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Path to standard normal to be used for mutation calling</td>
+</tr>
+<tr class="field-even field"><th class="field-name">ListOfFiles:</th><td class="field-body">File of Files(FOF) for different steps for the pipeline (only required when the process dont start from merging fastq)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Process:</th><td class="field-body">Which process to run the pipeline on ( can be 1,2,3,4,5,6,7 independently or continuous combination in ascending order )</td>
+</tr>
+<tr class="field-even field"><th class="field-name">FastqSource:</th><td class="field-body">Where are the fastq file from (can be <tt class="docutils literal"><span class="pre">GCL</span></tt> or <tt class="docutils literal"><span class="pre">DMP</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">MAPQ:</th><td class="field-body">Mapping Quality Threshold (Used by DMP-IMPACT:0.2)0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">BASQ:</th><td class="field-body">Base Quality Threshold (Used by DMP-IMPACT:0.2)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">MergeDinucleotide:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Flag to Merge di-nucleotide mutation(can be 1(True) or 2(False))</td>
+</tr>
+<tr class="field-even field"><th class="field-name">MoveFiles:</th><td class="field-body">Flag to Move file in folders (can be 1(True) or 2(False))</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">DeleteIntermediateFiles:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Flag ti Delete Intermediate Files (can be 1(True) or 2(False))</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">TNfreqRatio_MutectStdFilter:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">TN freq Ratio for mutect std filter (Used by DMP-IMPACT:5)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">TNfreqRatio_SomIndelStdFilter:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">TN freq Ratio for SID std filter (Used by DMP-IMPACT:5)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">VF_threshold_hotspot:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Variant Frequency threshold for SNV hotspot (Used by DMP-IMPACT:0.01)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">AD_SomIndelSTDFilter:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Allele Depth Threshold for SID standard filter (Used by DMP-IMPACT:5)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">DP_SomIndelSTDFilter:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Total Depth Threshold for SID standard filter (Used by DMP-IMPACT:0)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">VF_SomIndelSTDilter:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Variant Frequency Threshold for SID standard filter (Used by DMP-IMPACT:0.01)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">AD_MutectSTDFilter:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Allele Depth Threshold for Mutect standard filter (Used by DMP-IMPACT:5)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">DP_MutectSTDFilter:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Total Depth Threshold for Mutect standard filter (Used by DMP-IMPACT:0)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">VF_MutectSTDFilter:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Variant Frequency Threshold for Mutect standard filter (Used by DMP-IMPACT:0.01)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">TNfreqRatio_AnnotationFilter:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Tumor to Normal frequency ratio therehold for Annotation (Used by DMP-IMPACT:5)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">PON_AD_Threshold:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Panel of Normal Allele Depth Threshold (Used by DMP-IMPACT:3)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">PON_TPVF_Threshold:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Panel of Normal TPVF Threshold (Used by DMP-IMPACT:10)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Pindel_Min_Indel_Len:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Minimum Length of INDEL called by PINDEL(Used by DMP-IMPACT:25)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Pindel_Max_Indel_Len:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Maximum Length of INDEL called by PINDEL (Used by DMP-IMPACT:2000)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">MAFthreshold_AnnotationFilter:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Maf threshold for Annotation (Used by DMP-IMPACT:0.01)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">minimumDPforSNV:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Minimum Total Depth for Novel SNVs  (Used by DMP-IMPACT:20)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">minimumADforSNV:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Minimum Allele Depth for Novel SNVs (Used by DMP-IMPACT:10)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">minimumVFforSNV:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Minimum Variant Frequency for Novel SNVs (Used by DMP-IMPACT:0.05)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">minimumDPforSNVhs:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Minimum Total Depth for Hotspot SNVs (Used by DMP-IMPACT:20)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">minimumADforSNVhs:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Minimum Allele Depth for Hotspot SNVs (Used by DMP-IMPACT:8)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">minimumVFforSNVhs:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Minimum Variant Frequency for Hotspot SNVs (Used by DMP-IMPACT:0.02)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">minimumDPforINDEL:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Minimum Total Depth for Novel INDELs (Used by DMP-IMPACT:20)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">minimumADforINDEL:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Minimum Allele Depth for Novel INDELs (Used by DMP-IMPACT:10)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">minimumVFforINDEL:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Minimum Variant Frequency for Novel INDELs (Used by DMP-IMPACT:0.05)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">minimumDPforINDELhs:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Minimum Total Depth for Hotspot INDELs (Used by DMP-IMPACT:20)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">minimumADforINDELhs:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Minimum Allele Depth for Hotspot INDELs (Used by DMP-IMPACT:8)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">minimumVFforINDELhs:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Minimum Variant Frequnecy for Hotspot INDELs (Used by DMP-IMPACT:0.02)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">occurrencePercent:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Minimum Percentage For Occurrence In Other Normals (Used by DMP-IMPACT:0.2)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Coverage_threshold_darwin_report:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Coverage threshold for darwin reports(good coverage vs bad coverage) (Used by DMP-IMPACT:100)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">QUEUE_NAME:</th><td class="field-body">Name of the queue on the SGE or LSF</td>
+</tr>
+<tr class="field-even field"><th class="field-name">CLUSTER:</th><td class="field-body">Flag for what cluster to be used (can <tt class="docutils literal"><span class="pre">SGE</span></tt> or <tt class="docutils literal"><span class="pre">LSF</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">runABRA:</th><td class="field-body">Flag to whether use ABRA or GATK indel realignment(can be 1(True) or 2(False))</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="versions">
+<h3>Versions<a class="headerlink" href="#versions" title="Permalink to this headline">¶</a></h3>
+<div class="sidebar">
+<p class="first sidebar-title">Note:</p>
+<p class="last">This section is just to print what version of things you are using so you can have all the dependencies with the respective versions listed here.</p>
+</div>
+<p>Inside the version there are version that are being used for each tool. This is just for consistency in reports.</p>
+</div>
+</div>
+<div class="section" id="description-for-title-file-txt">
+<h2>Description for title_file.txt<a class="headerlink" href="#description-for-title-file-txt" title="Permalink to this headline">¶</a></h2>
+<p>Headers for this tab-delimited file should be exactly with this names:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Barcode:</th><td class="field-body">Has to start with bc and end with any number [for example: bc01 or bc101 should match the <strong>adaptor &amp; barcode</strong> file mentioned in configuration file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Pool:</th><td class="field-body">Can be any string <strong>joined by ``-``</strong> and <strong>not ``_``</strong> and all entries should be from same pool</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Sample_ID:</th><td class="field-body">Can be any string <strong>joined by ``-``</strong> and <strong>not ``_``</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Collab_ID:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+</tbody>
+</table>
+<div class="sidebar">
+<p class="first sidebar-title">Note:</p>
+<p class="last">Patient with multiple samples should have <strong>same Patient_ID</strong></p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Patient_ID:</th><td class="field-body">Can be any string <strong>joined by ``-``</strong> and <strong>not ``_``</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Class:</th><td class="field-body">Can be Tumor or Normal.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Sample_type:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Input_ng:</th><td class="field-body">Can be any float or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Library_yield:</th><td class="field-body">Can be float or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Pool_input:</th><td class="field-body">Can be float or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Bait_version:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Gender:</th><td class="field-body">Can be any Male/Female or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">PatientName:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">MAccession:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Extracted_DNA_Yield:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Can be a float or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>For analysis to start the <strong>outputDirectory</strong> will be required to have this file with <tt class="docutils literal"><span class="pre">title_file.txt</span></tt> as the name or this file needs to be present in the <strong>configuration</strong> file with either <tt class="docutils literal"><span class="pre">title_file.txt</span></tt> as then name or <tt class="docutils literal"><span class="pre">Pool_title.txt</span></tt> as the name where <strong>Pool</strong> is the string used above for that category.</p>
+</div>
+<div class="section" id="description-for-samplesheet-csv">
+<h2>Description for SampleSheet.csv<a class="headerlink" href="#description-for-samplesheet-csv" title="Permalink to this headline">¶</a></h2>
+<p>This is a comma separated file is created by the illumina sequencer and it is used to merge the fastq files.</p>
+<p>Headers for this tab-delimited file should be exactly with this names:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">FCID:</th><td class="field-body">Flowcell ID (required)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Lane:</th><td class="field-body">Lane Number, this is used to merge the fastq files across lanes (required)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">SampleID:</th><td class="field-body">Sample ID, this is used to merge the files (required)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">SampleRef:</th><td class="field-body">Sample Reference is from [example:HUMAN]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Index:</th><td class="field-body">Index used to sequence the sample (require)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Description:</th><td class="field-body">Description of the samples</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Control:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Recipe:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Operator:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">SampleProject:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>For analysis to start the <strong>outputDirectory</strong> will be required to have this file with <tt class="docutils literal"><span class="pre">SampleSheet.csv</span></tt> as the name or this file needs to be present in the <strong>configuration</strong> file with <tt class="docutils literal"><span class="pre">SampleSheet.csv</span></tt> as the name.</p>
+</div>
+<div class="section" id="description-for-adaptor-file-in-the-configuration-file">
+<h2>Description for adaptor file in the configuration file<a class="headerlink" href="#description-for-adaptor-file-in-the-configuration-file" title="Permalink to this headline">¶</a></h2>
+<p>The adaptor file is the tab-delimited file with two columns:
+1. Barcode Key to which the adaptor belongs which should always start with <tt class="docutils literal"><span class="pre">bc</span></tt>
+2. Adaptor sequence itself</p>
+<p>There is <strong>no header</strong> in this file.</p>
+<p>For Example:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>bc01</td>
+<td>GATCGGAAGAGCACACGTCTGAACTCCAGTCACAACGTGATATCTCGTATGCCGTCTTCTGCTTG</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="description-for-barcode-file-in-the-configuration-file">
+<h2>Description for barcode file in the configuration file<a class="headerlink" href="#description-for-barcode-file-in-the-configuration-file" title="Permalink to this headline">¶</a></h2>
+<p>The barcode file is the tab-delimited file with two columns:
+1. Barcode Sequece
+2. Barcode Number that sequence represent.</p>
+<p>There is <strong>a header</strong> in this file.</p>
+<dl class="docutils">
+<dt>For Example:</dt>
+<dd><table border="1" class="first last docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Sequence</th>
+<th class="head">TruSeqBarcode</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>AACGTGAT</td>
+<td>bc01</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijazuddin Syed, Raghu Chandramohan, Meera Prasad.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

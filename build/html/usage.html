@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Usage &mdash; IMPACT-Pipeline 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.3.4/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.3.4/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="IMPACT-Pipeline 1.0.1 documentation" href="index.html" />
+    <link rel="next" title="Description of sub-scripts" href="subscripts.html" />
+    <link rel="prev" title="Requirements" href="requirements.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          IMPACT-Pipeline</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subscripts.html">Description of sub-scripts</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Usage</a><ul>
+<li><a class="reference internal" href="#quick-usage">Quick Usage</a></li>
+<li><a class="reference internal" href="#detailed-usage">Detailed Usage</a><ul>
+<li><a class="reference internal" href="#what-does-each-number-represent">What does each number represent</a></li>
+<li><a class="reference internal" href="#using-different-process-to-run-pipeline">Using different Process to run Pipeline</a></li>
+<li><a class="reference internal" href="#shell-script-to-run-pipeline">Shell Script to run pipeline</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="requirements.html" title="Previous Chapter: Requirements"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Requirements</span>
+    </a>
+  </li>
+  <li>
+    <a href="subscripts.html" title="Next Chapter: Description of sub-scripts"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Description o... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/usage.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="quick-usage">
+<h2>Quick Usage<a class="headerlink" href="#quick-usage" title="Permalink to this headline">¶</a></h2>
+<p><strong>RunIlluminaProcess.pl [options]</strong></p>
+<blockquote>
+<div><p>&#8211;config | -c                        S Path to configration file(required)</p>
+<p class="attribution">&mdash;svConfig | -sc                     S Path to structural variant configration file(optional)</p>
+</div></blockquote>
+<blockquote>
+<div><p>&#8211;symLinkFlag | -sf                I Flag for Keeping or removing the symolic links(1:Remove;2:Keep)(default:2)</p>
+<p class="attribution">&mdash;dataDirectory | -d                 S Path where all the files to be processed are located (required)</p>
+</div></blockquote>
+<blockquote>
+<div>&#8211;outputDirectory | -o               S Path where all the output files will be written (required)</div></blockquote>
+<p>Assuming you have setup the configuration file properly and you have SampleSheet.csv and title_file.txt in the <strong>dataDirectory</strong> you can run:</p>
+<div class="highlight-sh"><div class="highlight"><pre>nohup perl RunIlluminaProcess.pl -c configuration.txt -sc configuration_sc.txt -d /path/to/fastq/files -o /path/to/output/directory
+</pre></div>
+</div>
+</div>
+<div class="section" id="detailed-usage">
+<h2>Detailed Usage<a class="headerlink" href="#detailed-usage" title="Permalink to this headline">¶</a></h2>
+<p>The behaviour of the prgram depends on the inputs in the configuration file:</p>
+<p>In the configuration file the <strong>Process</strong> variable in section <strong>&gt;Parameters</strong> tells pipeline following:</p>
+<div class="section" id="what-does-each-number-represent">
+<h3>What does each number represent<a class="headerlink" href="#what-does-each-number-represent" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Process</th>
+<th class="head">Things Pipeline will do</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Merge Fastq</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Trimming, Mapping &amp; sorting of SAM file giving you a BAM file</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Mark Duplicates, Indel Realignment, Base Quality Recalibration</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>Metrics Calculation, QC Report Genaration and launching IMPACT-SV if given -sc flag specified</td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>Variant Calling</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>Variant Filtering and Genotyping</td>
+</tr>
+<tr class="row-even"><td>7</td>
+<td>Variant Annotation and Variant Filtering</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="using-different-process-to-run-pipeline">
+<h3>Using different Process to run Pipeline<a class="headerlink" href="#using-different-process-to-run-pipeline" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">To run the complete pipeline. Set the following in the configuration file:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Process:</th><td class="field-body">1,2,3,4,5,6,7</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p class="first">To run from <strong>Process 1</strong>. Set the following in the configuration file:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">ListOfFilesListOfFiles:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">fastq.list #where fastq.list contains all the fastq files to be proces, this needs to be an even number as it automatically pairs them.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Process:</th><td class="field-body">2,3,4,5,6,7</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p class="first">To run from the <strong>Process 3 to 7</strong>. Set the following in the configuration file:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ListOfFiles:</th><td class="field-body">SortedBam.list (where SortedBam.list contains all the sorted bam files from Process 2 to be processed)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Process:</th><td class="field-body">3,4,5,6,7</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><dl class="first docutils">
+<dt>To run from the <strong>Process 4 to 7</strong>. Set the following in the configuration file:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ListOfFiles:</th><td class="field-body">RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Process:</th><td class="field-body">4,5,6,7</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="sidebar">
+<p class="first sidebar-title">Note:</p>
+<p class="last">For this to be sucessfull you should have the files from step 4 in the <strong>outputDirectory</strong></p>
+</div>
+<ol class="arabic" start="5">
+<li><dl class="first docutils">
+<dt>To run from the <strong>Process 5 to 7</strong>. Set the following in the configuration file:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ListOfFiles:</th><td class="field-body">RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Process:</th><td class="field-body">5,6,7</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="sidebar">
+<p class="first sidebar-title">Note:</p>
+<p class="last">For this to be sucessfull you should have the files from step 5 in the <strong>outputDirectory</strong></p>
+</div>
+<ol class="arabic" start="6">
+<li><dl class="first docutils">
+<dt>To run from the <strong>Process 6 to 7</strong>. Set the following in the configuration file:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ListOfFiles:</th><td class="field-body">RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Process:</th><td class="field-body">6,7</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="sidebar">
+<p class="first sidebar-title">Note:</p>
+<p class="last">For this to be sucessfull you should have the files from step 6 in the <strong>outputDirectory</strong></p>
+</div>
+<ol class="arabic" start="7">
+<li><dl class="first docutils">
+<dt>To run from the <strong>Process 7</strong>. Set the following in the configuration file:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ListOfFiles:</th><td class="field-body">RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Process:</th><td class="field-body">7</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+<p>If you want to run each Process separetly that is also possible but you need to make sure that files from previous procss are present in the <strong>outputDirectory</strong></p>
+</div>
+<div class="section" id="shell-script-to-run-pipeline">
+<h3>Shell Script to run pipeline<a class="headerlink" href="#shell-script-to-run-pipeline" title="Permalink to this headline">¶</a></h3>
+<p>There is also a <strong>helper shell script (Run_Pipeline_Example.sh)</strong> in the bin directory which will help to run the framework.
+Which looks like this:</p>
+<div class="sidebar">
+<p class="first sidebar-title">Note:</p>
+<p class="last">Please comment out the lines using (<tt class="docutils literal"><span class="pre">#</span></tt>) according to the cluster type and analysis type.</p>
+</div>
+<div class="highlight-sh"><div class="highlight"><pre><span class="c">##Run_Pipeline_Example.sh</span>
+<span class="c">#author:Ronak H Shah</span>
+<span class="c">#v1.0.1</span>
+<span class="c">##Path where the fastq are stored</span>
+<span class="nb">export </span><span class="nv">DATADIR</span><span class="o">=</span>&lt;Path <span class="k">for</span> Data Directory&gt;
+<span class="c">##Path where the output shoud be written</span>
+<span class="nb">export </span><span class="nv">OUTDIR</span><span class="o">=</span>&lt;Path To Output Directory&gt;
+<span class="c">##Path to the IMPACT-Pipeline script</span>
+<span class="nb">export </span><span class="nv">PipelineScript</span><span class="o">=</span>&lt;Path to IMPACT-Pipeline Script&gt;
+<span class="c">##Path to Perl installation</span>
+<span class="nb">export </span><span class="nv">Perl</span><span class="o">=</span>&lt;Path to Perl&gt;
+<span class="c">##Project associated with the Run</span>
+<span class="nb">export </span><span class="nv">ProjectName</span><span class="o">=</span>&lt;ProjectName&gt;
+<span class="c">##Path to working directory where you will write the LSF/SGE outputs</span>
+<span class="nb">export </span><span class="nv">WorkingDir</span><span class="o">=</span>&lt;Path to write sge/lsf files&gt;
+<span class="c">##Path to configfile for running main IMPACT pipeline</span>
+<span class="nb">export </span><span class="nv">CONFIGFILE</span><span class="o">=</span>&lt;Path To Pipeline Configuration File&gt;
+<span class="c">##Path to structural variants pipeline configuration file</span>
+<span class="nb">export </span><span class="nv">SV_ConfigFile</span><span class="o">=</span>&lt;Path to SV detection configuration file&gt;
+
+<span class="c">##Run both IMPACT-Pipeline &amp; SV Process on LSF</span>
+<span class="nb">echo </span>bsub -q sol -cwd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -J <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -e<span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stderr -o <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stdout -We 24:00 -R <span class="s2">&quot;rusage[mem=2]&quot;</span> -M <span class="m">4</span> <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -sc <span class="o">{</span><span class="nv">$SV_ConfigFile</span><span class="o">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
+bsub -q sol -cwd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -J <span class="si">${</span><span class="nv">PoolName</span><span class="si">}</span> -e<span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stderr -o <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stdout -We 24:00 -R <span class="s2">&quot;rusage[mem=2]&quot;</span> -M <span class="m">4</span> <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -sc <span class="o">{</span><span class="nv">$SV_ConfigFile</span><span class="o">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
+<span class="c">##Run IMPACT-Pipeline on LSF</span>
+<span class="nb">echo </span>bsub -q sol -cwd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -J <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -e<span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stderr -o <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stdout -We 24:00 -R <span class="s2">&quot;rusage[mem=2]&quot;</span> -M <span class="m">4</span> <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
+bsub -q sol -cwd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -J <span class="si">${</span><span class="nv">PoolName</span><span class="si">}</span> -e<span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stderr -o <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stdout -We 24:00 -R <span class="s2">&quot;rusage[mem=2]&quot;</span> -M <span class="m">4</span> <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
+
+<span class="c">##Run both IMPACT-Pipeline &amp; SV Process on SGE</span>
+<span class="nb">echo </span>qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -N <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -l <span class="nv">hvmem</span><span class="o">=</span>2G,virtual_free<span class="o">=</span>2G -pe smp <span class="m">1</span> -b y <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -sc <span class="si">${</span><span class="nv">SV_ConfigFile</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
+qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -N <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -l <span class="nv">hvmem</span><span class="o">=</span>2G,virtual_free<span class="o">=</span>2G -pe smp <span class="m">1</span> -b y <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -sc <span class="si">${</span><span class="nv">SV_ConfigFile</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
+<span class="c">##Run both IMPACT-Pipeline on SGE</span>
+<span class="nb">echo </span>qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -N <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -l <span class="nv">hvmem</span><span class="o">=</span>2G,virtual_free<span class="o">=</span>2G -pe smp <span class="m">1</span> -b y <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
+qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -N <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -l <span class="nv">hvmem</span><span class="o">=</span>2G,virtual_free<span class="o">=</span>2G -pe smp <span class="m">1</span> -b y <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijazuddin Syed, Raghu Chandramohan, Meera Prasad.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
