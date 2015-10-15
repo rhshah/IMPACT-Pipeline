@@ -12,7 +12,7 @@ It is designed for use with hybrid capture, including both whole-exome and custo
 
 For Description/Usage/Help:
 
-Please visit here: `IMPACT-Pipeline Wiki<http://impact-pipeline.readthedocs.org/en/latest/index.html >`_
+Please visit here: `IMPACT-Pipeline Wiki <http://impact-pipeline.readthedocs.org/en/latest/index.html>`_
 
 Citation
 ========
