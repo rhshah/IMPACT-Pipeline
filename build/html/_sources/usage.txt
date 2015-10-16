@@ -72,6 +72,7 @@ Using different Process to run Pipeline
 	:ListOfFiles: RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)
 	:Process: 4,5,6,7
 
+
 .. sidebar:: Note:
 
 	For this to be sucessfull you should have the files from step 4 in the **outputDirectory**
@@ -80,6 +81,8 @@ Using different Process to run Pipeline
 	:ListOfFiles: RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)
 	:Process: 5,6,7
 		
+
+
 .. sidebar:: Note: 
 
 	For this to be sucessfull you should have the files from step 5 in the **outputDirectory**
@@ -88,6 +91,9 @@ Using different Process to run Pipeline
 	:ListOfFiles: RecalibratedBam.list (where Recalibrated.list contains all the recalibrated bam files from Process 3 to be processed)
 	:Process: 6,7
 	
+
+
+
 .. sidebar:: Note: 
 			
 	For this to be sucessfull you should have the files from step 6 in the **outputDirectory**
