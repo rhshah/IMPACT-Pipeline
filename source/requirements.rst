@@ -226,7 +226,9 @@ Description for adaptor file in the configuration file
 ======================================================
 
 The adaptor file is the tab-delimited file with two columns:
+
 1. Barcode Key to which the adaptor belongs which should always start with ``bc``
+
 2. Adaptor sequence itself
 
 There is **no header** in this file.
@@ -242,7 +244,9 @@ Description for barcode file in the configuration file
 ======================================================
 
 The barcode file is the tab-delimited file with two columns:
+
 1. Barcode Sequece
+
 2. Barcode Number that sequence represent.
 
 There is **a header** in this file.

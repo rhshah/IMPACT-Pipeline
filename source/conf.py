@@ -228,7 +228,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'impact-pipeline', u'IMPACT-Pipeline Documentation',
-     [u'Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijaz Syed, Raghu Chandramohan, Meera Prasad'], 1)
+     [u'Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijazuddin Syed, Raghu Chandramohan, Meera Prasad'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -242,7 +242,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'IMPACT-Pipeline', u'IMPACT-Pipeline Documentation',
-   u'Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijaz Syed, Raghu Chandramohan, Meera Prasad', 'IMPACT-Pipeline', 'One line description of project.',
+   u'Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijazuddin Syed, Raghu Chandramohan, Meera Prasad', 'IMPACT-Pipeline', 'One line description of project.',
    'Miscellaneous'),
 ]
 
