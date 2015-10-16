@@ -19,7 +19,7 @@ Contents:
 .. toctree::
    :maxdepth: 4
    
-   installation
+   install
    requirements
    usage
    subscripts
