@@ -17,8 +17,9 @@ It is designed for use with hybrid capture, including both whole-exome and custo
 Contents:
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
    
+   installation
    requirements
    usage
    subscripts
