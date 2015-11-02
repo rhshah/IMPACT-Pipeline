@@ -1938,9 +1938,9 @@ sub MergeDataFromDirectory
 
 						#Read2
 						$cmd =
-"$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read2ListName | gzip > $read1Name\"";
+"$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read2ListName | gzip > $read2Name\"";
 						$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$ZCAT $read2ListName | gzip > $read1Name"`;
+`$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$ZCAT $read2ListName | gzip > $read2Name"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead2.$newIndex.$sampleNum.$$)" -J MergeRead2.$newIndex.$sampleNum.$$ -e NotifyMR.Read2.$sampleNum.$$.%J.stderr -o NotifyMR.Read2.$sampleNum.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 					}
 				};
