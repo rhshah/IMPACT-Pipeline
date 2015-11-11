@@ -422,7 +422,14 @@ sub RunMpileup
     {
 	$bam = "$outdir/$bam";
     }
-    my $command = "mpileup -f $refFile -l $bed -C 0 -A -B -Q $mbq -q $mmq -d 50000 $bam";
+    my $command = "";
+    if(defined $QSUB){
+    	$command = "mpileup -f $refFile -l $bed -C 0 -A -B -Q $mbq -q $mmq -d 50000 $bam";
+    }
+    else
+    {
+    	$command = "mpileup -f $refFile -l $bed -C 0 -A -B -Q $mbq -q $mmq -d 50000 $bam > $outdir/$mpileUpOutFile";
+    }
     if((-e "$outdir/$mpileUpOutFile") and (-s "$outdir/$mpileUpOutFile" != 0))
     {
 	$logger->info("$outdir/$mpileUpOutFile exists and mpileup will not be ran.\n");
@@ -441,9 +448,9 @@ sub RunMpileup
            	}
            	else
            	{
-           		my $cmd = "$BSUB -q $queue -J RunPileup.$bamId.$$ -cwd $outdir -e RunPileup.$bamId.$$.%J.stderr -o $mpileUpOutFile -R \"rusage[mem=5]\" -M 8 -n 1 \"$pathToSamtools $command\"";
+           		my $cmd = "$BSUB -q $queue -J RunPileup.$bamId.$$ -cwd $outdir -e RunPileup.$bamId.$$.%J.stderr -o RunPileup.$bamId.$$.%J.stdout -R \"rusage[mem=5]\" -M 8 -n 1 \"$pathToSamtools $command\"";
            		$logger->debug($cmd);
-           		`$BSUB -q $queue -J RunPileup.$bamId.$$ -cwd $outdir -e RunPileup.$bamId.$$.%J.stderr -o $mpileUpOutFile -R "rusage[mem=5]" -M 8 -n 1 "$pathToSamtools $command"`;
+           		`$BSUB -q $queue -J RunPileup.$bamId.$$ -cwd $outdir -e RunPileup.$bamId.$$.%J.stderr -o RunPileup.$bamId.$$.%J.stdout -R "rusage[mem=5]" -M 8 -n 1 "$pathToSamtools $command"`;
 				`$BSUB -q $queue -cwd $outdir -w "post_done(RunPileup.$bamId.$$)" -J NotifyMpileup.$bamId.$$ -e NotifyMpileup.$bamId.$$.%J.stderr -o NotifyMpileup.$bamId.$$.stat -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;	
            	}
 		};
