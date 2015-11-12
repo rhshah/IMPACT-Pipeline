@@ -3324,6 +3324,7 @@ sub CallingSNPsAndIndels
 		}
 
 		#RUN Mutation Calling Jobs
+		my $pcount = 0
 		foreach my $file (@files)
 		{
 			my ($fileBarcode) = $file =~ /.*_(bc\d+)_.*/;
@@ -3354,6 +3355,7 @@ sub CallingSNPsAndIndels
 			{
 				push( @notifyNames, $waitName );
 			}
+			
 			if ( $fileClass =~ m/NTC/i )
 			{
 				push( @NTCsomaticMutationFiles,
@@ -3367,6 +3369,13 @@ sub CallingSNPsAndIndels
 				push( @somaticPindelFiles,   $somaticPindelFile );
 			}
 			$count++;
+			$pcount++;
+			if ( $pcount >= 4 )
+			{
+				&WaitToFinish( $outdir, @notifyNames );
+				@notifyNames = ();
+				$pcount = 0;
+			}
 		}
 	}
 	&WaitToFinish( $outdir, @notifyNames );
