@@ -101,7 +101,7 @@ def RunPindel(args, wd, vcfoutName, tag):
         if(args.qsub):
             cl_cmd = args.qsub + " -q " + args.queue + " -N " + "Pindel_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stderr" + " -V -l h_vmem=6G,virtual_free=6G -pe smp " + args.threads + " -wd " + wd + " -sync y " + " -b y " + cmd 
         else:
-            cl_cmd = args.bsub + " -q " + args.queue + " -J " + "Pindel_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stderr" + " -We 24:00 -R \"rusage[mem=" + str(mem) + "]\" -n " + args.threads + " -cwd " + wd + " -K " + cmd 
+            cl_cmd = args.bsub + " -q " + args.queue + " -J " + "Pindel_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel_" + args.patientId + "_" + str(myPid) + ".stderr" + " -We 24:00 -R \"rusage[mem=" + str(mem) + "]\" -M " + str(maxmem) + " -n " + args.threads + " -cwd " + wd + " -K " + cmd 
         print "Cluster_CMD==>", cl_cmd , "\n"
         cl_args = shlex.split(cl_cmd)
         proc = Popen(cl_args)
@@ -119,7 +119,7 @@ def RunPindel(args, wd, vcfoutName, tag):
             if(args.qsub):
                 p2v_cl = args.qsub + " -q " + args.queue + " -N " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stderr" + " -V -l h_vmem=8G,virtual_free=8G -pe smp 1 " + " -wd " + wd + " -sync y " + " -b y " + p2v_cmd 
             else:
-                p2v_cl = args.bsub + " -q " + args.queue + " -J " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stderr" +  " -We 24:00 -R \"rusage[mem=8]\" -n 1" + " -cwd " + wd + " -K " + p2v_cmd 
+                p2v_cl = args.bsub + " -q " + args.queue + " -J " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + " -o " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stdout" + " -e " + "Pindel2Vcf_" + args.patientId + "_" + str(myPid) + ".stderr" +  " -We 24:00 -R \"rusage[mem=8]\" -M 16 -n 1" + " -cwd " + wd + " -K " + p2v_cmd 
            
             print "P2V cmd: ", p2v_cl
             p2v_args = shlex.split(p2v_cl)

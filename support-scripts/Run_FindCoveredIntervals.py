@@ -63,7 +63,7 @@ def RunFindCoveredIntervals(args):
         if(args.qsub):
             cl_cmd = args.qsub + " -q " + args.queue + " -N " + "FindCoveredIntervals_" + str(myPid) + " -o " + "FindCoveredIntervals_" + str(myPid) + ".stdout" + " -e " + "FindCoveredIntervals_"+ str(myPid) +".stderr" + " -V -l h_vmem=8G,virtual_free=8G -pe smp " + str(args.threads) + " -wd " + args.outdir + " -sync y " + " -b y " + cmd 
         else:
-            cl_cmd = args.bsub + " -q " + args.queue + " -J " + "FindCoveredIntervals_" + str(myPid) + " -o " + "FindCoveredIntervals_" + str(myPid) + ".stdout" + " -e " + "FindCoveredIntervals_"+ str(myPid) +".stderr" + " -We 24:00 -R \"rusage[mem=" + str(mem) + "]\" -n " + str(args.threads) + " -cwd " + args.outdir + " -K " + cmd 
+            cl_cmd = args.bsub + " -q " + args.queue + " -J " + "FindCoveredIntervals_" + str(myPid) + " -o " + "FindCoveredIntervals_" + str(myPid) + ".stdout" + " -e " + "FindCoveredIntervals_"+ str(myPid) +".stderr" + " -We 24:00 -R \"rusage[mem=" + str(mem) + "]\" -M " + str(maxmem) + " -n " + str(args.threads) + " -cwd " + args.outdir + " -K " + cmd 
    
         if(args.verbose):
             print "Cluster_CMD==>", cl_cmd , "\n"

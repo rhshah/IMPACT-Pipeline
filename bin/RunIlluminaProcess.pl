@@ -1803,17 +1803,17 @@ sub MergeDataFromDirectory
 					{
 						#Read1
 						my $cmd =
-"$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$i.$$ -e MergeRead1.$newIndex.$i.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$ZCAT $read1ListName | gzip > $read1Name\"";
+"$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$i.$$ -e MergeRead1.$newIndex.$i.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read1ListName | gzip > $read1Name\"";
 						$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$i.$$ -e MergeRead1.$newIndex.$i.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$ZCAT $read1ListName | gzip > $read1Name"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead1.$newIndex.$i.$$)" -J NotifyMR.Read1.$i.$$ -e NotifyMR.Read1.$i.$$.%J.stderr -o NotifyMR.Read1.$i.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$i.$$ -e MergeRead1.$newIndex.$i.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$ZCAT $read1ListName | gzip > $read1Name"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead1.$newIndex.$i.$$)" -J NotifyMR.Read1.$i.$$ -e NotifyMR.Read1.$i.$$.%J.stderr -o NotifyMR.Read1.$i.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 						$cmd =
-"$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$i.$$ -e MergeRead2.$newIndex.$i.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$ZCAT $read2ListName | gzip > $read2Name\"";
+"$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$i.$$ -e MergeRead2.$newIndex.$i.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read2ListName | gzip > $read2Name\"";
 						$logger->debug("COMMAND: $cmd");
 
 						#Read2
-`$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$i.$$ -e MergeRead2.$newIndex.$i.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$ZCAT $read2ListName | gzip > $read2Name"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead2.$newIndex.$i.$$)" -J NotifyMR.Read2.$i.$$ -e NotifyMR.Read2.$i.$$.%J.stderr -o NotifyMR.Read2.$i.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$i.$$ -e MergeRead2.$newIndex.$i.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$ZCAT $read2ListName | gzip > $read2Name"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead2.$newIndex.$i.$$)" -J NotifyMR.Read2.$i.$$ -e NotifyMR.Read2.$i.$$.%J.stderr -o NotifyMR.Read2.$i.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 					}
 				};
 				if ($@)
@@ -1931,17 +1931,17 @@ sub MergeDataFromDirectory
 					{
 						#Read1
 						my $cmd =
-"$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$sampleNum.$$ -e MergeRead1.$newIndex.$sampleNum.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$ZCAT $read1ListName | gzip > $read1Name\"";
+"$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$sampleNum.$$ -e MergeRead1.$newIndex.$sampleNum.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read1ListName | gzip > $read1Name\"";
 						$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$sampleNum.$$ -e MergeRead1.$newIndex.$sampleNum.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$ZCAT $read1ListName | gzip > $read1Name"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead1.$newIndex.$sampleNum.$$)" -J MergeRead1.$newIndex.$sampleNum.$$ -e NotifyMR.Read1.$sampleNum.$$.%J.stderr -o NotifyMR.Read1.$sampleNum.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$sampleNum.$$ -e MergeRead1.$newIndex.$sampleNum.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$ZCAT $read1ListName | gzip > $read1Name"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead1.$newIndex.$sampleNum.$$)" -J MergeRead1.$newIndex.$sampleNum.$$ -e NotifyMR.Read1.$sampleNum.$$.%J.stderr -o NotifyMR.Read1.$sampleNum.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 
 						#Read2
 						$cmd =
-"$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$ZCAT $read2ListName | gzip > $read2Name\"";
+"$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read2ListName | gzip > $read2Name\"";
 						$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$ZCAT $read2ListName | gzip > $read2Name"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead2.$newIndex.$sampleNum.$$)" -J MergeRead2.$newIndex.$sampleNum.$$ -e NotifyMR.Read2.$sampleNum.$$.%J.stderr -o NotifyMR.Read2.$sampleNum.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$ZCAT $read2ListName | gzip > $read2Name"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead2.$newIndex.$sampleNum.$$)" -J MergeRead2.$newIndex.$sampleNum.$$ -e NotifyMR.Read2.$sampleNum.$$.%J.stderr -o NotifyMR.Read2.$sampleNum.$$.stat -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 					}
 				};
 				if ($@)
@@ -2795,10 +2795,10 @@ sub GenotypeHotspotsOnNormals
 				} else
 				{
 					my $cmd =
-"$BSUB -q $queue -J AD.$bamID.$$ -cwd $outdir -e AD.$bamID.$$.%J.stderr -o AD.$bamID.$$.%J.stdout -R \"rusage[mem=2]\" -n 1 \"$PERL $GenotypeAllele -fmv $cosmicHotspotVcf -bam $outdir/$bamFile -rf $Reference -s $SAMTOOLS -o $outdir -of $alleleDepthMutationOut -mof $mpileUpMutationOut -bi $bamID -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB\"";
+"$BSUB -q $queue -J AD.$bamID.$$ -cwd $outdir -e AD.$bamID.$$.%J.stderr -o AD.$bamID.$$.%J.stdout -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $GenotypeAllele -fmv $cosmicHotspotVcf -bam $outdir/$bamFile -rf $Reference -s $SAMTOOLS -o $outdir -of $alleleDepthMutationOut -mof $mpileUpMutationOut -bi $bamID -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB\"";
 					$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -J AD.$bamID.$$ -cwd $outdir -e AD.$bamID.$$.%J.stderr -o AD.$bamID.$$.%J.stdout -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $GenotypeAllele -fmv $cosmicHotspotVcf -bam $outdir/$bamFile -rf $Reference -s $SAMTOOLS -o $outdir -of $alleleDepthMutationOut -mof $mpileUpMutationOut -bi $bamID -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(AD.$bamID.$$)" -J NotityAD.$bamID.$$ -e NotifyAD.$bamID.$$.%J.stderr -o NotifyAD.$bamID.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -J AD.$bamID.$$ -cwd $outdir -e AD.$bamID.$$.%J.stderr -o AD.$bamID.$$.%J.stdout -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $GenotypeAllele -fmv $cosmicHotspotVcf -bam $outdir/$bamFile -rf $Reference -s $SAMTOOLS -o $outdir -of $alleleDepthMutationOut -mof $mpileUpMutationOut -bi $bamID -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(AD.$bamID.$$)" -J NotityAD.$bamID.$$ -e NotifyAD.$bamID.$$.%J.stderr -o NotifyAD.$bamID.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 				}
 			};
 			if ($@)
@@ -2986,10 +2986,10 @@ sub GenotypePooledNormal
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -J GenotypePooledNormal.$$ -cwd $outdir -e GenotypePooledNormal.$$.%J.stderr -o GenotypePooledNormal.$$.%J.stdout -R \"rusage[mem=2]\" -n 1 \"$PERL $GenotypeAllele -fmv $NormalVariantsVCF -bam $outdir/$pooledNormal -rf $Reference -s $SAMTOOLS -o $outdir -of $outfile -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB\"";
+"$BSUB -q $queue -J GenotypePooledNormal.$$ -cwd $outdir -e GenotypePooledNormal.$$.%J.stderr -o GenotypePooledNormal.$$.%J.stdout -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $GenotypeAllele -fmv $NormalVariantsVCF -bam $outdir/$pooledNormal -rf $Reference -s $SAMTOOLS -o $outdir -of $outfile -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -J GenotypePooledNormal.$$ -cwd $outdir -e GenotypePooledNormal.$$.%J.stderr -o GenotypePooledNormal.$$.%J.stdout -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $GenotypeAllele -fmv $NormalVariantsVCF -bam $outdir/$pooledNormal -rf $Reference -s $SAMTOOLS -o $outdir -of $outfile -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(GenotypePooledNormal.$$)" -J NotifyGenotypePooledNormal.$$ -e NotifyGenotypePooledNormal.%J.$$.stderr -o NotifyGenotypePooledNormal.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -J GenotypePooledNormal.$$ -cwd $outdir -e GenotypePooledNormal.$$.%J.stderr -o GenotypePooledNormal.$$.%J.stdout -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $GenotypeAllele -fmv $NormalVariantsVCF -bam $outdir/$pooledNormal -rf $Reference -s $SAMTOOLS -o $outdir -of $outfile -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(GenotypePooledNormal.$$)" -J NotifyGenotypePooledNormal.$$ -e NotifyGenotypePooledNormal.%J.$$.stderr -o NotifyGenotypePooledNormal.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -4089,10 +4089,10 @@ sub GenotypeAllele_And_MergeFiles
 				} else
 				{
 					my $cmd =
-"$BSUB -q $queue -J RSYNC.$stdBamId.$$ -cwd $outdir -e RSYNC.$stdBamId.$$.%J.stderr -o RSYNC.$stdBamId.$$.%J.stdout -R \"rusage[mem=2]\" -n 1 \"$RSYNC -a -L $_\* $outdir/.\"";
+"$BSUB -q $queue -J RSYNC.$stdBamId.$$ -cwd $outdir -e RSYNC.$stdBamId.$$.%J.stderr -o RSYNC.$stdBamId.$$.%J.stdout -R \"rusage[mem=2]\" -M 4 -n 1 \"$RSYNC -a -L $_\* $outdir/.\"";
 					$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -J RSYNC.$stdBamId.$$ -cwd $outdir -e RSYNC.$stdBamId.$$.%J.stderr -o RSYNC.$stdBamId.$$.%J.stdout -We 24:00 -R "rusage[mem=2]" -n 1 "$RSYNC -a -L $_\* $outdir/."`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(RSYNC.$stdBamId.$$)" -J NotityRsync.$stdBamId.$$ -e NotifyRsync.$stdBamId.$$.%J.stderr -o NotifyRsync.$stdBamId.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -J RSYNC.$stdBamId.$$ -cwd $outdir -e RSYNC.$stdBamId.$$.%J.stderr -o RSYNC.$stdBamId.$$.%J.stdout -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$RSYNC -a -L $_\* $outdir/."`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(RSYNC.$stdBamId.$$)" -J NotityRsync.$stdBamId.$$ -e NotifyRsync.$stdBamId.$$.%J.stderr -o NotifyRsync.$stdBamId.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 				}
 			};
 			if ($@)
@@ -4144,10 +4144,10 @@ sub GenotypeAllele_And_MergeFiles
 				} else
 				{
 					my $cmd =
-"$BSUB -q $queue -J AD.$bamID.$$ -cwd $outdir -e AD.$bamID.$$.%J.stderr -o AD.$bamID.$$.%J.stdout -R \"rusage[mem=2]\" -n 1 \"$PERL $GenotypeAllele -fmv $outdir/$AllStdFilterEntriesVcf -bam $outdir/$bamFile -rf $Reference -s $SAMTOOLS -o $outdir -of $alleleDepthMutationOut -mof $mpileUpMutationOut -bi $bamID -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB -tos $typeOfSample[$index]\"";
+"$BSUB -q $queue -J AD.$bamID.$$ -cwd $outdir -e AD.$bamID.$$.%J.stderr -o AD.$bamID.$$.%J.stdout -R \"rusage[mem=2]\" -M 6 -n 1 \"$PERL $GenotypeAllele -fmv $outdir/$AllStdFilterEntriesVcf -bam $outdir/$bamFile -rf $Reference -s $SAMTOOLS -o $outdir -of $alleleDepthMutationOut -mof $mpileUpMutationOut -bi $bamID -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB -tos $typeOfSample[$index]\"";
 					$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -J AD.$bamID.$$ -cwd $outdir -e AD.$bamID.$$.%J.stderr -o AD.$bamID.$$.%J.stdout -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $GenotypeAllele -fmv $outdir/$AllStdFilterEntriesVcf -bam $outdir/$bamFile -rf $Reference -s $SAMTOOLS -o $outdir -of $alleleDepthMutationOut -mof $mpileUpMutationOut -bi $bamID -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB -tos $typeOfSample[$index]"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(AD.$bamID.$$)" -J NotifyAD.$bamID.$$ -e NotifyAD.$bamID.$$.%J.stderr -o NotifyAD.$bamID.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -J AD.$bamID.$$ -cwd $outdir -e AD.$bamID.$$.%J.stderr -o AD.$bamID.$$.%J.stdout -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $GenotypeAllele -fmv $outdir/$AllStdFilterEntriesVcf -bam $outdir/$bamFile -rf $Reference -s $SAMTOOLS -o $outdir -of $alleleDepthMutationOut -mof $mpileUpMutationOut -bi $bamID -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB -tos $typeOfSample[$index]"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(AD.$bamID.$$)" -J NotifyAD.$bamID.$$ -e NotifyAD.$bamID.$$.%J.stderr -o NotifyAD.$bamID.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 				}
 			};
 			if ($@)
@@ -4692,10 +4692,10 @@ sub AnnotateSNPsAndIndels
 	} else
 	{
 		my $cmd =
-"$BSUB -q $queue -cwd $outdir -J AnnotateVariants.$$ -o AnnotateVariants.$$.%J.stdout -e AnnotateVariants.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PERL $AnnotateAssessFilterVariants -si $outdir/$somaticMutIndelFile -c $config_file -t $titleFile -o $outdir -d $deleteIntermediateFiles\"";
+"$BSUB -q $queue -cwd $outdir -J AnnotateVariants.$$ -o AnnotateVariants.$$.%J.stdout -e AnnotateVariants.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $AnnotateAssessFilterVariants -si $outdir/$somaticMutIndelFile -c $config_file -t $titleFile -o $outdir -d $deleteIntermediateFiles\"";
 		$logger->debug("COMMAND : $cmd");
-`$BSUB -q $queue -cwd $outdir -J AnnotateVariants.$$ -o AnnotateVariants.$$.%J.stdout -e AnnotateVariants.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $AnnotateAssessFilterVariants -si $outdir/$somaticMutIndelFile -c $config_file -t $titleFile -o $outdir -d $deleteIntermediateFiles"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(AnnotateVariants.$$)" -J NotifyAV.$$ -e NotifyAV.$$.%J.stderr -o NotifyAV.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J AnnotateVariants.$$ -o AnnotateVariants.$$.%J.stdout -e AnnotateVariants.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $AnnotateAssessFilterVariants -si $outdir/$somaticMutIndelFile -c $config_file -t $titleFile -o $outdir -d $deleteIntermediateFiles"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(AnnotateVariants.$$)" -J NotifyAV.$$ -e NotifyAV.$$.%J.stderr -o NotifyAV.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 	}
 	push( @notifyNames, "NotifyAV.$$.stat" );
 	&WaitToFinish( $outdir, @notifyNames );
@@ -4714,11 +4714,11 @@ sub AnnotateSNPsAndIndels
 	} else
 	{
 		my $cmd =
-"$BSUB -q $queue -cwd $outdir -J FilterExonicVariants.$$ -o FilterVariants.$$.%J.stdout -e FilterVariants.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold\"";
+"$BSUB -q $queue -cwd $outdir -J FilterExonicVariants.$$ -o FilterVariants.$$.%J.stdout -e FilterVariants.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold\"";
 		$logger->debug("COMMAND : $cmd");
 		@notifyNames = ();
-`$BSUB -q $queue -cwd $outdir -J FilterExonicVariants.$$ -o FilterVariants.$$.%J.stdout -e FilterVariants.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(FilterExonicVariants.$$)" -J NotifyFV.$$ -e NotifyFV.$$.%J.stderr -o NotifyFV.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J FilterExonicVariants.$$ -o FilterVariants.$$.%J.stdout -e FilterVariants.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(FilterExonicVariants.$$)" -J NotifyFV.$$ -e NotifyFV.$$.%J.stderr -o NotifyFV.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 	}
 	push( @notifyNames, "NotifyFV.$$.stat" );
 	&WaitToFinish( $outdir, @notifyNames );
@@ -4738,11 +4738,11 @@ sub AnnotateSNPsAndIndels
 	} else
 	{
 		my $cmd =
-"$BSUB -q $queue -cwd $outdir -J FilterNpVariants.$$ -o FilterVariants.$$.%J.stdout -e FilterVariants.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold\"";
+"$BSUB -q $queue -cwd $outdir -J FilterNpVariants.$$ -o FilterVariants.$$.%J.stdout -e FilterVariants.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold\"";
 		$logger->debug("COMMAND : $cmd");
 		@notifyNames = ();
-`$BSUB -q $queue -cwd $outdir -J FilterNpVariants.$$ -o FilterVariants.$$.%J.stdout -e FilterVariants.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(FilterNpVariants.$$)" -J NotifyFV.$$ -e NotifyFV.$$.stderr -o NotifyNpFV.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J FilterNpVariants.$$ -o FilterVariants.$$.%J.stdout -e FilterVariants.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(FilterNpVariants.$$)" -J NotifyFV.$$ -e NotifyFV.$$.stderr -o NotifyNpFV.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 	}
 	push( @notifyNames, "NotifyNpFV.$$.stat" );
 	&WaitToFinish( $outdir, @notifyNames );
@@ -4764,11 +4764,11 @@ sub AnnotateSNPsAndIndels
 	} else
 	{
 		my $cmd =
-"$BSUB -q $queue -cwd $outdir -J FilterSilentVariants.$$ -o FilterSilentVariants.$$.%J.stdout -e FilterSilentVariants.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold\"";
+"$BSUB -q $queue -cwd $outdir -J FilterSilentVariants.$$ -o FilterSilentVariants.$$.%J.stdout -e FilterSilentVariants.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold\"";
 		$logger->debug("COMMAND : $cmd");
 		@notifyNames = ();
-`$BSUB -q $queue -cwd $outdir -J FilterSilentVariants.$$ -o FilterSilentVariants.$$.%J.stdout -e FilterSilentVariants.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(FilterSilentVariants.$$)" -J NotifySilentFV.$$ -e NotifySilentFV.$$.%J.stderr -o NotifySilentFV.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J FilterSilentVariants.$$ -o FilterSilentVariants.$$.%J.stdout -e FilterSilentVariants.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(FilterSilentVariants.$$)" -J NotifySilentFV.$$ -e NotifySilentFV.$$.%J.stderr -o NotifySilentFV.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 	}
 	push( @notifyNames, "NotifySilentFV.$$.stat" );
 	&WaitToFinish( $outdir, @notifyNames );
@@ -4788,11 +4788,11 @@ sub AnnotateSNPsAndIndels
 	} else
 	{
 		my $cmd =
-"$BSUB -q $queue -cwd $outdir -J FilterNpsVariants.$$ -o FilterSilentVariants.$$.%J.stdout -e FilterSilentVariants.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold\"";
+"$BSUB -q $queue -cwd $outdir -J FilterNpsVariants.$$ -o FilterSilentVariants.$$.%J.stdout -e FilterSilentVariants.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold\"";
 		$logger->debug("COMMAND : $cmd");
 		@notifyNames = ();
-`$BSUB -q $queue -cwd $outdir -J FilterNpsVariants.$$ -o FilterSilentVariants.$$.%J.stdout -e FilterSilentVariants.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(FilterNpsVariants.$$)" -J NotifyNpsFV.$$ -e NotifySilentFV.$$.%J.stderr -o NotifyNpsFV.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J FilterNpsVariants.$$ -o FilterSilentVariants.$$.%J.stdout -e FilterSilentVariants.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(FilterNpsVariants.$$)" -J NotifyNpsFV.$$ -e NotifySilentFV.$$.%J.stderr -o NotifyNpsFV.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 	}
 	push( @notifyNames, "NotifyNpsFV.$$.stat" );
 	&WaitToFinish( $outdir, @notifyNames );
@@ -4814,11 +4814,11 @@ sub AnnotateSNPsAndIndels
 	} else
 	{
 		my $cmd =
-"$BSUB -q $queue -cwd $outdir -J GenerateVCFfiles.$$ -o GenerateVCFfiles.$$.%J.stdout -e GenerateVCFfiles.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PERL $createPatientVCFfile -v $somaticMutIndelFile -o $outdir  -t $titleFile -j $JAVA_1_7 -it $IGVtools\"";
+"$BSUB -q $queue -cwd $outdir -J GenerateVCFfiles.$$ -o GenerateVCFfiles.$$.%J.stdout -e GenerateVCFfiles.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $createPatientVCFfile -v $somaticMutIndelFile -o $outdir  -t $titleFile -j $JAVA_1_7 -it $IGVtools\"";
 		$logger->debug("COMMAND : $cmd");
 		@notifyNames = ();
-`$BSUB -q $queue -cwd $outdir -J GenerateVCFfiles.$$ -o GenerateVCFfiles.$$.%J.stdout -e GenerateVCFfiles.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $createPatientVCFfile -v $somaticMutIndelFile -o $outdir  -t $titleFile -j $JAVA_1_7 -it $IGVtools"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(GenerateVCFfiles.$$)" -J NotifyGenVCF.$$ -e NotifyGenVCF.$$.%J.stderr -o NotifyGenVCF.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J GenerateVCFfiles.$$ -o GenerateVCFfiles.$$.%J.stdout -e GenerateVCFfiles.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $createPatientVCFfile -v $somaticMutIndelFile -o $outdir  -t $titleFile -j $JAVA_1_7 -it $IGVtools"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(GenerateVCFfiles.$$)" -J NotifyGenVCF.$$ -e NotifyGenVCF.$$.%J.stderr -o NotifyGenVCF.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 	}
 	push( @notifyNames, "NotifyGenVCF.$$.stat" );
 	&WaitToFinish( $outdir, @notifyNames );
@@ -4841,11 +4841,11 @@ sub AnnotateSNPsAndIndels
 	} else
 	{
 		my $cmd =
-"$BSUB -q $queue -cwd $outdir -J GenerateCoverageFiles.$$ -o GenerateCoverageFiles.$$.%J.stdout -e GenerateCoverageFiles.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PERL $createCoverageFiles -v $somaticMutIndelFile -o $outdir -nu $normalsUSed -t $titleFile -ss $sampleFile -id $intragenicLevelCNfile -gc $outdir/$geneCoverage -cn $geneLevelCNfile -gi $GeneIntervalAnn -ec $outdir/$exonCoverage -cc $outdir/$canonicalExonCoverage -ve $validatedExons -ce $ClinicalExons -ei $exonIntervalsFile -tf $translationFolder  -ct $coverageThreshold\"";
+"$BSUB -q $queue -cwd $outdir -J GenerateCoverageFiles.$$ -o GenerateCoverageFiles.$$.%J.stdout -e GenerateCoverageFiles.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $createCoverageFiles -v $somaticMutIndelFile -o $outdir -nu $normalsUSed -t $titleFile -ss $sampleFile -id $intragenicLevelCNfile -gc $outdir/$geneCoverage -cn $geneLevelCNfile -gi $GeneIntervalAnn -ec $outdir/$exonCoverage -cc $outdir/$canonicalExonCoverage -ve $validatedExons -ce $ClinicalExons -ei $exonIntervalsFile -tf $translationFolder  -ct $coverageThreshold\"";
 		$logger->debug("COMMAND : $cmd");
 		@notifyNames = ();
-`$BSUB -q $queue -cwd $outdir -J GenerateCoverageFiles.$$ -o GenerateCoverageFiles.$$.%J.stdout -e GenerateCoverageFiles.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $createCoverageFiles -v $somaticMutIndelFile -o $outdir -nu $normalsUSed -t $titleFile -ss $sampleFile -id $intragenicLevelCNfile -gc $outdir/$geneCoverage -cn $geneLevelCNfile -gi $GeneIntervalAnn -ec $outdir/$exonCoverage -cc $outdir/$canonicalExonCoverage -ve $validatedExons -ce $ClinicalExons -ei $exonIntervalsFile -tf $translationFolder  -ct $coverageThreshold"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(GenerateCoverageFiles.$$)" -J NotifyCovFile.$$ -e NotifyCovFile.$$.%J.stderr -o NotifyCovFile.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J GenerateCoverageFiles.$$ -o GenerateCoverageFiles.$$.%J.stdout -e GenerateCoverageFiles.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $createCoverageFiles -v $somaticMutIndelFile -o $outdir -nu $normalsUSed -t $titleFile -ss $sampleFile -id $intragenicLevelCNfile -gc $outdir/$geneCoverage -cn $geneLevelCNfile -gi $GeneIntervalAnn -ec $outdir/$exonCoverage -cc $outdir/$canonicalExonCoverage -ve $validatedExons -ce $ClinicalExons -ei $exonIntervalsFile -tf $translationFolder  -ct $coverageThreshold"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(GenerateCoverageFiles.$$)" -J NotifyCovFile.$$ -e NotifyCovFile.$$.%J.stderr -o NotifyCovFile.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 	}
 	push( @notifyNames, "NotifyCovFile.$$.stat" );
 	&WaitToFinish( $outdir, @notifyNames );
@@ -4928,10 +4928,10 @@ sub RunTrimGalore
 			} else
 			{
 				my $cmd =
-"`$BSUB -q $queue -cwd $outdir -J Clipping.$id.$$ -o Clipping.$id.$$.%J.stdout -e Clipping.$id.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PERL $TrimGalore --paired --gzip -q 1 --suppress_warn --stringency 3 -length 25 -o $outdir -a $adapter1 -a2 $adapter2 $file1 $file2\"";
+"`$BSUB -q $queue -cwd $outdir -J Clipping.$id.$$ -o Clipping.$id.$$.%J.stdout -e Clipping.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $TrimGalore --paired --gzip -q 1 --suppress_warn --stringency 3 -length 25 -o $outdir -a $adapter1 -a2 $adapter2 $file1 $file2\"";
 				$logger->debug("COMMAND : $cmd");
-`$BSUB -q $queue -cwd $outdir -J Clipping.$id.$$ -o Clipping.$id.$$.%J.stdout -e Clipping.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $TrimGalore --paired --gzip -q 1 --suppress_warn --stringency 3 -length 25 -o $outdir -a $adapter1 -a2 $adapter2 $file1 $file2"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(Clipping.$id.$$)" -J NotifyCR.$id.$$ -e NotifyCR.$id.$$.%J.stderr -o NotifyCR.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J Clipping.$id.$$ -o Clipping.$id.$$.%J.stdout -e Clipping.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $TrimGalore --paired --gzip -q 1 --suppress_warn --stringency 3 -length 25 -o $outdir -a $adapter1 -a2 $adapter2 $file1 $file2"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(Clipping.$id.$$)" -J NotifyCR.$id.$$ -e NotifyCR.$id.$$.%J.stderr -o NotifyCR.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -4969,10 +4969,10 @@ sub RunBwaAln
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J bwaAln.$readType.$id.$$ -o bwaAln.$readType.$id.$$.%J.stdout -e bwaAln.$readType.$id.$$.%J.stderr -R \"rusage[mem=5]\" -n 1 \"$BWA aln -f $outFilename $Reference $file\"";
+"$BSUB -q $queue -cwd $outdir -J bwaAln.$readType.$id.$$ -o bwaAln.$readType.$id.$$.%J.stdout -e bwaAln.$readType.$id.$$.%J.stderr -R \"rusage[mem=5]\" -M 8 -n 1 \"$BWA aln -f $outFilename $Reference $file\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J bwaAln.$readType.$id.$$ -o bwaAln.$readType.$id.$$.%J.stdout -e bwaAln.$readType.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=5]" -n 1 "$BWA aln -f $outFilename $Reference $file"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(bwaAln.$readType.$id.$$)" -J NotifyBwaAln.$id.$$ -e NotifyBwaAln.$readType.$id.$$.%J.stderr -o NotifyBwaAln.$readType.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J bwaAln.$readType.$id.$$ -o bwaAln.$readType.$id.$$.%J.stdout -e bwaAln.$readType.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=5]" -M 8 -n 1 "$BWA aln -f $outFilename $Reference $file"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(bwaAln.$readType.$id.$$)" -J NotifyBwaAln.$id.$$ -e NotifyBwaAln.$readType.$id.$$.%J.stderr -o NotifyBwaAln.$readType.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5020,10 +5020,10 @@ sub RunBwaSampe
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J bwaSampe.$id.$$ -o bwaSampe.$id.$$.%J.stdout -e bwaSampe.$id.$$.%J.stderr -R \"rusage[mem=6]\" -n 1 \"$BWA sampe -f $outFilename $Reference $SAfile1 $SAfile2 $clippedfile1 $clippedfile2\"";
+"$BSUB -q $queue -cwd $outdir -J bwaSampe.$id.$$ -o bwaSampe.$id.$$.%J.stdout -e bwaSampe.$id.$$.%J.stderr -R \"rusage[mem=6]\" -M 8 -n 1 \"$BWA sampe -f $outFilename $Reference $SAfile1 $SAfile2 $clippedfile1 $clippedfile2\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J bwaSampe.$id.$$ -o bwaSampe.$id.$$.%J.stdout -e bwaSampe.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=6]" -n 1 "$BWA sampe -f $outFilename $Reference $SAfile1 $SAfile2 $clippedfile1 $clippedfile2"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(bwaSampe.$id.$$)" -J NotifyBwaSampe.$id.$$ -e NotifyBwaSampe.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 -o NotifyBwaSampe.$id.$$.stat "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J bwaSampe.$id.$$ -o bwaSampe.$id.$$.%J.stdout -e bwaSampe.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=6]" -M 8 -n 1 "$BWA sampe -f $outFilename $Reference $SAfile1 $SAfile2 $clippedfile1 $clippedfile2"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(bwaSampe.$id.$$)" -J NotifyBwaSampe.$id.$$ -e NotifyBwaSampe.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 -o NotifyBwaSampe.$id.$$.stat "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5069,10 +5069,10 @@ sub RunBwaMem
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J bwaMem.$id.$$ -R \"rusage[mem=10]\" -n 4 -o bwaMem.$id.$$.stdout -e bwaMem.$id.$$.stderr \"$BWA mem -t 4 -PM -R \'\@RG\tID:$basename\tLB:$id\tSM:$sampleId\tPL:Illumina\tPU:$barcode\tCN:BergerLab_MSKCC\' $Reference $fastq1 $fastq2 > $outFilename\"";
+"$BSUB -q $queue -cwd $outdir -J bwaMem.$id.$$ -R \"rusage[mem=10]\" -M 40 -n 4 -o bwaMem.$id.$$.stdout -e bwaMem.$id.$$.stderr \"$BWA mem -t 4 -PM -R \'\@RG\tID:$basename\tLB:$id\tSM:$sampleId\tPL:Illumina\tPU:$barcode\tCN:BergerLab_MSKCC\' $Reference $fastq1 $fastq2 > $outFilename\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J bwaMem.$id.$$ -We 24:00 -R "rusage[mem=10]" -n 4 -o bwaMem.$id.$$.stdout -e bwaMem.$id.$$.stderr "$BWA mem -t 4 -PM -R \'\@RG\tID:$basename\tLB:$id\tSM:$sampleId\tPL:Illumina\tPU:$barcode\tCN:BergerLab_MSKCC\' $Reference $fastq1 $fastq2 > $outFilename"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(bwaMem.$id.$$)" -J NotifyBwaMem.$id.$$ -We 24:00 -R "rusage[mem=2]" -n 1 -o NotifyBwaMem.$id.$$.stat "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J bwaMem.$id.$$ -We 24:00 -R "rusage[mem=10]" -M 40 -n 4 -o bwaMem.$id.$$.stdout -e bwaMem.$id.$$.stderr "$BWA mem -t 4 -PM -R \'\@RG\tID:$basename\tLB:$id\tSM:$sampleId\tPL:Illumina\tPU:$barcode\tCN:BergerLab_MSKCC\' $Reference $fastq1 $fastq2 > $outFilename"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(bwaMem.$id.$$)" -J NotifyBwaMem.$id.$$ -We 1:00 -R "rusage[mem=2]" -M 2 -n 1 -o NotifyBwaMem.$id.$$.stat "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5117,10 +5117,10 @@ sub RunSortSam
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J SortSam.$id.$$ -o SortSam.$id.$$.%J.stdout -e SortSam.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/AddOrReplaceReadGroups.jar I=$samFile O=$outFilename SO=coordinate RGID=$basename RGLB=$id RGPL=$platform RGPU=$barcode RGSM=$sampleId RGCN=MSKCC TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\"";
+"$BSUB -q $queue -cwd $outdir -J SortSam.$id.$$ -o SortSam.$id.$$.%J.stdout -e SortSam.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/AddOrReplaceReadGroups.jar I=$samFile O=$outFilename SO=coordinate RGID=$basename RGLB=$id RGPL=$platform RGPU=$barcode RGSM=$sampleId RGCN=MSKCC TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J SortSam.$id.$$ -o SortSam.$id.$$.%J.stdout -e SortSam.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/AddOrReplaceReadGroups.jar I=$samFile O=$outFilename SO=coordinate RGID=$basename RGLB=$id RGPL=$platform RGPU=$barcode RGSM=$sampleId RGCN=MSKCC TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(SortSam.$id.$$)" -J NotifySortSam.$id.$$ -e NotifySortSam.$id.$$.%J.stderr -o NotifySortSam.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J SortSam.$id.$$ -o SortSam.$id.$$.%J.stdout -e SortSam.$id.$$.%J.stderr -We 2:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/AddOrReplaceReadGroups.jar I=$samFile O=$outFilename SO=coordinate RGID=$basename RGLB=$id RGPL=$platform RGPU=$barcode RGSM=$sampleId RGCN=MSKCC TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(SortSam.$id.$$)" -J NotifySortSam.$id.$$ -e NotifySortSam.$id.$$.%J.stderr -o NotifySortSam.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5158,10 +5158,10 @@ sub RunFixMateInformation
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J FixMate.$id.$$ -o FixMate.$id.$$.%J.stdout -e FixMate.$id.$$.%J.stderr -R \"rusage[mem=32]\" -n 4 \"$JAVA_1_7 -Xmx24g -jar $PICARD/FixMateInformation.jar I=$bamFile O=$outFilename SO=coordinate TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\"";
+"$BSUB -q $queue -cwd $outdir -J FixMate.$id.$$ -o FixMate.$id.$$.%J.stdout -e FixMate.$id.$$.%J.stderr -R \"rusage[mem=32]\" -M 40 -n 4 \"$JAVA_1_7 -Xmx24g -jar $PICARD/FixMateInformation.jar I=$bamFile O=$outFilename SO=coordinate TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J FixMate.$id.$$ -o FixMate.$id.$$.%J.stdout -e FixMate.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=32]" -n 4 "$JAVA_1_7 -Xmx24g -jar $PICARD/FixMateInformation.jar I=$bamFile O=$outFilename SO=coordinate TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(FixMate.$id.$$)" -J NotifyFixMate.$id.$$ -e NotifyFixMate.$id.$$.%J.stderr -o NotifyFixMate.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J FixMate.$id.$$ -o FixMate.$id.$$.%J.stdout -e FixMate.$id.$$.%J.stderr -We 2:00 -R "rusage[mem=32]" -M 40 -n 4 "$JAVA_1_7 -Xmx24g -jar $PICARD/FixMateInformation.jar I=$bamFile O=$outFilename SO=coordinate TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(FixMate.$id.$$)" -J NotifyFixMate.$id.$$ -e NotifyFixMate.$id.$$.%J.stderr -o NotifyFixMate.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5202,10 +5202,10 @@ sub RunMarkDuplicates
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J MD.$id.$$ -o MD.$id.$$.%J.stdout -e MD.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/MarkDuplicates.jar I=$bamFile O=$outFilename ASSUME_SORTED=true METRICS_FILE=$metricsFilename TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\"";
+"$BSUB -q $queue -cwd $outdir -J MD.$id.$$ -o MD.$id.$$.%J.stdout -e MD.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/MarkDuplicates.jar I=$bamFile O=$outFilename ASSUME_SORTED=true METRICS_FILE=$metricsFilename TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J MD.$id.$$ -o MD.$id.$$.%J.stdout -e MD.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/MarkDuplicates.jar I=$bamFile O=$outFilename ASSUME_SORTED=true METRICS_FILE=$metricsFilename TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(MD.$id.$$)" -J NotifyMD.$id.$$ -e NotifyMD.$id.$$.%J.stderr -o NotifyMD.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J MD.$id.$$ -o MD.$id.$$.%J.stdout -e MD.$id.$$.%J.stderr -We 2:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/MarkDuplicates.jar I=$bamFile O=$outFilename ASSUME_SORTED=true METRICS_FILE=$metricsFilename TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(MD.$id.$$)" -J NotifyMD.$id.$$ -e NotifyMD.$id.$$.%J.stderr -o NotifyMD.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5244,10 +5244,10 @@ sub RunRealignerTargetCreator
 			} else
 			{
 				my $cmd =
-"`$BSUB -q $queue -cwd $outdir -J RTC.$jobName.$$ -o RTC.$jobName.$$.%J.stdout -e RTC.$jobName.$$.%J.stderr -R \"rusage[mem=12]\" -n 2 \"$JAVA_1_7 -Xmx20g -jar $GATK -T RealignerTargetCreator -I $outdir/$inputFiles -R $Reference -L $GeneInterval -o $outFilename --known $Mills_1000G_Indels\"";
+"`$BSUB -q $queue -cwd $outdir -J RTC.$jobName.$$ -o RTC.$jobName.$$.%J.stdout -e RTC.$jobName.$$.%J.stderr -R \"rusage[mem=12]\" -M 24 -n 2 \"$JAVA_1_7 -Xmx20g -jar $GATK -T RealignerTargetCreator -I $outdir/$inputFiles -R $Reference -L $GeneInterval -o $outFilename --known $Mills_1000G_Indels\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J RTC.$jobName.$$ -o RTC.$jobName.$$.%J.stdout -e RTC.$jobName.$$.%J.stderr -We 24:00 -R "rusage[mem=12]" -n 2 "$JAVA_1_7 -Xmx20g -jar $GATK -T RealignerTargetCreator -I $outdir/$inputFiles -R $Reference -L $GeneInterval -o $outFilename --known $Mills_1000G_Indels"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(RTC.$jobName.$$)" -J NotifyRTC.$jobName.$$ -e NotifyRTC.$jobName.$$.%J.stderr -o NotifyRTC.$jobName.$$.%J.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J RTC.$jobName.$$ -o RTC.$jobName.$$.%J.stdout -e RTC.$jobName.$$.%J.stderr -We 24:00 -R "rusage[mem=12]" -M 24 -n 2 "$JAVA_1_7 -Xmx20g -jar $GATK -T RealignerTargetCreator -I $outdir/$inputFiles -R $Reference -L $GeneInterval -o $outFilename --known $Mills_1000G_Indels"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(RTC.$jobName.$$)" -J NotifyRTC.$jobName.$$ -e NotifyRTC.$jobName.$$.%J.stderr -o NotifyRTC.$jobName.$$.%J.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5286,10 +5286,10 @@ sub RunIndelRealigner
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J IR.$id.$$ -o IR.$id.$$.%J.stdout -e IR.$id.$$.%J.stderr -R \"rusage[mem=12]\" -n 2 \"$JAVA_1_7 -Xmx20g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T IndelRealigner -I $file -R $Reference -targetIntervals $interval -o $outFilename -baq RECALCULATE -known $Mills_1000G_Indels\"";
+"$BSUB -q $queue -cwd $outdir -J IR.$id.$$ -o IR.$id.$$.%J.stdout -e IR.$id.$$.%J.stderr -R \"rusage[mem=12]\" -M 30 -n 2 \"$JAVA_1_7 -Xmx20g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T IndelRealigner -I $file -R $Reference -targetIntervals $interval -o $outFilename -baq RECALCULATE -known $Mills_1000G_Indels\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J IR.$id.$$ -o IR.$id.$$.%J.stdout -e IR.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=12]" -n 2 "$JAVA_1_7 -Xmx20g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T IndelRealigner -I $file -R $Reference -targetIntervals $interval -o $outFilename -baq RECALCULATE -known $Mills_1000G_Indels"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(IR.$id.$$)" -J NotifyIR.$id.$$ -e NotifyIR.$id.$$.%J.stderr -o NotifyIR.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J IR.$id.$$ -o IR.$id.$$.%J.stdout -e IR.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=12]" -M 30 -n 2 "$JAVA_1_7 -Xmx20g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T IndelRealigner -I $file -R $Reference -targetIntervals $interval -o $outFilename -baq RECALCULATE -known $Mills_1000G_Indels"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(IR.$id.$$)" -J NotifyIR.$id.$$ -e NotifyIR.$id.$$.%J.stderr -o NotifyIR.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5339,10 +5339,10 @@ sub RunBaseQualityRecalibration
 				} else
 				{
 					my $cmd =
-"$BSUB -q $queue -cwd $outdir -o BQSR1.$id.$$.%J.stdout -e BQSR1.$id.$$.%J.stderr -J BQSR1.$id.$$ -R \"rusage[mem=3]\" -n 10 \"$JAVA_1_7 -Xmx20g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T BaseRecalibrator -nct 10 -I $files -plots -R $Reference -knownSites $dbSNP -knownSites $Mills_1000G_Indels -rf BadCigar -o $outFilename1\"";
+"$BSUB -q $queue -cwd $outdir -o BQSR1.$id.$$.%J.stdout -e BQSR1.$id.$$.%J.stderr -J BQSR1.$id.$$ -R \"rusage[mem=3]\" -M 36 -n 10 \"$JAVA_1_7 -Xmx20g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T BaseRecalibrator -nct 10 -I $files -plots -R $Reference -knownSites $dbSNP -knownSites $Mills_1000G_Indels -rf BadCigar -o $outFilename1\"";
 					$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -o BQSR1.$id.$$.%J.stdout -e BQSR1.$id.$$.%J.stderr -J BQSR1.$id.$$ -We 24:00 -R "rusage[mem=3]" -n 10 "$JAVA_1_7 -Xmx20g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T BaseRecalibrator -nct 10 -I $files -plots -R $Reference -knownSites $dbSNP -knownSites $Mills_1000G_Indels -rf BadCigar -o $outFilename1"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(BQSR1.$id.$$)" -J NotifyBQSR.$id.$$ -e NotifyBQSR.$id.$$.%J.stderr -o NotifyBQSR.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -o BQSR1.$id.$$.%J.stdout -e BQSR1.$id.$$.%J.stderr -J BQSR1.$id.$$ -We 24:00 -R "rusage[mem=3]" -M 36 -n 10 "$JAVA_1_7 -Xmx20g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T BaseRecalibrator -nct 10 -I $files -plots -R $Reference -knownSites $dbSNP -knownSites $Mills_1000G_Indels -rf BadCigar -o $outFilename1"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(BQSR1.$id.$$)" -J NotifyBQSR.$id.$$ -e NotifyBQSR.$id.$$.%J.stderr -o NotifyBQSR.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 				}
 			};
 			if ($@)
@@ -5381,10 +5381,10 @@ sub RunBaseQualityRecalibration
 				} else
 				{
 					my $cmd =
-"$BSUB -q $queue -cwd $outdir -R \"rusage[mem=8]\" -n 5  -o BQSR1.$id.$$.%J.stdout -e BQSR1.$id.$$.%J.stderr -J BQSR1.$id.$$ \"$JAVA_1_7 -Xmx30g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T BaseRecalibrator -I $files -R $Reference -knownSites $dbSNP -knownSites $Mills_1000G_Indels -rf BadCigar -o $outFilename1 -nct 3\"";
+"$BSUB -q $queue -cwd $outdir -R \"rusage[mem=8]\" -M 44 -n 5 -o BQSR1.$id.$$.%J.stdout -e BQSR1.$id.$$.%J.stderr -J BQSR1.$id.$$ \"$JAVA_1_7 -Xmx30g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T BaseRecalibrator -I $files -R $Reference -knownSites $dbSNP -knownSites $Mills_1000G_Indels -rf BadCigar -o $outFilename1 -nct 3\"";
 					$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -We 24:00 -R "rusage[mem=8]" -n 5  -o BQSR1.$id.$$.%J.stdout -e BQSR1.$id.$$.%J.stderr -J BQSR1.$id.$$ "$JAVA_1_7 -Xmx30g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T BaseRecalibrator -I $files -R $Reference -knownSites $dbSNP -knownSites $Mills_1000G_Indels -rf BadCigar -o $outFilename1 -nct 3"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(BQSR1.$id.$$)" -J NotifyBQSR.$id.$$ -e NotifyBQSR.$id.$$.%J.stderr -o NotifyBQSR.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -We 24:00 -R "rusage[mem=8]" -M 44 -n 5 -o BQSR1.$id.$$.%J.stdout -e BQSR1.$id.$$.%J.stderr -J BQSR1.$id.$$ "$JAVA_1_7 -Xmx30g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T BaseRecalibrator -I $files -R $Reference -knownSites $dbSNP -knownSites $Mills_1000G_Indels -rf BadCigar -o $outFilename1 -nct 3"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(BQSR1.$id.$$)" -J NotifyBQSR.$id.$$ -e NotifyBQSR.$id.$$.%J.stderr -o NotifyBQSR.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 				}
 			};
 			if ($@)
@@ -5425,10 +5425,10 @@ sub PrintBQSRreads
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J PrintBQSR.$id.$$ -o PrintBQSR.$id.$$.%J.stdout -e PrintBQSR.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 330 -n 3 \"$JAVA_1_7 -Xmx4g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T PrintReads -I $file -R $Reference -baq RECALCULATE -BQSR $BQSRtable -nct 8 -EOQ -o $outFilename\"";
+"$BSUB -q $queue -cwd $outdir -J PrintBQSR.$id.$$ -o PrintBQSR.$id.$$.%J.stdout -e PrintBQSR.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 30 -n 3 \"$JAVA_1_7 -Xmx4g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T PrintReads -I $file -R $Reference -baq RECALCULATE -BQSR $BQSRtable -nct 8 -EOQ -o $outFilename\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J PrintBQSR.$id.$$ -o PrintBQSR.$id.$$.%J.stdout -e PrintBQSR.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 3 "$JAVA_1_7 -Xmx4g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T PrintReads -I $file -R $Reference -baq RECALCULATE -BQSR $BQSRtable -nct 8 -EOQ -o $outFilename"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(PrintBQSR.$id.$$)" -J NotifyPrintBQSR.$id.$$ -e NotifyPrintBQSR.$id.$$.stderr -o NotifyPrintBQSR.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J PrintBQSR.$id.$$ -o PrintBQSR.$id.$$.%J.stdout -e PrintBQSR.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 30 -n 3 "$JAVA_1_7 -Xmx4g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T PrintReads -I $file -R $Reference -baq RECALCULATE -BQSR $BQSRtable -nct 8 -EOQ -o $outFilename"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(PrintBQSR.$id.$$)" -J NotifyPrintBQSR.$id.$$ -e NotifyPrintBQSR.$id.$$.stderr -o NotifyPrintBQSR.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5489,10 +5489,10 @@ sub RunMetricsCalculations
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J HSmetrics.$id.$$ -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/CalculateHsMetrics.jar I=$bamFile O=$HSmetricsFilename BI=$BaitInterval TI=$TargetInterval REFERENCE_SEQUENCE=$Reference PER_TARGET_COVERAGE=$perTargetCoverageFilename TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT\"";
+"$BSUB -q $queue -cwd $outdir -J HSmetrics.$id.$$ -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/CalculateHsMetrics.jar I=$bamFile O=$HSmetricsFilename BI=$BaitInterval TI=$TargetInterval REFERENCE_SEQUENCE=$Reference PER_TARGET_COVERAGE=$perTargetCoverageFilename TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J HSmetrics.$id.$$ -o HSmetrics.$id.$$.stdout -e HSmetrics.$id.$$.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/CalculateHsMetrics.jar I=$bamFile O=$HSmetricsFilename BI=$BaitInterval TI=$TargetInterval REFERENCE_SEQUENCE=$Reference PER_TARGET_COVERAGE=$perTargetCoverageFilename TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(HSmetrics.$id.$$)" -J NotifyHSmetrics.$id.$$ -o NotifyHSmetrics.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J HSmetrics.$id.$$ -o HSmetrics.$id.$$.stdout -e HSmetrics.$id.$$.stderr -We 1:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/CalculateHsMetrics.jar I=$bamFile O=$HSmetricsFilename BI=$BaitInterval TI=$TargetInterval REFERENCE_SEQUENCE=$Reference PER_TARGET_COVERAGE=$perTargetCoverageFilename TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(HSmetrics.$id.$$)" -J NotifyHSmetrics.$id.$$ -o NotifyHSmetrics.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5533,14 +5533,14 @@ sub RunMetricsCalculations
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J InsertSizeMetrics.$id.$$ -o InsertSizeMetrics.$id.$$.%J.stdout -e InsertSizeMetrics.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/CollectMultipleMetrics.jar I=$bamFile O=$basename PROGRAM=null PROGRAM=CollectInsertSizeMetrics ASSUME_SORTED=true TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT\"";
+"$BSUB -q $queue -cwd $outdir -J InsertSizeMetrics.$id.$$ -o InsertSizeMetrics.$id.$$.%J.stdout -e InsertSizeMetrics.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/CollectMultipleMetrics.jar I=$bamFile O=$basename PROGRAM=null PROGRAM=CollectInsertSizeMetrics ASSUME_SORTED=true TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J InsertSizeMetrics.$id.$$ -o InsertSizeMetrics.$id.$$.%J.stdout -e InsertSizeMetrics.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/CollectMultipleMetrics.jar I=$bamFile O=$basename PROGRAM=null PROGRAM=CollectInsertSizeMetrics ASSUME_SORTED=true TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT"`;
+`$BSUB -q $queue -cwd $outdir -J InsertSizeMetrics.$id.$$ -o InsertSizeMetrics.$id.$$.%J.stdout -e InsertSizeMetrics.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/CollectMultipleMetrics.jar I=$bamFile O=$basename PROGRAM=null PROGRAM=CollectInsertSizeMetrics ASSUME_SORTED=true TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT"`;
 				$cmd =
-"$BSUB -q $queue -cwd $outdir -J MeanQualityByCycle.$id.$$ -o MeanQualityByCycle.$id.$$.%J.stdout -e MeanQualityByCycle.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/CollectMultipleMetrics.jar I=$bamFile O=$basename PROGRAM=null PROGRAM=MeanQualityByCycle ASSUME_SORTED=true TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT\"";
+"$BSUB -q $queue -cwd $outdir -J MeanQualityByCycle.$id.$$ -o MeanQualityByCycle.$id.$$.%J.stdout -e MeanQualityByCycle.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/CollectMultipleMetrics.jar I=$bamFile O=$basename PROGRAM=null PROGRAM=MeanQualityByCycle ASSUME_SORTED=true TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J MeanQualityByCycle.$id.$$ -o MeanQualityByCycle.$id.$$.%J.stdout -e MeanQualityByCycle.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/CollectMultipleMetrics.jar I=$bamFile O=$basename PROGRAM=null PROGRAM=MeanQualityByCycle ASSUME_SORTED=true TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(InsertSizeMetrics.$id.$$) && post_done(MeanQualityByCycle.$id.$$)" -J NotifyMultipleMetrics.$id.$$ -e NotifyMultipleMetrics.$id.$$.%J.stderr -o NotifyMultipleMetrics.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J MeanQualityByCycle.$id.$$ -o MeanQualityByCycle.$id.$$.%J.stdout -e MeanQualityByCycle.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/CollectMultipleMetrics.jar I=$bamFile O=$basename PROGRAM=null PROGRAM=MeanQualityByCycle ASSUME_SORTED=true TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(InsertSizeMetrics.$id.$$) && post_done(MeanQualityByCycle.$id.$$)" -J NotifyMultipleMetrics.$id.$$ -e NotifyMultipleMetrics.$id.$$.%J.stderr -o NotifyMultipleMetrics.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5580,14 +5580,14 @@ sub RunMetricsCalculations
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J GeneCoverage.$id.$$ -o GeneCoverage.$id.$$.%J.stdout -e GeneCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $geneCoverage -L $GeneInterval  -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
+"$BSUB -q $queue -cwd $outdir -J GeneCoverage.$id.$$ -o GeneCoverage.$id.$$.%J.stdout -e GeneCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $geneCoverage -L $GeneInterval  -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J GeneCoverage.$id.$$ -o GeneCoverage.$id.$$.%J.stdout -e GeneCoverage.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $geneCoverage -L $GeneInterval  -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
+`$BSUB -q $queue -cwd $outdir -J GeneCoverage.$id.$$ -o GeneCoverage.$id.$$.%J.stdout -e GeneCoverage.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $geneCoverage -L $GeneInterval  -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
 				$cmd =
-				  "$BSUB -q $queue -cwd $outdir -w \"done(GeneCoverage.$id.$$)\" -J ExonToGeneCov.$id.$$ -o ExonToGeneCov.$id.$$.%J.stdout -e ExonToGeneCov.$id.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord > $geneCount\"";
+				  "$BSUB -q $queue -cwd $outdir -w \"done(GeneCoverage.$id.$$)\" -J ExonToGeneCov.$id.$$ -o ExonToGeneCov.$id.$$.%J.stdout -e ExonToGeneCov.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord > $geneCount\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -w "post_done(GeneCoverage.$id.$$)" -J ExonToGeneCov.$id.$$ -o ExonToGeneCov.$id.$$.%J.stdout -e ExonToGeneCov.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord > $geneCount"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(ExonToGeneCov.$id.$$)" -J NotifyGeneCoverage.$id.$$ -e NotifyGeneCoverage.$id.$$.stderr -o NotifyGeneCoverage.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(GeneCoverage.$id.$$)" -J ExonToGeneCov.$id.$$ -o ExonToGeneCov.$id.$$.%J.stdout -e ExonToGeneCov.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord > $geneCount"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(ExonToGeneCov.$id.$$)" -J NotifyGeneCoverage.$id.$$ -e NotifyGeneCoverage.$id.$$.stderr -o NotifyGeneCoverage.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5626,10 +5626,10 @@ sub RunMetricsCalculations
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J GeneNomapqCoverage.$id.$$ -o GeneNomapqCoverage.$id.$$.%J.stdout -e GeneNomapqCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $gene_nomapqCoverage -L $GeneInterval  -rf BadCigar -mmq 0 -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
+"$BSUB -q $queue -cwd $outdir -J GeneNomapqCoverage.$id.$$ -o GeneNomapqCoverage.$id.$$.%J.stdout -e GeneNomapqCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $gene_nomapqCoverage -L $GeneInterval  -rf BadCigar -mmq 0 -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J GeneNomapqCoverage.$id.$$ -o GeneNomapqCoverage.$id.$$.%J.stdout -e GeneNomapqCoverage.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $gene_nomapqCoverage -L $GeneInterval  -rf BadCigar -mmq 0 -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(GeneNomapqCoverage.$id.$$)" -J NotifyGeneNomapqCoverage.$id.$$ -e NotifyGeneNomapqCoverage.$id.$$.%J.stderr -o NotifyGeneNomapqCoverage.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J GeneNomapqCoverage.$id.$$ -o GeneNomapqCoverage.$id.$$.%J.stdout -e GeneNomapqCoverage.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $gene_nomapqCoverage -L $GeneInterval  -rf BadCigar -mmq 0 -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(GeneNomapqCoverage.$id.$$)" -J NotifyGeneNomapqCoverage.$id.$$ -e NotifyGeneNomapqCoverage.$id.$$.%J.stderr -o NotifyGeneNomapqCoverage.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 6 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5665,10 +5665,10 @@ sub RunMetricsCalculations
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J CanonicalExonCoverage.$id.$$ -o CanonicalExonCoverage.$id.$$.%J.stdout -e CanonicalExonCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $canonicalExonCoverage -L $canonicalExonIntervalsFile -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
+"$BSUB -q $queue -cwd $outdir -J CanonicalExonCoverage.$id.$$ -o CanonicalExonCoverage.$id.$$.%J.stdout -e CanonicalExonCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $canonicalExonCoverage -L $canonicalExonIntervalsFile -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J CanonicalExonCoverage.$id.$$ -o CanonicalExonCoverage.$id.$$.%J.stdout -e CanonicalExonCoverage.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $canonicalExonCoverage -L $canonicalExonIntervalsFile -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(CanonicalExonCoverage.$id.$$)" -J NotifyCanonicalExonCoverage.$id.$$ -e NotifyCanonicalExonCoverage.$id.$$.%J.stderr -o NotifyCanonicalExonCoverage.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J CanonicalExonCoverage.$id.$$ -o CanonicalExonCoverage.$id.$$.%J.stdout -e CanonicalExonCoverage.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $canonicalExonCoverage -L $canonicalExonIntervalsFile -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(CanonicalExonCoverage.$id.$$)" -J NotifyCanonicalExonCoverage.$id.$$ -e NotifyCanonicalExonCoverage.$id.$$.%J.stderr -o NotifyCanonicalExonCoverage.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5703,10 +5703,10 @@ sub RunMetricsCalculations
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J TilingCoverage.$id.$$ -o TilingCoverage.$id.$$.%J.stdout -e TilingCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $tilingCoverage -L $TilingInterval -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
+"$BSUB -q $queue -cwd $outdir -J TilingCoverage.$id.$$ -o TilingCoverage.$id.$$.%J.stdout -e TilingCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $tilingCoverage -L $TilingInterval -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J TilingCoverage.$id.$$ -o TilingCoverage.$id.$$.%J.stdout -e TilingCoverage.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $tilingCoverage -L $TilingInterval -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(TilingCoverage.$id.$$)" -J NotifyTilingCoverage.$id.$$ -e NotifyTilingCoverage.$id.$$.stderr -o NotifyTilingCoverage.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J TilingCoverage.$id.$$ -o TilingCoverage.$id.$$.%J.stdout -e TilingCoverage.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $tilingCoverage -L $TilingInterval -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(TilingCoverage.$id.$$)" -J NotifyTilingCoverage.$id.$$ -e NotifyTilingCoverage.$id.$$.stderr -o NotifyTilingCoverage.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5745,10 +5745,10 @@ sub RunMetricsCalculations
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J TilingNomapqCoverage.$id.$$ -o TilingNomapqCoverage.$id.$$.%J.stdout -e TilingNomapqCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $tiling_nomapqCoverage -L $TilingInterval  -rf BadCigar -mmq 0 -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
+"$BSUB -q $queue -cwd $outdir -J TilingNomapqCoverage.$id.$$ -o TilingNomapqCoverage.$id.$$.%J.stdout -e TilingNomapqCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $tiling_nomapqCoverage -L $TilingInterval  -rf BadCigar -mmq 0 -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J TilingNomapqCoverage.$id.$$ -o TilingNomapqCoverage.$id.$$.%J.stdout -e TilingNomapqCoverage.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $tiling_nomapqCoverage -L $TilingInterval  -rf BadCigar -mmq 0 -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(TilingNomapqCoverage.$id.$$)" -J NotifyTilingNomapqCoverage.$id.$$ -e NotifyTilingNomapqCoverage.$id.$$.stderr -o NotifyTilingNomapqCoverage.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J TilingNomapqCoverage.$id.$$ -o TilingNomapqCoverage.$id.$$.%J.stdout -e TilingNomapqCoverage.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $tiling_nomapqCoverage -L $TilingInterval  -rf BadCigar -mmq 0 -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(TilingNomapqCoverage.$id.$$)" -J NotifyTilingNomapqCoverage.$id.$$ -e NotifyTilingNomapqCoverage.$id.$$.stderr -o NotifyTilingNomapqCoverage.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5788,14 +5788,14 @@ sub RunMetricsCalculations
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J FingerPrint.$id.$$ -o FingerPrint.$id.$$.%J.stdout -e FingerPrint.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $fingerprintCounts -L $FingerPrintInterval -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitIntervals -baseCounts\"";
+"$BSUB -q $queue -cwd $outdir -J FingerPrint.$id.$$ -o FingerPrint.$id.$$.%J.stdout -e FingerPrint.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $fingerprintCounts -L $FingerPrintInterval -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitIntervals -baseCounts\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J FingerPrint.$id.$$ -o FingerPrint.$id.$$.%J.stdout -e FingerPrint.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $fingerprintCounts -L $FingerPrintInterval -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitIntervals -baseCounts"`;
+`$BSUB -q $queue -cwd $outdir -J FingerPrint.$id.$$ -o FingerPrint.$id.$$.%J.stdout -e FingerPrint.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $fingerprintCounts -L $FingerPrintInterval -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitIntervals -baseCounts"`;
 				$cmd =
-"$BSUB -q $queue -cwd $outdir -w \"done(FingerPrint.$id.$$)\" -J FingerPrintSummary.$id.$$ -o FingerPrint.$id.$$.%J.stdout -e FingerPrint.$id.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PERL $FPGenotypesScript $fingerprintCounts $FP_genotypes > $fingerprintSummary\"";
+"$BSUB -q $queue -cwd $outdir -w \"done(FingerPrint.$id.$$)\" -J FingerPrintSummary.$id.$$ -o FingerPrint.$id.$$.%J.stdout -e FingerPrint.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $FPGenotypesScript $fingerprintCounts $FP_genotypes > $fingerprintSummary\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -w "post_done(FingerPrint.$id.$$)" -J FingerPrintSummary.$id.$$ -o FingerPrint.$id.$$.%J.stdout -e FingerPrint.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $FPGenotypesScript $fingerprintCounts $FP_genotypes > $fingerprintSummary"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(FingerPrintSummary.$id.$$)" -J NotifyFingerPrintSummary.$id.$$ -e NotifyFingerPrintSummary.$id.$$.%J.stderr -o NotifyFingerPrintSummary.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(FingerPrint.$id.$$)" -J FingerPrintSummary.$id.$$ -o FingerPrint.$id.$$.%J.stdout -e FingerPrint.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $FPGenotypesScript $fingerprintCounts $FP_genotypes > $fingerprintSummary"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(FingerPrintSummary.$id.$$)" -J NotifyFingerPrintSummary.$id.$$ -e NotifyFingerPrintSummary.$id.$$.%J.stderr -o NotifyFingerPrintSummary.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -5879,10 +5879,10 @@ sub CompileMetrics
 		} else
 		{
 			my $cmd =
-"$BSUB -q $queue -cwd $outdir -J CompileMetrics.$$ -o CompileMetrics.$$.%J.stdout -e CompileMetrics.$$.%J.stderr -We 24:00 -R \"rusage[mem=2]\" -n 1 \"$PERL $CompileMetrics -i $allBams -t $titleFile -am $AllMetrics -cn $BestCopyNumber -ncn $NormVsNormCopyNumber -ce $exonIntervalsFile -gcb $GCBiasFile -snlo $StdNormalLoess_TM -snlon $StdNormalLoess_NVN -gia $GeneIntervalAnn -tia $TilingIntervalAnn -ln $LoessNormalization -o $outdir -q $queue -bsub $BSUB -p $PERL -rh $RHOME -rl $RLIBS -ms $GenerateMetricsFilesScript\"";
+"$BSUB -q $queue -cwd $outdir -J CompileMetrics.$$ -o CompileMetrics.$$.%J.stdout -e CompileMetrics.$$.%J.stderr -We 1:00 -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $CompileMetrics -i $allBams -t $titleFile -am $AllMetrics -cn $BestCopyNumber -ncn $NormVsNormCopyNumber -ce $exonIntervalsFile -gcb $GCBiasFile -snlo $StdNormalLoess_TM -snlon $StdNormalLoess_NVN -gia $GeneIntervalAnn -tia $TilingIntervalAnn -ln $LoessNormalization -o $outdir -q $queue -bsub $BSUB -p $PERL -rh $RHOME -rl $RLIBS -ms $GenerateMetricsFilesScript\"";
 			$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J CompileMetrics.$$ -o CompileMetrics.$$.%J.stdout -e CompileMetrics.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $CompileMetrics -i $allBams -t $titleFile -am $AllMetrics -cn $BestCopyNumber -ncn $NormVsNormCopyNumber -ce $exonIntervalsFile -gcb $GCBiasFile -snlo $StdNormalLoess_TM -snlon $StdNormalLoess_NVN -gia $GeneIntervalAnn -tia $TilingIntervalAnn -ln $LoessNormalization -o $outdir -q $queue -bsub $BSUB -p $PERL -rh $RHOME -rl $RLIBS -ms $GenerateMetricsFilesScript"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(CompileMetrics.$$)" -J NotifyCM.$$ -e NotifyCM.$$.%J.stderr -o NotifyCM.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J CompileMetrics.$$ -o CompileMetrics.$$.%J.stdout -e CompileMetrics.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $CompileMetrics -i $allBams -t $titleFile -am $AllMetrics -cn $BestCopyNumber -ncn $NormVsNormCopyNumber -ce $exonIntervalsFile -gcb $GCBiasFile -snlo $StdNormalLoess_TM -snlon $StdNormalLoess_NVN -gia $GeneIntervalAnn -tia $TilingIntervalAnn -ln $LoessNormalization -o $outdir -q $queue -bsub $BSUB -p $PERL -rh $RHOME -rl $RLIBS -ms $GenerateMetricsFilesScript"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(CompileMetrics.$$)" -J NotifyCM.$$ -e NotifyCM.$$.%J.stderr -o NotifyCM.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 		}
 	};
 	if ($@)
@@ -5928,14 +5928,14 @@ sub RunUnifiedGenotyper
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J UGM.$id.$$ -o UGM.$id.$$.%J.stdout -e UGM.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T UnifiedGenotyper -R $Reference -I $bamFile -o $outFilename1  -rf BadCigar --dbsnp $dbSNP -glm SNP -dcov 50000 -L $GeneInterval\"";
+"$BSUB -q $queue -cwd $outdir -J UGM.$id.$$ -o UGM.$id.$$.%J.stdout -e UGM.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T UnifiedGenotyper -R $Reference -I $bamFile -o $outFilename1  -rf BadCigar --dbsnp $dbSNP -glm SNP -dcov 50000 -L $GeneInterval\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J UGM.$id.$$ -o UGM.$id.$$.%J.stdout -e UGM.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T UnifiedGenotyper -R $Reference -I $bamFile -o $outFilename1  -rf BadCigar --dbsnp $dbSNP -glm SNP -dcov 50000 -L $GeneInterval"`;
+`$BSUB -q $queue -cwd $outdir -J UGM.$id.$$ -o UGM.$id.$$.%J.stdout -e UGM.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T UnifiedGenotyper -R $Reference -I $bamFile -o $outFilename1  -rf BadCigar --dbsnp $dbSNP -glm SNP -dcov 50000 -L $GeneInterval"`;
 				$cmd =
-"$BSUB -q $queue -cwd $outdir -J UGI.$id.$$ -o UGI.$id.$$.%J.stdout -e UGI.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T UnifiedGenotyper -R $Reference -I $bamFile -o $outFilename2  -rf BadCigar --dbsnp $dbSNP -glm INDEL -dcov 50000 -L $GeneInterval\"";
+"$BSUB -q $queue -cwd $outdir -J UGI.$id.$$ -o UGI.$id.$$.%J.stdout -e UGI.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T UnifiedGenotyper -R $Reference -I $bamFile -o $outFilename2  -rf BadCigar --dbsnp $dbSNP -glm INDEL -dcov 50000 -L $GeneInterval\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J UGI.$id.$$ -o UGI.$id.$$.%J.stdout -e UGI.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T UnifiedGenotyper -R $Reference -I $bamFile -o $outFilename2  -rf BadCigar --dbsnp $dbSNP -glm INDEL -dcov 50000 -L $GeneInterval"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(UGM.$id.$$) && post_done(UGI.$id.$$)" -J NotifyUG.$id.$$ -e NotifyUG.$id.$$.%J.stderr -o NotifyUG.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J UGI.$id.$$ -o UGI.$id.$$.%J.stdout -e UGI.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T UnifiedGenotyper -R $Reference -I $bamFile -o $outFilename2  -rf BadCigar --dbsnp $dbSNP -glm INDEL -dcov 50000 -L $GeneInterval"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(UGM.$id.$$) && post_done(UGI.$id.$$)" -J NotifyUG.$id.$$ -e NotifyUG.$id.$$.%J.stderr -o NotifyUG.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -6020,14 +6020,14 @@ sub RunMutect_SomaticIndelDetector
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J MuTect.$id.$$ -o MuTect.$id.$$.%J.stdout -e MuTect.$id.$$.%J.stderr -We 24:00 -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_6 -Xmx4g -jar $Mutect -T MuTect --input_file:normal $normalBamFile --input_file:tumor $tumorBamFile --reference_sequence $Reference --dbsnp $dbSNP --cosmic $COSMIC -o $MutationVerboseOutFilename -vcf $MutationOutFilename --enable_extended_output  -dcov 50000 -rf BadCigar -rf MappingQuality -mmq $MAPQ\"";
+"$BSUB -q $queue -cwd $outdir -J MuTect.$id.$$ -o MuTect.$id.$$.%J.stdout -e MuTect.$id.$$.%J.stderr -We 24:00 -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_6 -Xmx4g -jar $Mutect -T MuTect --input_file:normal $normalBamFile --input_file:tumor $tumorBamFile --reference_sequence $Reference --dbsnp $dbSNP --cosmic $COSMIC -o $MutationVerboseOutFilename -vcf $MutationOutFilename --enable_extended_output  -dcov 50000 -rf BadCigar -rf MappingQuality -mmq $MAPQ\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J MuTect.$id.$$ -o MuTect.$id.$$.%J.stdout -e MuTect.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_6 -Xmx4g -jar $Mutect -T MuTect --input_file:normal $normalBamFile --input_file:tumor $tumorBamFile --reference_sequence $Reference --dbsnp $dbSNP --cosmic $COSMIC -o $MutationVerboseOutFilename -vcf $MutationOutFilename --enable_extended_output  -dcov 50000 -rf BadCigar -rf MappingQuality -mmq $MAPQ"`;
+`$BSUB -q $queue -cwd $outdir -J MuTect.$id.$$ -o MuTect.$id.$$.%J.stdout -e MuTect.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_6 -Xmx4g -jar $Mutect -T MuTect --input_file:normal $normalBamFile --input_file:tumor $tumorBamFile --reference_sequence $Reference --dbsnp $dbSNP --cosmic $COSMIC -o $MutationVerboseOutFilename -vcf $MutationOutFilename --enable_extended_output  -dcov 50000 -rf BadCigar -rf MappingQuality -mmq $MAPQ"`;
 				$cmd =
-"$BSUB -q $queue -cwd $outdir -w \"done(MuTect.$id.$$)\" -J Triallelic.$id.$$ -o Triallelic.$id.$$.%J.stdout -e Triallelic.$id.$$.%J.stderr -We 24:00 -R \"rusage[mem=2]\" -n 1 \"$PERL $triallelic_fix --output_dir $outdir --mutect_raw_file $MutationVerboseOutFilename --mutect_vcf_file $MutationOutFilename\"";
+"$BSUB -q $queue -cwd $outdir -w \"done(MuTect.$id.$$)\" -J Triallelic.$id.$$ -o Triallelic.$id.$$.%J.stdout -e Triallelic.$id.$$.%J.stderr -We 1:00 -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $triallelic_fix --output_dir $outdir --mutect_raw_file $MutationVerboseOutFilename --mutect_vcf_file $MutationOutFilename\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -w "post_done(MuTect.$id.$$)" -J Triallelic.$id.$$ -o Triallelic.$id.$$.%J.stdout -e Triallelic.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $triallelic_fix --output_dir $outdir --mutect_raw_file $MutationVerboseOutFilename --mutect_vcf_file $MutationOutFilename"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(MuTect.$id.$$) && post_done(Triallelic.$id.$$)" -J NotifyMT.$id.$$ -e NotifyMT.$id.$$.%J.stderr -o NotifyMT.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(MuTect.$id.$$)" -J Triallelic.$id.$$ -o Triallelic.$id.$$.%J.stdout -e Triallelic.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $triallelic_fix --output_dir $outdir --mutect_raw_file $MutationVerboseOutFilename --mutect_vcf_file $MutationOutFilename"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(MuTect.$id.$$) && post_done(Triallelic.$id.$$)" -J NotifyMT.$id.$$ -e NotifyMT.$id.$$.%J.stderr -o NotifyMT.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -6059,10 +6059,10 @@ sub RunMutect_SomaticIndelDetector
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J SID.$id.$$ -o SID.$id.$$.%J.stdout -e SID.$id.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$JAVA_1_6 -Xmx4g -jar $GATK_SomaticIndel -T SomaticIndelDetector -R $Reference -I:normal $normalBamFile -I:tumor $tumorBamFile -filter 'T_COV<10||N_COV<4||T_INDEL_F<0.0001||T_INDEL_CF<0.7' -verbose $IndelVerboseOutFilename -o $IndelOutFilename -refseq $Refseq --maxNumberOfReads 100000 -rf DuplicateRead -rf FailsVendorQualityCheck -rf NotPrimaryAlignment -rf BadMate -rf MappingQualityUnavailable -rf UnmappedRead -rf BadCigar -rf MappingQuality -mmq $MAPQ -L $targetFile\"";
+"$BSUB -q $queue -cwd $outdir -J SID.$id.$$ -o SID.$id.$$.%J.stdout -e SID.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_6 -Xmx4g -jar $GATK_SomaticIndel -T SomaticIndelDetector -R $Reference -I:normal $normalBamFile -I:tumor $tumorBamFile -filter 'T_COV<10||N_COV<4||T_INDEL_F<0.0001||T_INDEL_CF<0.7' -verbose $IndelVerboseOutFilename -o $IndelOutFilename -refseq $Refseq --maxNumberOfReads 100000 -rf DuplicateRead -rf FailsVendorQualityCheck -rf NotPrimaryAlignment -rf BadMate -rf MappingQualityUnavailable -rf UnmappedRead -rf BadCigar -rf MappingQuality -mmq $MAPQ -L $targetFile\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J SID.$id.$$ -o SID.$id.$$.%J.stdout -e SID.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$JAVA_1_6 -Xmx4g -jar $GATK_SomaticIndel -T SomaticIndelDetector -R $Reference -I:normal $normalBamFile -I:tumor $tumorBamFile -filter 'T_COV<10||N_COV<4||T_INDEL_F<0.0001||T_INDEL_CF<0.7' -verbose $IndelVerboseOutFilename -o $IndelOutFilename -refseq $Refseq --maxNumberOfReads 100000 -rf DuplicateRead -rf FailsVendorQualityCheck -rf NotPrimaryAlignment -rf BadMate -rf MappingQualityUnavailable -rf UnmappedRead -rf BadCigar -rf MappingQuality -mmq $MAPQ -L $targetFile"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(SID.$id.$$)" -J NotifySID.$id.$$ -e NotifySID.$id.$$.%J.stderr -o NotifySID.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J SID.$id.$$ -o SID.$id.$$.%J.stdout -e SID.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_6 -Xmx4g -jar $GATK_SomaticIndel -T SomaticIndelDetector -R $Reference -I:normal $normalBamFile -I:tumor $tumorBamFile -filter 'T_COV<10||N_COV<4||T_INDEL_F<0.0001||T_INDEL_CF<0.7' -verbose $IndelVerboseOutFilename -o $IndelOutFilename -refseq $Refseq --maxNumberOfReads 100000 -rf DuplicateRead -rf FailsVendorQualityCheck -rf NotPrimaryAlignment -rf BadMate -rf MappingQualityUnavailable -rf UnmappedRead -rf BadCigar -rf MappingQuality -mmq $MAPQ -L $targetFile"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(SID.$id.$$)" -J NotifySID.$id.$$ -e NotifySID.$id.$$.%J.stderr -o NotifySID.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -6095,10 +6095,10 @@ sub RunMutect_SomaticIndelDetector
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J PID.$id.$$ -o PID.$id.$$.%J.stdout -e PID.$id.$$.%J.stderr -We 24:00 -R \"rusage[mem=8]\" -n 1 \"$PYTHON $PindelWrapper -i $pconfig -pId $tFileId -t 5 -r $Reference -p $PINDELBIN -chr ALL -q $queue -bsub $BSUB -o $outdir -op $tFileId\"";
+"$BSUB -q $queue -cwd $outdir -J PID.$id.$$ -o PID.$id.$$.%J.stdout -e PID.$id.$$.%J.stderr -We 24:00 -R \"rusage[mem=8]\" -M 12 -n 1 \"$PYTHON $PindelWrapper -i $pconfig -pId $tFileId -t 5 -r $Reference -p $PINDELBIN -chr ALL -q $queue -bsub $BSUB -o $outdir -op $tFileId\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J PID.$id.$$ -o PID.$id.$$.%J.stdout -e PID.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$PYTHON $PindelWrapper -i $pconfig -pId $tFileId -t 5 -r $Reference -p $PINDELBIN -chr ALL -q $queue -bsub $BSUB -o $outdir -op $tFileId"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(PID.$id.$$)" -J NotifyPID.$id.$$ -e NotifyPID.$id.$$.%J.stderr -o NotifyPID.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J PID.$id.$$ -o PID.$id.$$.%J.stdout -e PID.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$PYTHON $PindelWrapper -i $pconfig -pId $tFileId -t 5 -r $Reference -p $PINDELBIN -chr ALL -q $queue -bsub $BSUB -o $outdir -op $tFileId"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(PID.$id.$$)" -J NotifyPID.$id.$$ -e NotifyPID.$id.$$.%J.stderr -o NotifyPID.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -6169,10 +6169,10 @@ sub RunSomaticMutIndelFilter
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J FilterMuTect.$id.$$ -o FilterMuTect.$id.$$.%J.stdout -e FilterMuTect.$id.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PERL $filter_Mutect -t $outdir/$MutationVerboseFilename -v $outdir/$MutationVcfFilename -s $tFileId -o $outdir -dp $dp_MutectStdFilter -ad $ad_MutectStdFilter -vf $vf_MutectStdFilter -tnr $TNfreqRatio_MutectStdFilter\"";
+"$BSUB -q $queue -cwd $outdir -J FilterMuTect.$id.$$ -o FilterMuTect.$id.$$.%J.stdout -e FilterMuTect.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $filter_Mutect -t $outdir/$MutationVerboseFilename -v $outdir/$MutationVcfFilename -s $tFileId -o $outdir -dp $dp_MutectStdFilter -ad $ad_MutectStdFilter -vf $vf_MutectStdFilter -tnr $TNfreqRatio_MutectStdFilter\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J FilterMuTect.$id.$$ -o FilterMuTect.$id.$$.%J.stdout -e FilterMuTect.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $filter_Mutect -t $outdir/$MutationVerboseFilename -v $outdir/$MutationVcfFilename -s $tFileId -o $outdir -dp $dp_MutectStdFilter -ad $ad_MutectStdFilter -vf $vf_MutectStdFilter -tnr $TNfreqRatio_MutectStdFilter"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(FilterMuTect.$id.$$)" -J NotifyFMT.$id.$$ -e NotifyFMT.$id.$$.%J.stderr -o NotifyFMT.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J FilterMuTect.$id.$$ -o FilterMuTect.$id.$$.%J.stdout -e FilterMuTect.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $filter_Mutect -t $outdir/$MutationVerboseFilename -v $outdir/$MutationVcfFilename -s $tFileId -o $outdir -dp $dp_MutectStdFilter -ad $ad_MutectStdFilter -vf $vf_MutectStdFilter -tnr $TNfreqRatio_MutectStdFilter"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(FilterMuTect.$id.$$)" -J NotifyFMT.$id.$$ -e NotifyFMT.$id.$$.%J.stderr -o NotifyFMT.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -6204,10 +6204,10 @@ sub RunSomaticMutIndelFilter
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J FilterSID.$id.$$ -o FilterSID.$id.$$.%J.stdout -e FilterSID.$id.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PERL $filter_SomaticIndel -t $outdir/$IndelVerboseFilename -v $outdir/$IndelVcfFilename -s $tFileId -o $outdir -dp $dp_SomIndelStdFilter -ad $ad_SomIndelStdFilter -vf $vf_SomIndelStdFilter -tnr $TNfreqRatio_SomIndelStdFilter\"";
+"$BSUB -q $queue -cwd $outdir -J FilterSID.$id.$$ -o FilterSID.$id.$$.%J.stdout -e FilterSID.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $filter_SomaticIndel -t $outdir/$IndelVerboseFilename -v $outdir/$IndelVcfFilename -s $tFileId -o $outdir -dp $dp_SomIndelStdFilter -ad $ad_SomIndelStdFilter -vf $vf_SomIndelStdFilter -tnr $TNfreqRatio_SomIndelStdFilter\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J FilterSID.$id.$$ -o FilterSID.$id.$$.%J.stdout -e FilterSID.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $filter_SomaticIndel -t $outdir/$IndelVerboseFilename -v $outdir/$IndelVcfFilename -s $tFileId -o $outdir -dp $dp_SomIndelStdFilter -ad $ad_SomIndelStdFilter -vf $vf_SomIndelStdFilter -tnr $TNfreqRatio_SomIndelStdFilter"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(FilterSID.$id.$$)" -J NotifyFSID.$id.$$ -e NotifyFSID.$id.$$.%J.stderr -o NotifySID.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J FilterSID.$id.$$ -o FilterSID.$id.$$.%J.stdout -e FilterSID.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $filter_SomaticIndel -t $outdir/$IndelVerboseFilename -v $outdir/$IndelVcfFilename -s $tFileId -o $outdir -dp $dp_SomIndelStdFilter -ad $ad_SomIndelStdFilter -vf $vf_SomIndelStdFilter -tnr $TNfreqRatio_SomIndelStdFilter"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(FilterSID.$id.$$)" -J NotifyFSID.$id.$$ -e NotifyFSID.$id.$$.%J.stderr -o NotifySID.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -6239,10 +6239,10 @@ sub RunSomaticMutIndelFilter
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J FilterPID.$id.$$ -o FilterPID.$id.$$.%J.stdout -e FilterPID.$id.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PYTHON $filter_Pindel -i $outdir/$PindelVcfFilename -tsn $tFileId -o $outdir -dp $dp_SomIndelStdFilter -ad $ad_SomIndelStdFilter -vf $vf_SomIndelStdFilter -tnr $TNfreqRatio_SomIndelStdFilter -min $Pindel_Min_Indel_Len -max $Pindel_Max_Indel_Len -o $outdir\"";
+"$BSUB -q $queue -cwd $outdir -J FilterPID.$id.$$ -o FilterPID.$id.$$.%J.stdout -e FilterPID.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PYTHON $filter_Pindel -i $outdir/$PindelVcfFilename -tsn $tFileId -o $outdir -dp $dp_SomIndelStdFilter -ad $ad_SomIndelStdFilter -vf $vf_SomIndelStdFilter -tnr $TNfreqRatio_SomIndelStdFilter -min $Pindel_Min_Indel_Len -max $Pindel_Max_Indel_Len -o $outdir\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J FilterPID.$id.$$ -o FilterPID.$id.$$.%J.stdout -e FilterPID.$id.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PYTHON $filter_Pindel -i $outdir/$PindelVcfFilename -tsn $tFileId -o $outdir -dp $dp_SomIndelStdFilter -ad $ad_SomIndelStdFilter -vf $vf_SomIndelStdFilter -tnr $TNfreqRatio_SomIndelStdFilter -min $Pindel_Min_Indel_Len -max $Pindel_Max_Indel_Len -o $outdir"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(FilterPID.$id.$$)" -J NotifyFPID.$id.$$ -e NotifyFPID.$id.$$.%J.stderr -o NotifyPID.$id.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J FilterPID.$id.$$ -o FilterPID.$id.$$.%J.stdout -e FilterPID.$id.$$.%J.stderr -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$PYTHON $filter_Pindel -i $outdir/$PindelVcfFilename -tsn $tFileId -o $outdir -dp $dp_SomIndelStdFilter -ad $ad_SomIndelStdFilter -vf $vf_SomIndelStdFilter -tnr $TNfreqRatio_SomIndelStdFilter -min $Pindel_Min_Indel_Len -max $Pindel_Max_Indel_Len -o $outdir"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(FilterPID.$id.$$)" -J NotifyFPID.$id.$$ -e NotifyFPID.$id.$$.%J.stderr -o NotifyPID.$id.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
@@ -6287,10 +6287,10 @@ sub CallSV
 		} else
 		{
 			my $cmd =
-"$BSUB -q $queue -cwd $outdir -J RunSV.$$ -o RunSV.$$.%J.stdout -e RunSV.$$.%J.stderr -R \"rusage[mem=2]\" -n 1 \"$PERL $SVpipeline -c $sv_config_file -d $datadir -o $outdir\"";
+"$BSUB -q $queue -cwd $outdir -J RunSV.$$ -o RunSV.$$.%J.stdout -e RunSV.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $SVpipeline -c $sv_config_file -d $datadir -o $outdir\"";
 			$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J RunSV.$$ -o RunSV.$$.%J.stdout -e RunSV.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -n 1 "$PERL $SVpipeline -c $sv_config_file -d $datadir -o $outdir"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(RunSV.$$)" -J NotifyRunSV.$$ -e NotifyRunSV.$$.%J.stderr -o NotifyRunSV.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J RunSV.$$ -o RunSV.$$.%J.stdout -e RunSV.$$.%J.stderr -We 24:00 -R "rusage[mem=2]" -M 4 -n 1 "$PERL $SVpipeline -c $sv_config_file -d $datadir -o $outdir"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(RunSV.$$)" -J NotifyRunSV.$$ -e NotifyRunSV.$$.%J.stderr -o NotifyRunSV.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 		}
 	};
 	if ($@)
@@ -6352,14 +6352,14 @@ sub RunABRA
 			} else
 			{
 				my $cmd =
-"$BSUB -q $queue -cwd $outdir -J RunFindCoveredInterval_IR.$i.$$ -o RunFindCoveredInterval_IR.$i.$$.%J.stdout -e RunFindCoveredInterval.$i.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$PYTHON $FindCoveredIntervals -i $inputFiles -of $targetFilePrefix -t 4 -r $Reference -g $GATK -j $JAVA_1_7 -q $queue -bsub $BSUB -o $outdir\"";
+"$BSUB -q $queue -cwd $outdir -J RunFindCoveredInterval_IR.$i.$$ -o RunFindCoveredInterval_IR.$i.$$.%J.stdout -e RunFindCoveredInterval.$i.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$PYTHON $FindCoveredIntervals -i $inputFiles -of $targetFilePrefix -t 4 -r $Reference -g $GATK -j $JAVA_1_7 -q $queue -bsub $BSUB -o $outdir\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J RunFindCoveredInterval_IR.$i.$$ -o RunFindCoveredInterval_IR.$i.$$.%J.stdout -e RunFindCoveredInterval.$i.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$PYTHON $FindCoveredIntervals -i $inputFiles -of $targetFilePrefix -t 4 -r $Reference -g $GATK -j $JAVA_1_7 -q $queue -bsub $BSUB -o $outdir"`;
+`$BSUB -q $queue -cwd $outdir -J RunFindCoveredInterval_IR.$i.$$ -o RunFindCoveredInterval_IR.$i.$$.%J.stdout -e RunFindCoveredInterval.$i.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$PYTHON $FindCoveredIntervals -i $inputFiles -of $targetFilePrefix -t 4 -r $Reference -g $GATK -j $JAVA_1_7 -q $queue -bsub $BSUB -o $outdir"`;
 				$cmd =
-"$BSUB -q $queue -cwd $outdir -w \"post_done(RunFindCoveredInterval_IR.$i.$$)\" -J RunABRA_IR.$i.$$ -o RunABRA_IR.$i.$$.%J.stdout -e RunABRA_IR.$i.$$.%J.stderr -R \"rusage[mem=8]\" -n 1 \"$PYTHON $ABRAwrapper -i $inputFiles -p $patientID -t 12 -k 43 53 63 83 93 -r $Reference -tr $targetFile -j $JAVA_1_7 -b $BWA_PATH -a $ABRA -q $queue -bsub $BSUB -o $outdir -temp $TMPDIR\"";
+"$BSUB -q $queue -cwd $outdir -w \"post_done(RunFindCoveredInterval_IR.$i.$$)\" -J RunABRA_IR.$i.$$ -o RunABRA_IR.$i.$$.%J.stdout -e RunABRA_IR.$i.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$PYTHON $ABRAwrapper -i $inputFiles -p $patientID -t 12 -k 43 53 63 83 93 -r $Reference -tr $targetFile -j $JAVA_1_7 -b $BWA_PATH -a $ABRA -q $queue -bsub $BSUB -o $outdir -temp $TMPDIR\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -w "post_done(RunFindCoveredInterval_IR.$i.$$)" -J RunABRA_IR.$i.$$ -o RunABRA_IR.$i.$$.%J.stdout -e RunABRA_IR.$i.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -n 1 "$PYTHON $ABRAwrapper -i $inputFiles -p $patientID -t 12 -k 43 53 63 83 93 -r $Reference -tr $targetFile -j $JAVA_1_7 -b $BWA_PATH -a $ABRA -q $queue -bsub $BSUB -o $outdir -temp $TMPDIR"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(RunABRA_IR.$i.$$)" -J NotifyRunABRA_IR.$i.$$ -e NotifyRunABRA_IR.$i.$$.%J.stderr -o NotifyRunABRA_IR.$i.$$.stat -We 24:00 -R "rusage[mem=2]" -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(RunFindCoveredInterval_IR.$i.$$)" -J RunABRA_IR.$i.$$ -o RunABRA_IR.$i.$$.%J.stdout -e RunABRA_IR.$i.$$.%J.stderr -We 24:00 -R "rusage[mem=8]" -M 12 -n 1 "$PYTHON $ABRAwrapper -i $inputFiles -p $patientID -t 12 -k 43 53 63 83 93 -r $Reference -tr $targetFile -j $JAVA_1_7 -b $BWA_PATH -a $ABRA -q $queue -bsub $BSUB -o $outdir -temp $TMPDIR"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(RunABRA_IR.$i.$$)" -J NotifyRunABRA_IR.$i.$$ -e NotifyRunABRA_IR.$i.$$.%J.stderr -o NotifyRunABRA_IR.$i.$$.stat -We 1:00 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
 		if ($@)
