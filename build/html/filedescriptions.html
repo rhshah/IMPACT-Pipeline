@@ -1,0 +1,413 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>File Description &mdash; IMPACT-Pipeline 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="IMPACT-Pipeline 1.0.1 documentation" href="index.html" />
+    <link rel="prev" title="Description of sub-scripts" href="subscripts.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="subscripts.html" title="Description of sub-scripts"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">IMPACT-Pipeline 1.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="file-description">
+<h1>File Description<a class="headerlink" href="#file-description" title="Permalink to this headline">¶</a></h1>
+<p><strong>The following files are output by the CMO bioinformatics pipeline and are organized in the data delivery drives as outlined below. Detailed descriptions of all results files are provided. Of particular importance are the following key results files:</strong>
+-       CompiledMetrics/Proj_*_ALL_Metrics.pdf          [summary of QC metrics]
+-       Variants/annotated_exonic_variants.txt          [all variants and allele counts]
+-       CopyNumber/Proj_*_copynumber_segclusp.pdf       [copy number plots]
+-       SampleInfo/Proj_*_title_file.txt                                [sample IDs and limited metadata]</p>
+<div class="section" id="qc-metrics-files">
+<h2>QC Metrics Files<a class="headerlink" href="#qc-metrics-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="proj-all-metrics-pdf">
+<h3>Proj_*_All_Metrics.pdf<a class="headerlink" href="#proj-all-metrics-pdf" title="Permalink to this headline">¶</a></h3>
+<p>PDF file with graphical representation of all calculated quality and performance metrics for all samples in project. Numerical values are contained in the text files below.</p>
+</div>
+<div class="section" id="proj-all-basequalities-txt">
+<h3>Proj_*_ALL_basequalities.txt<a class="headerlink" href="#proj-all-basequalities-txt" title="Permalink to this headline">¶</a></h3>
+<p>Illumina base quality score by cycle (following GATK base quality recalibration), displayed for each sample.</p>
+</div>
+<div class="section" id="proj-all-canonical-exoncoverage-txt">
+<h3>Proj_*_ALL_Canonical_exoncoverage.txt<a class="headerlink" href="#proj-all-canonical-exoncoverage-txt" title="Permalink to this headline">¶</a></h3>
+<p>Mean coverage for each target interval corresponding to exons in canonical transcripts, displayed for each sample. Coverage is computed for reads with mapping quality &gt; 20.</p>
+</div>
+<div class="section" id="proj-all-exoncoverage-txt">
+<h3>Proj_*_ALL_exoncoverage.txt<a class="headerlink" href="#proj-all-exoncoverage-txt" title="Permalink to this headline">¶</a></h3>
+<p>Mean coverage for each target interval corresponding to all protein-coding exons in all transcripts (including flanking splice sites), displayed for each sample. Coverage is computed for reads with mapping quality &gt; 20.</p>
+</div>
+<div class="section" id="proj-all-exonnomapqcoverage-txt">
+<h3>Proj_*_ALL_exonnomapqcoverage.txt<a class="headerlink" href="#proj-all-exonnomapqcoverage-txt" title="Permalink to this headline">¶</a></h3>
+<p>Mean coverage for each target interval corresponding to all protein-coding exons in all transcripts (including flanking splice sites), displayed for each sample. Coverage is computed for reads regardless of mapping quality (i.e., including reads mapping to multiple locations).</p>
+</div>
+<div class="section" id="proj-all-fpavghom-txt">
+<h3>Proj_*_ALL_FPavgHom.txt<a class="headerlink" href="#proj-all-fpavghom-txt" title="Permalink to this headline">¶</a></h3>
+<p>Average minor allele fraction across all tiling SNPs that are homozygous in the given sample. This is an indication of the degree of contamination from unrelated DNA. (The IMPACT and HemePACT panels contain &gt;1,000 “tiling SNPs” where both alleles are common in the population.)</p>
+</div>
+<div class="section" id="proj-all-fpcresultsunmatch-txt">
+<h3>Proj_*_ALL_FPCResultsUnMatch.txt<a class="headerlink" href="#proj-all-fpcresultsunmatch-txt" title="Permalink to this headline">¶</a></h3>
+<p>Pairs of samples from different individuals with concordant fingerprint genotypes. (The number represents the fraction of tiling SNPs homozygous in one sample which are homozygous for the alternate allele in the other sample.)</p>
+</div>
+<div class="section" id="proj-all-fpcresultsunmismatch-txt">
+<h3>Proj_*_ALL_FPCResultsUnMismatch.txt<a class="headerlink" href="#proj-all-fpcresultsunmismatch-txt" title="Permalink to this headline">¶</a></h3>
+<p>Pairs of samples from the same individual with discordant fingerprint genotypes. (The number represents the fraction of tiling SNPs homozygous in one sample which are homozygous for the alternate allele in the other sample.)</p>
+</div>
+<div class="section" id="proj-all-fpcsummary-txt">
+<h3>Proj_*_ALL_FPCsummary.txt<a class="headerlink" href="#proj-all-fpcsummary-txt" title="Permalink to this headline">¶</a></h3>
+<p>Matrix of all pairwise concordance values based on fingerprint genotypes. (The number represents the fraction of tiling SNPs homozygous in one sample which are homozygous for the alternate allele in the other sample.)</p>
+</div>
+<div class="section" id="proj-all-fphet-txt">
+<h3>Proj_*_ALL_FPhet.txt<a class="headerlink" href="#proj-all-fphet-txt" title="Permalink to this headline">¶</a></h3>
+<p>Fraction of all tiling SNPs that are heterozygous in the given sample. Samples with &gt;0.50 heterozygous SNPs may be contaminated with unrelated DNA. (The IMPACT and HemePACT panels contain &gt;1,000 “tiling SNPs” where both alleles are common in the population.)</p>
+</div>
+<div class="section" id="proj-all-fpsummary-txt">
+<h3>Proj_*_ALL_FPsummary.txt<a class="headerlink" href="#proj-all-fpsummary-txt" title="Permalink to this headline">¶</a></h3>
+<p>For each tiling SNP in each sample: the observed allele counts of each base, the inferred genotype, and the minor allele fraction. (The IMPACT and HemePACT panels contain &gt;1,000 “tiling SNPs” where both alleles are common in the population.)</p>
+</div>
+<div class="section" id="proj-all-gcbias-txt">
+<h3>Proj_*_ALL_gcbias.txt<a class="headerlink" href="#proj-all-gcbias-txt" title="Permalink to this headline">¶</a></h3>
+<p>For each sample, the average coverage for target intervals in different bins of GC content (from 25-30% to 80-85%).</p>
+</div>
+<div class="section" id="proj-all-genecoverage-txt">
+<h3>Proj_*_ALL_genecoverage.txt<a class="headerlink" href="#proj-all-genecoverage-txt" title="Permalink to this headline">¶</a></h3>
+<p>Mean coverage for each target gene (across all target exons), displayed for each sample. Coverage is computed for reads with mapping quality &gt; 20.</p>
+</div>
+<div class="section" id="proj-all-genotypehotspotnormals-txt">
+<h3>Proj_*_ALL_genotypehotspotnormals.txt<a class="headerlink" href="#proj-all-genotypehotspotnormals-txt" title="Permalink to this headline">¶</a></h3>
+<p>Sites of known somatic mutation hotspots (COSMIC) with variants detected in a normal sample. Allele counts are also shown for the matched tumor sample as well as any other tumor where the corresponding variant was detected.</p>
+</div>
+<div class="section" id="proj-all-hsmetrics-txt">
+<h3>Proj_*_ALL_HSmetrics.txt<a class="headerlink" href="#proj-all-hsmetrics-txt" title="Permalink to this headline">¶</a></h3>
+<p>Quality and performance metrics for hybrid selection, calculated by Picard.</p>
+</div>
+<div class="section" id="proj-all-insertsizemetrics-txt">
+<h3>Proj_*_ALL_insertsizemetrics.txt<a class="headerlink" href="#proj-all-insertsizemetrics-txt" title="Permalink to this headline">¶</a></h3>
+<p>Numerical values for histogram of library insert size distribution, displayed for each sample.</p>
+</div>
+<div class="section" id="proj-all-intervalnomapqcoverage-loess-txt">
+<h3>Proj_*_ALL_intervalnomapqcoverage_loess.txt<a class="headerlink" href="#proj-all-intervalnomapqcoverage-loess-txt" title="Permalink to this headline">¶</a></h3>
+<p>Mean coverage for each target interval, displayed for each sample. Coverage is computed for reads regardless of mapping quality (i.e., including reads mapping to multiple locations). Coverage is then normalized according to a Loess normalization to adjust for biases in GC content of target intervals.</p>
+</div>
+<div class="section" id="proj-all-intervalnomapqcoverage-txt">
+<h3>Proj_*_ALL_intervalnomapqcoverage.txt<a class="headerlink" href="#proj-all-intervalnomapqcoverage-txt" title="Permalink to this headline">¶</a></h3>
+<p>Mean coverage for each target interval, displayed for each sample. Coverage is computed for reads regardless of mapping quality (i.e., including reads mapping to multiple locations).</p>
+</div>
+<div class="section" id="proj-all-orgbasequalities-txt">
+<h3>Proj_*_ALL_orgbasequalities.txt<a class="headerlink" href="#proj-all-orgbasequalities-txt" title="Permalink to this headline">¶</a></h3>
+<p>Illumina base quality score by cycle (prior to GATK base quality recalibration), displayed for each sample.</p>
+</div>
+</div>
+<div class="section" id="copy-number-files">
+<h2>Copy Number Files<a class="headerlink" href="#copy-number-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="proj-all-copynumber-seg">
+<h3>Proj_*_ALL_copynumber.seg<a class="headerlink" href="#proj-all-copynumber-seg" title="Permalink to this headline">¶</a></h3>
+<p>Segmented copy number (following %GC-based loess normalization and CBS-based segmentation) for all samples. This file can be loaded in IGV.</p>
+</div>
+<div class="section" id="proj-copynumber-segclusp-genes-txt">
+<h3>Proj_*_copynumber_segclusp.genes.txt<a class="headerlink" href="#proj-copynumber-segclusp-genes-txt" title="Permalink to this headline">¶</a></h3>
+<p>Gene-level copy number (following %GC-based loess normalization and CBS-based segmentation) for all samples. Each gene is assigned the copy number ratio (fold-change) for the segment on which it falls. If a gene spans multiple segments, it is assigned the average copy number ratio. The normal sample selected for copy number normalization is shown for each sample. Both fold-change and a p-value (indicative of the signal-to-noise ratio) are given.</p>
+</div>
+<div class="section" id="proj-copynumber-segclusp-intragenic-txt">
+<h3>Proj_*_copynumber_segclusp.intragenic.txt<a class="headerlink" href="#proj-copynumber-segclusp-intragenic-txt" title="Permalink to this headline">¶</a></h3>
+<p>List of genes with putative intragenic copy number deletions. Individual targets (exons) are listed down the right-most column. The copy number ratios for the exons in each gene are grouped into two clusters. (Cluster membership is labeled as “1” or “2”.) Genes where exons with lower copy number are consecutive are candidates for intragenic deletions, though this analysis tends to overcall events.</p>
+</div>
+<div class="section" id="proj-copynumber-segclusp-pdf">
+<h3>Proj_*_copynumber_segclusp.pdf<a class="headerlink" href="#proj-copynumber-segclusp-pdf" title="Permalink to this headline">¶</a></h3>
+<p>Plots of copy number profiles for all tumors. Each data point represents a target interval (blue = exon; red = tiling SNP). Each tumor is normalized against a diploid normal, either from the same project or from a historical panel of normals; the specific normal used for normalization is shown. Listed below each plot are the 20 highest-level amplifications (left) and deletions (right), though not all are significant. Significantly altered genes (fold-change &gt; 2 and p-value &lt; 0.05) are marked with an asterisk.</p>
+</div>
+<div class="section" id="proj-copynumber-segclusp-probes-txt">
+<h3>Proj_*_copynumber_segclusp.probes.txt<a class="headerlink" href="#proj-copynumber-segclusp-probes-txt" title="Permalink to this headline">¶</a></h3>
+<p>Target-level copy number (following %GC-based loess normalization) for all samples. The normal sample selected for copy number normalization is shown for each sample. “fc” = fold change; “lr” = log ratio.</p>
+</div>
+<div class="section" id="proj-discrete-cna-txt">
+<h3>Proj_*_discrete_CNA.txt<a class="headerlink" href="#proj-discrete-cna-txt" title="Permalink to this headline">¶</a></h3>
+<p>Matrix of significant copy number alterations by gene (rows are genes; columns are tumors). 2 = amplification; 0 = neutral; -2 = deletion.</p>
+</div>
+<div class="section" id="proj-loessnorm-pdf">
+<h3>Proj_*_loessnorm.pdf<a class="headerlink" href="#proj-loessnorm-pdf" title="Permalink to this headline">¶</a></h3>
+<p>Plots showing best loess normalization fit to adjust for coverage bias related to %GC content of target intervals.</p>
+</div>
+</div>
+<div class="section" id="structural-variant-files">
+<h2>Structural Variant Files<a class="headerlink" href="#structural-variant-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="proj-allannotatedsvs-txt">
+<h3>Proj_*_AllAnnotatedSVs.txt<a class="headerlink" href="#proj-allannotatedsvs-txt" title="Permalink to this headline">¶</a></h3>
+<p>Annotated output from DELLY rearrangement detection algorithm. Genomic coordinates and gene annotations are provided for both breakpoints. The distance between breakpoints (SV_LENGTH) and orientation of fragments that are joined (Conection_Type) are shown. Also provided are the number of supporting paired reads and split reads and the inferred derived sequence at the breakpoint (when possible). This analysis tends to overcall events—as the vast majority of rearrangements are false positives, manual review and further filtering are necessary. Events listed (in Site2Description) as “Protein fusion: in frame” should be prioritized.</p>
+</div>
+<div class="section" id="proj-allannotatedsvs-xlsx">
+<h3>Proj_*_AllAnnotatedSVs.xlsx<a class="headerlink" href="#proj-allannotatedsvs-xlsx" title="Permalink to this headline">¶</a></h3>
+<p>Same information as Proj_*_AllAnnotatedCVs.txt (above) in Excel file format.</p>
+</div>
+</div>
+<div class="section" id="per-sample-files">
+<h2>Per Sample Files<a class="headerlink" href="#per-sample-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="s-proj-copynumber-seg">
+<h3>s_*_Proj_*_copynumber.seg<a class="headerlink" href="#s-proj-copynumber-seg" title="Permalink to this headline">¶</a></h3>
+<p>Segmented copy number for each individual sample. Each segment is listed with the genomic coordinates, number of target intervals, and copy number log ratio.</p>
+</div>
+<div class="section" id="s-proj-mrg-cl-aln-srt-md-ir-br-canonical-exon-covg-sample-interval-summary">
+<h3>s_*_Proj_*_mrg_cl_aln_srt_MD_IR_BR.canonical.exon.covg.sample_interval_summary<a class="headerlink" href="#s-proj-mrg-cl-aln-srt-md-ir-br-canonical-exon-covg-sample-interval-summary" title="Permalink to this headline">¶</a></h3>
+<p>Coverage statistics (total, mean, quartiles) for each exon of a canonical transcript in each individual sample. Coverage is calculated for reads with mapping quality &gt; 20.</p>
+</div>
+<div class="section" id="s-proj-mrg-cl-aln-srt-md-ir-br-gene-nomapq-covg-sample-interval-summary">
+<h3>s_*_Proj_*_mrg_cl_aln_srt_MD_IR_BR.gene_nomapq.covg.sample_interval_summary<a class="headerlink" href="#s-proj-mrg-cl-aln-srt-md-ir-br-gene-nomapq-covg-sample-interval-summary" title="Permalink to this headline">¶</a></h3>
+<p>Coverage statistics (total, mean, quartiles) for each exon of any target transcript in each individual sample. Coverage is computed for reads regardless of mapping quality (i.e., including reads mapping to multiple locations).</p>
+</div>
+<div class="section" id="s-proj-mrg-cl-aln-srt-md-ir-br-gene-covg-sample-interval-summary">
+<h3>s_*_Proj_*_mrg_cl_aln_srt_MD_IR_BR.gene.covg.sample_interval_summary<a class="headerlink" href="#s-proj-mrg-cl-aln-srt-md-ir-br-gene-covg-sample-interval-summary" title="Permalink to this headline">¶</a></h3>
+<p>Coverage statistics (total, mean, quartiles) for each exon of any target transcript in each individual sample. Coverage is calculated for reads with mapping quality &gt; 20.</p>
+</div>
+<div class="section" id="s-proj-mrg-cl-aln-srt-md-ir-br-target-covg">
+<h3>s_*_Proj_*_mrg_cl_aln_srt_MD_IR_BR.target.covg<a class="headerlink" href="#s-proj-mrg-cl-aln-srt-md-ir-br-target-covg" title="Permalink to this headline">¶</a></h3>
+<p>Coverage statistics (mean covearage and %GC content) for all target intervals (coding exons and tiling SNPs) in each individual sample. Coverage is calculated for reads with mapping quality &gt; 20.</p>
+</div>
+<div class="section" id="s-proj-mrg-cl-aln-srt-md-ir-br-tiling-nomapq-covg-sample-interval-summary">
+<h3>s_*_Proj_*_mrg_cl_aln_srt_MD_IR_BR.tiling_nomapq.covg.sample_interval_summary<a class="headerlink" href="#s-proj-mrg-cl-aln-srt-md-ir-br-tiling-nomapq-covg-sample-interval-summary" title="Permalink to this headline">¶</a></h3>
+<p>Coverage statistics (mean covearage and %GC content) for just tiling intervals (tiling SNPs and fingerprint SNPs) in each individual sample. Coverage is computed for reads regardless of mapping quality (i.e., including reads mapping to multiple locations).</p>
+</div>
+<div class="section" id="s-proj-mrg-cl-aln-srt-md-ir-br-tiling-covg-sample-interval-summary">
+<h3>s_*_Proj_*_mrg_cl_aln_srt_MD_IR_BR.tiling.covg.sample_interval_summary<a class="headerlink" href="#s-proj-mrg-cl-aln-srt-md-ir-br-tiling-covg-sample-interval-summary" title="Permalink to this headline">¶</a></h3>
+<p>Coverage statistics (mean covearage and %GC content) for just tiling intervals (tiling SNPs and fingerprint SNPs) in each individual sample. Coverage is calculated for reads with mapping quality &gt; 20.</p>
+</div>
+</div>
+<div class="section" id="sample-info-file">
+<h2>Sample Info File<a class="headerlink" href="#sample-info-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="proj-title-file-txt">
+<h3>Proj_*_title_file.txt<a class="headerlink" href="#proj-title-file-txt" title="Permalink to this headline">¶</a></h3>
+<p>Sample IDs (provided by CMO and Investigators) and limited metadata (including sample type, input DNA amount, library yield, and capture platform) for all samples in the project.</p>
+</div>
+</div>
+<div class="section" id="variant-files">
+<h2>Variant Files<a class="headerlink" href="#variant-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="annotated-exonic-variants-txt">
+<h3>annotated_exonic_variants.txt<a class="headerlink" href="#annotated-exonic-variants-txt" title="Permalink to this headline">¶</a></h3>
+<p>Mutations and indels (and genomic annotations and allele counts) called in all tumors in the project. The normal sample used for mutation calling is displayed in the second column (usually either the matched normal or a pool of unmatched normal). Presence in dbSNP, COSMIC, and the 1000 genomes project (depicted as the minor allele fraction in the population) is shown. For tumors called against an unmatched pool of normal, variants present in &gt;0.01 of the 1000 genomes project (and not in COSMIC) are automatically filtered out. Allele counts across a panel of historical normal are shown to indicate potential systematic artifacts. The rightmost columns display the stats for every variant in every sample, including a panel of historical normals (usually labeled with a capital M or S). DP = depth of coverage at the variant site; RD = counts of reference allele; AD = counts of alternate (mutant) allele; VF = variant frequency.</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotated-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotated.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotated-txt" title="Permalink to this headline">¶</a></h3>
+<p>Intermediate variants file displaying all mutations and indels called prior to any filtering. Stats are included for every variant in every sample in the project (as described above).</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotatedexonic-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedExonic.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatedexonic-txt" title="Permalink to this headline">¶</a></h3>
+<p>Intermediate variants files displaying all non-silent mutations and indels called in exonic (plus splice site) regions of target genes.</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotatedexonic-dropped-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedExonic.Dropped.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatedexonic-dropped-txt" title="Permalink to this headline">¶</a></h3>
+<p>Intermediate variants files displaying all non-silent mutations and indels called in exonic (plus splice site) regions of target genes. The file labeled “Dropped” includes candidate mutations that were subsequently rejected based on empirical filters (e.g., present in historical normal or insufficient coverage, read support, or variant frequency).</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotatedexonic-filtered-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedExonic.Filtered.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatedexonic-filtered-txt" title="Permalink to this headline">¶</a></h3>
+<p>Intermediate variants files displaying all non-silent mutations and indels called in exonic (plus splice site) regions of target genes. The file labeled “Filtered” includes candidate mutations that survived all filters.</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotatedsilent-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedSilent.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatedsilent-txt" title="Permalink to this headline">¶</a></h3>
+<p>Intermediate variants files displaying all silent mutations called in exonic (plus splice site) regions of target genes.</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotatedsilent-dropped-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedSilent.Dropped.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatedsilent-dropped-txt" title="Permalink to this headline">¶</a></h3>
+<p>Intermediate variants files displaying all silent mutations called in exonic (plus splice site) regions of target genes. The file labeled “Dropped” includes candidate mutations that were subsequently rejected based on empirical filters (e.g., present in historical normal or insufficient coverage, read support, or variant frequency).</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotatedsilent-filtered-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedSilent.Filtered.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatedsilent-filtered-txt" title="Permalink to this headline">¶</a></h3>
+<p>Intermediate variants files displaying all silent mutations called in exonic (plus splice site) regions of target genes. The file labeled “Filtered” includes candidate mutations that survived all filters.</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelexonic-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelExonic.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelexonic-txt" title="Permalink to this headline">¶</a></h3>
+<p>Intermediate variants files displaying all non-silent mutations and indels called in exonic (plus splice site) regions of off-target genes.</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelexonic-dropped-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelExonic.Dropped.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelexonic-dropped-txt" title="Permalink to this headline">¶</a></h3>
+<p>Intermediate variants files displaying all non-silent mutations and indels called in exonic (plus splice site) regions of off-target genes. The file labeled “Dropped” includes candidate mutations that were subsequently rejected based on empirical filters (e.g., present in historical normal or insufficient coverage, read support, or variant frequency).</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelexonic-filtered-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelExonic.Filtered.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelexonic-filtered-txt" title="Permalink to this headline">¶</a></h3>
+<p>Intermediate variants files displaying all non-silent mutations and indels called in exonic (plus splice site) regions of off-target genes. The file labeled “Filtered” includes candidate mutations that survived all filters.</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelsilent-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelSilent.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelsilent-txt" title="Permalink to this headline">¶</a></h3>
+<p>Intermediate variants files displaying all silent mutations and indels called in off-target regions, including introns, intergenic regions, and off-target genes.</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelsilent-dropped-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelSilent.Dropped.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelsilent-dropped-txt" title="Permalink to this headline">¶</a></h3>
+<p>Intermediate variants files displaying all silent mutations and indels called in off-target regions, including introns, intergenic regions, and off-target genes. The file labeled “Dropped” includes candidate mutations that were subsequently rejected based on empirical filters (e.g., present in historical normal or insufficient coverage, read support, or variant frequency).</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelsilent-filtered-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelSilent.Filtered.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelsilent-filtered-txt" title="Permalink to this headline">¶</a></h3>
+<p>Intermediate variants files displaying all silent mutations and indels called in off-target regions, including introns, intergenic regions, and off-target genes. The file labeled “Filtered” includes candidate mutations that survived all filters.</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-annovarannotated-all-filtered-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotated_All_Filtered.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-annovarannotated-all-filtered-txt" title="Permalink to this headline">¶</a></h3>
+<p>Aggregation of all mutations and indels called (on-target and off-target) that survived all empirical filters (in the “Filtered” files above).</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-txt" title="Permalink to this headline">¶</a></h3>
+<p>Candidate mutations called in all samples, prior to genomic annotation.</p>
+</div>
+<div class="section" id="proj-allsomaticmutindel-withalleledepth-mergeddnp-txt">
+<h3>Proj_*_AllSomaticMutIndel_withAlleleDepth_mergedDNP.txt<a class="headerlink" href="#proj-allsomaticmutindel-withalleledepth-mergeddnp-txt" title="Permalink to this headline">¶</a></h3>
+<p>Candidate mutations called, prior to genomic annotation, with adjacent SNVs with similar coverage and allele frequencies merged into dinucleotide substitutions.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">File Description</a><ul>
+<li><a class="reference internal" href="#qc-metrics-files">QC Metrics Files</a><ul>
+<li><a class="reference internal" href="#proj-all-metrics-pdf">Proj_*_All_Metrics.pdf</a></li>
+<li><a class="reference internal" href="#proj-all-basequalities-txt">Proj_*_ALL_basequalities.txt</a></li>
+<li><a class="reference internal" href="#proj-all-canonical-exoncoverage-txt">Proj_*_ALL_Canonical_exoncoverage.txt</a></li>
+<li><a class="reference internal" href="#proj-all-exoncoverage-txt">Proj_*_ALL_exoncoverage.txt</a></li>
+<li><a class="reference internal" href="#proj-all-exonnomapqcoverage-txt">Proj_*_ALL_exonnomapqcoverage.txt</a></li>
+<li><a class="reference internal" href="#proj-all-fpavghom-txt">Proj_*_ALL_FPavgHom.txt</a></li>
+<li><a class="reference internal" href="#proj-all-fpcresultsunmatch-txt">Proj_*_ALL_FPCResultsUnMatch.txt</a></li>
+<li><a class="reference internal" href="#proj-all-fpcresultsunmismatch-txt">Proj_*_ALL_FPCResultsUnMismatch.txt</a></li>
+<li><a class="reference internal" href="#proj-all-fpcsummary-txt">Proj_*_ALL_FPCsummary.txt</a></li>
+<li><a class="reference internal" href="#proj-all-fphet-txt">Proj_*_ALL_FPhet.txt</a></li>
+<li><a class="reference internal" href="#proj-all-fpsummary-txt">Proj_*_ALL_FPsummary.txt</a></li>
+<li><a class="reference internal" href="#proj-all-gcbias-txt">Proj_*_ALL_gcbias.txt</a></li>
+<li><a class="reference internal" href="#proj-all-genecoverage-txt">Proj_*_ALL_genecoverage.txt</a></li>
+<li><a class="reference internal" href="#proj-all-genotypehotspotnormals-txt">Proj_*_ALL_genotypehotspotnormals.txt</a></li>
+<li><a class="reference internal" href="#proj-all-hsmetrics-txt">Proj_*_ALL_HSmetrics.txt</a></li>
+<li><a class="reference internal" href="#proj-all-insertsizemetrics-txt">Proj_*_ALL_insertsizemetrics.txt</a></li>
+<li><a class="reference internal" href="#proj-all-intervalnomapqcoverage-loess-txt">Proj_*_ALL_intervalnomapqcoverage_loess.txt</a></li>
+<li><a class="reference internal" href="#proj-all-intervalnomapqcoverage-txt">Proj_*_ALL_intervalnomapqcoverage.txt</a></li>
+<li><a class="reference internal" href="#proj-all-orgbasequalities-txt">Proj_*_ALL_orgbasequalities.txt</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#copy-number-files">Copy Number Files</a><ul>
+<li><a class="reference internal" href="#proj-all-copynumber-seg">Proj_*_ALL_copynumber.seg</a></li>
+<li><a class="reference internal" href="#proj-copynumber-segclusp-genes-txt">Proj_*_copynumber_segclusp.genes.txt</a></li>
+<li><a class="reference internal" href="#proj-copynumber-segclusp-intragenic-txt">Proj_*_copynumber_segclusp.intragenic.txt</a></li>
+<li><a class="reference internal" href="#proj-copynumber-segclusp-pdf">Proj_*_copynumber_segclusp.pdf</a></li>
+<li><a class="reference internal" href="#proj-copynumber-segclusp-probes-txt">Proj_*_copynumber_segclusp.probes.txt</a></li>
+<li><a class="reference internal" href="#proj-discrete-cna-txt">Proj_*_discrete_CNA.txt</a></li>
+<li><a class="reference internal" href="#proj-loessnorm-pdf">Proj_*_loessnorm.pdf</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#structural-variant-files">Structural Variant Files</a><ul>
+<li><a class="reference internal" href="#proj-allannotatedsvs-txt">Proj_*_AllAnnotatedSVs.txt</a></li>
+<li><a class="reference internal" href="#proj-allannotatedsvs-xlsx">Proj_*_AllAnnotatedSVs.xlsx</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#per-sample-files">Per Sample Files</a><ul>
+<li><a class="reference internal" href="#s-proj-copynumber-seg">s_*_Proj_*_copynumber.seg</a></li>
+<li><a class="reference internal" href="#s-proj-mrg-cl-aln-srt-md-ir-br-canonical-exon-covg-sample-interval-summary">s_*_Proj_*_mrg_cl_aln_srt_MD_IR_BR.canonical.exon.covg.sample_interval_summary</a></li>
+<li><a class="reference internal" href="#s-proj-mrg-cl-aln-srt-md-ir-br-gene-nomapq-covg-sample-interval-summary">s_*_Proj_*_mrg_cl_aln_srt_MD_IR_BR.gene_nomapq.covg.sample_interval_summary</a></li>
+<li><a class="reference internal" href="#s-proj-mrg-cl-aln-srt-md-ir-br-gene-covg-sample-interval-summary">s_*_Proj_*_mrg_cl_aln_srt_MD_IR_BR.gene.covg.sample_interval_summary</a></li>
+<li><a class="reference internal" href="#s-proj-mrg-cl-aln-srt-md-ir-br-target-covg">s_*_Proj_*_mrg_cl_aln_srt_MD_IR_BR.target.covg</a></li>
+<li><a class="reference internal" href="#s-proj-mrg-cl-aln-srt-md-ir-br-tiling-nomapq-covg-sample-interval-summary">s_*_Proj_*_mrg_cl_aln_srt_MD_IR_BR.tiling_nomapq.covg.sample_interval_summary</a></li>
+<li><a class="reference internal" href="#s-proj-mrg-cl-aln-srt-md-ir-br-tiling-covg-sample-interval-summary">s_*_Proj_*_mrg_cl_aln_srt_MD_IR_BR.tiling.covg.sample_interval_summary</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sample-info-file">Sample Info File</a><ul>
+<li><a class="reference internal" href="#proj-title-file-txt">Proj_*_title_file.txt</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#variant-files">Variant Files</a><ul>
+<li><a class="reference internal" href="#annotated-exonic-variants-txt">annotated_exonic_variants.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotated-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotated.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatedexonic-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedExonic.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatedexonic-dropped-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedExonic.Dropped.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatedexonic-filtered-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedExonic.Filtered.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatedsilent-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedSilent.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatedsilent-dropped-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedSilent.Dropped.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatedsilent-filtered-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedSilent.Filtered.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelexonic-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelExonic.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelexonic-dropped-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelExonic.Dropped.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelexonic-filtered-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelExonic.Filtered.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelsilent-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelSilent.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelsilent-dropped-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelSilent.Dropped.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotatednonpanelsilent-filtered-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelSilent.Filtered.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-annovarannotated-all-filtered-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_annovarAnnotated_All_Filtered.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth.txt</a></li>
+<li><a class="reference internal" href="#proj-allsomaticmutindel-withalleledepth-mergeddnp-txt">Proj_*_AllSomaticMutIndel_withAlleleDepth_mergedDNP.txt</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="subscripts.html"
+                        title="previous chapter">Description of sub-scripts</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/filedescriptions.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="subscripts.html" title="Description of sub-scripts"
+             >previous</a> |</li>
+        <li><a href="index.html">IMPACT-Pipeline 1.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijazuddin Syed, Raghu Chandramohan, Meera Prasad.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
