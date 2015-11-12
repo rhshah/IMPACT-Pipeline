@@ -21,12 +21,13 @@ It is designed for use with hybrid capture, including both whole-exome and custo
 Contents:
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 5
    
    install
    requirements
    usage
    subscripts
+   filedescriptions
 
 Citation
 ========
