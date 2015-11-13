@@ -3324,7 +3324,7 @@ sub CallingSNPsAndIndels
 		}
 
 		#RUN Mutation Calling Jobs
-		my $pcount = 0
+		my $pcount = 0;
 		foreach my $file (@files)
 		{
 			my ($fileBarcode) = $file =~ /.*_(bc\d+)_.*/;
