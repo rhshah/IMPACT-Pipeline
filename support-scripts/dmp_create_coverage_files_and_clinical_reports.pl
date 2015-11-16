@@ -622,6 +622,7 @@ sub GenerateGeneCoverage {
 			print OUT "$k\t$gene\t$txID\t$cov\t$result\n";
 			$k++;
 		}
+		close COVERAGEFILE
 	}
 	$logger->info("Gene based coverage files are created.");
 	return;
