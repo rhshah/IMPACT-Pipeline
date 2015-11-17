@@ -1835,7 +1835,7 @@ sub PlotGraphs
     	$logger->debug( "COMMAND: $cmd");
     	eval{
     		`$BSUB -q $queue -J PCW.$$ -cwd $outdir -e PCW.$$.%J.stderr -o PCW.$$.%J.stdout -We 0:59 -R "rusage[mem=5]" -M 10 -n 1 "$outdir/PostCompileWrapper.csh"`;
-			`$BSUB -q $queue -cwd $outdir -w "done(PCW.$$)" -J NotifyPCW.$$ -e NotifyPCW.$$.%J.stderr -o NotifyPCW.$$.stat -We 0:59 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;	
+			`$BSUB -q $queue -cwd $outdir -w "post_done(PCW.$$)" -J NotifyPCW.$$ -e NotifyPCW.$$.%J.stderr -o NotifyPCW.$$.stat -We 0:59 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;	
            
     	};
     	if ($@) {
