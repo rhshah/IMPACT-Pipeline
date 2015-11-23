@@ -5128,7 +5128,7 @@ sub RunSortSam
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J SortSam.$id.$$ -o SortSam.$id.$$.%J.stdout -e SortSam.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/AddOrReplaceReadGroups.jar I=$samFile O=$outFilename SO=coordinate RGID=$basename RGLB=$id RGPL=$platform RGPU=$barcode RGSM=$sampleId RGCN=MSKCC TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J SortSam.$id.$$ -o SortSam.$id.$$.%J.stdout -e SortSam.$id.$$.%J.stderr -We 2:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/AddOrReplaceReadGroups.jar I=$samFile O=$outFilename SO=coordinate RGID=$basename RGLB=$id RGPL=$platform RGPU=$barcode RGSM=$sampleId RGCN=MSKCC TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
+`$BSUB -q $queue -cwd $outdir -J SortSam.$id.$$ -o SortSam.$id.$$.%J.stdout -e SortSam.$id.$$.%J.stderr -We 6:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/AddOrReplaceReadGroups.jar I=$samFile O=$outFilename SO=coordinate RGID=$basename RGLB=$id RGPL=$platform RGPU=$barcode RGSM=$sampleId RGCN=MSKCC TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(SortSam.$id.$$)" -J NotifySortSam.$id.$$ -e NotifySortSam.$id.$$.%J.stderr -o NotifySortSam.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
@@ -5169,7 +5169,7 @@ sub RunFixMateInformation
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J FixMate.$id.$$ -o FixMate.$id.$$.%J.stdout -e FixMate.$id.$$.%J.stderr -R \"rusage[mem=32]\" -M 40 -n 4 \"$JAVA_1_7 -Xmx24g -jar $PICARD/FixMateInformation.jar I=$bamFile O=$outFilename SO=coordinate TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J FixMate.$id.$$ -o FixMate.$id.$$.%J.stdout -e FixMate.$id.$$.%J.stderr -We 2:00 -R "rusage[mem=32]" -M 40 -n 4 "$JAVA_1_7 -Xmx24g -jar $PICARD/FixMateInformation.jar I=$bamFile O=$outFilename SO=coordinate TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
+`$BSUB -q $queue -cwd $outdir -J FixMate.$id.$$ -o FixMate.$id.$$.%J.stdout -e FixMate.$id.$$.%J.stderr -We 6:00 -R "rusage[mem=32]" -M 40 -n 4 "$JAVA_1_7 -Xmx24g -jar $PICARD/FixMateInformation.jar I=$bamFile O=$outFilename SO=coordinate TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(FixMate.$id.$$)" -J NotifyFixMate.$id.$$ -e NotifyFixMate.$id.$$.%J.stderr -o NotifyFixMate.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
@@ -5213,7 +5213,7 @@ sub RunMarkDuplicates
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J MD.$id.$$ -o MD.$id.$$.%J.stdout -e MD.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/MarkDuplicates.jar I=$bamFile O=$outFilename ASSUME_SORTED=true METRICS_FILE=$metricsFilename TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J MD.$id.$$ -o MD.$id.$$.%J.stdout -e MD.$id.$$.%J.stderr -We 2:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/MarkDuplicates.jar I=$bamFile O=$outFilename ASSUME_SORTED=true METRICS_FILE=$metricsFilename TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
+`$BSUB -q $queue -cwd $outdir -J MD.$id.$$ -o MD.$id.$$.%J.stdout -e MD.$id.$$.%J.stderr -We 6:00 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $PICARD/MarkDuplicates.jar I=$bamFile O=$outFilename ASSUME_SORTED=true METRICS_FILE=$metricsFilename TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(MD.$id.$$)" -J NotifyMD.$id.$$ -e NotifyMD.$id.$$.%J.stderr -o NotifyMD.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
