@@ -3833,7 +3833,7 @@ sub FilterSNPsAndIndels
 			#Pindel VCF
 			my $Pvcf =
 			  Vcf->new( file => "$outdir/$somaticPindelVcfFiles[$fileNum]" );
-			($sampleId) = $somaticIndelVcfFiles[$fileNum] =~ /(.*)_bc{1,2}/;
+			($sampleId) = $somaticIndelVcfFiles[$fileNum] =~ /(.*)_bc\d+/;
 			$Pvcf->parse_header();
 
 			#Get Sample ID
