@@ -3370,7 +3370,7 @@ sub CallingSNPsAndIndels
 			}
 			$count++;
 			$pcount++;
-			if ( $pcount >= 4 )
+			if ( $pcount >= 8 )
 			{
 				&WaitToFinish( $outdir, @notifyNames );
 				@notifyNames = ();
