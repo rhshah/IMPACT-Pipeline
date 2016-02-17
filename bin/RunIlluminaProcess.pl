@@ -1860,19 +1860,19 @@ sub MergeDataFromDirectory {
 		return ( \@sortedparseFilenames );
 	}
 	else {
-		for ( my $i = 0 ; $i < scalar(@titleBarcode) ; $i++ ) {
+		for ( my $sampleNum = 0 ; $sampleNum < scalar(@titleBarcode) ; $sampleNum++ ) {
 			my $name =
-			    $titleSampleId[$i] . "_"
-			  . $titleBarcode[$i] . "_"
-			  . $titlePool[$i];
+			    $titleSampleId[$sampleNum] . "_"
+			  . $titleBarcode[$sampleNum] . "_"
+			  . $titlePool[$SampleNum];
 
 			my $read1ListName =
 			    $datadir . "/"
-			  . $sampleId[$sampleNum] . "_" . "*" . "_L00*"
+			  . $titleSampleId[$sampleNum] . "_" . "*" . "_L00*"
 			  . "_R1_*.fastq.gz";
 			my $read2ListName =
 			    $datadir . "/"
-			  . $sampleId[$sampleNum] . "_" . "*" . "_L00*"
+			  . $titleSampleId[$sampleNum] . "_" . "*" . "_L00*"
 			  . "_R2_*.fastq.gz";
 
 			my $read1Name =
