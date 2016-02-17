@@ -1734,7 +1734,7 @@ sub MergeDataFromDirectory {
 		&CheckOutputFiles( $outdir, $prog, @sortedparseFilenames );
 		return ( \@sortedparseFilenames );
 	}
-	elsif ( $fastqSource == "GCL" ) {
+	elsif ( $fastqSource eq "GCL" ) {
 		for ( my $i = 0 ; $i < scalar(@titleBarcode) ; $i++ ) {
 			$titleInfo{ $titleBarcode[$i] } =
 			    $titleSampleId[$i] . "_"
