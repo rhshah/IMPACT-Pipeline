@@ -113,7 +113,7 @@ use version;
 my $logger = MSKCC_DMP_Logger->get_logger('IMPACT_Pipeline_Logger');
 $logger->start_local();
 my ( $config_file, $sv_config_file, $datadir, $outdir, $svTag,
-	 $removeSymLinksFlag );
+	$removeSymLinksFlag );
 undef $!;
 undef $@;
 
@@ -121,129 +121,124 @@ undef $@;
 my $now = time;
 
 # This is variable is the path to the bin folder
-my $binPath    = Bin();
-my ($root)     = $binPath =~ /(.*\/).*/;    #get the path above bin
+my $binPath = Bin();
+my ($root) = $binPath =~ /(.*\/).*/;    #get the path above bin
 my ($revision) = `svnversion $root`;
 $revision =~ s/\s//g;
 my $supportScriptPath = $root
   . "support-scripts/"
   ;    #path to support scripts, independent of installation location
 if (
-	 @ARGV < 1
-	 or !GetOptions(
-					 'config|c:s'          => \$config_file,
-					 'svConfig|sc:s'       => \$sv_config_file,
-					 'dataDirectory|d:s'   => \$datadir,
-					 'outputDirectory|o:s' => \$outdir,
-					 'symLinkFlag|sf:i'    => \$removeSymLinksFlag,
-					 'version|v:s'         => \&VersionMessage
-	 )
+	@ARGV < 1
+	or !GetOptions(
+		'config|c:s'          => \$config_file,
+		'svConfig|sc:s'       => \$sv_config_file,
+		'dataDirectory|d:s'   => \$datadir,
+		'outputDirectory|o:s' => \$outdir,
+		'symLinkFlag|sf:i'    => \$removeSymLinksFlag,
+		'version|v:s'         => \&VersionMessage
+	)
   )
 {
 	Usage();
 }
-if ($config_file)
-{
+if ($config_file) {
 	$logger->info("The configration file in use is $config_file");
-} else
-{
+}
+else {
 	$logger->fatal("The configration file in use is $config_file");
 	exit(1);
 }
-if ($sv_config_file)
-{
+if ($sv_config_file) {
 	$logger->info("The sv configration file in use is $config_file");
 	$svTag = 2;
-} else
-{
+}
+else {
 	$logger->fatal("The sv configration file in use is $config_file");
 	$svTag = 1;
 }
-if ($removeSymLinksFlag)
-{
-	if ( $removeSymLinksFlag == 1 )
-	{
+if ($removeSymLinksFlag) {
+	if ( $removeSymLinksFlag == 1 ) {
 		$logger->info("SYMLINKS:The symLinks will be removed");
-	} else
-	{
+	}
+	else {
 		$logger->info("SYMLINKS:The symLinks will be not be removed");
 	}
-} else
-{
+}
+else {
 	$removeSymLinksFlag = 2;
 	$logger->info("SYMLINKS:The symLinks will not be removed");
 }
 
 #Define Global Variables
 my (
-	 $sampleFile,                  $stdNormal,
-	 $titleFile,                   $fof,
-	 $runBQSR,                     $mailID,
-	 $list,                        $poolName,
-	 $projectName,                 $barcodeFile,
-	 $process,                     $standardNormalList,
-	 $mvFiles,                     $mergeDinucleotide,
-	 $fastqSource,                 $adaptorFile,
-	 $TMPDIR,                      $JAVA_1_6,
-	 $JAVA_1_7,                    $ExonToGenCov,
-	 $FPGenotypesScript,           $GenerateMetricsFilesScript,
-	 $FP_genotypes,                $GATK_SomaticIndel,
-	 $GATK,                        $Reference,
-	 $Refseq,                      $PICARD,
-	 $Mutect,                      $filter_Mutect,
-	 $filter_SomaticIndel,         $BaitInterval,
-	 $TargetInterval,              $CompileMetrics,
-	 $CAT,                         $PYTHON,
-	 $TrimGalore,                  $PERL,
-	 $BWA,                         $GeneInterval,
-	 $GeneIntervalAnn,             $GeneCoord,
-	 $TilingInterval,              $TilingIntervalAnn,
-	 $FingerPrintInterval,         $canonicalExonIntervalsFile,
-	 $dbSNP,                       $COSMIC,
-	 $Mills_1000G_Indels,          $dbSNP_bitset,
-	 $dbProperties,                $Oncotator,
-	 $Mutation_Assessor,           $AnnotateAssessFilterVariants,
-	 $LoessNormalization,          $BestCopyNumber,
-	 $NormVsNormCopyNumber,        $StdNormalLoess_TM,
-	 $StdNormalLoess_NVN,          $AllMetrics,
-	 $SAMTOOLS,                    $BEDTOOLS,
-	 $GenotypeAllele,              $cosmicHotspotsVcf,
-	 $GCBiasFile,                  $HistNormDir,
-	 $TNfreqRatio_MutectStdFilter, $TNfreqRatio_SomIndelStdFilter,
-	 $TNfreqRatioThreshold,        $ad_SomIndelStdFilter,
-	 $dp_SomIndelStdFilter,        $vf_SomIndelStdFilter,
-	 $ad_MutectStdFilter,          $dp_MutectStdFilter,
-	 $vf_MutectStdFilter,          $dp_snv,
-	 $ad_snv,                      $vf_snv,
-	 $dp_snvHS,                    $ad_snvHS,
-	 $vf_snvHS,                    $dp_indel,
-	 $ad_indel,                    $vf_indel,
-	 $dp_indelHS,                  $ad_indelHS,
-	 $vf_indelHS,                  $MAFthreshold,
-	 $occurrencePercent,           $NormalVariantsVCF,
-	 $queue,                       $deleteIntermediateFiles,
-	 $MAPQ,                        $BASQ,
-	 $QSUB,                        $RHOME,
-	 $RLIBS,                       $RSYNC,
-	 $filterGenotypedVariants,     $createPatientVCFfile,
-	 $createCoverageFiles,         $ClinicalExons,
-	 $HotspotMutations,            $IGVtools,
-	 $translationFolder,           $exonIntervalsFile,
-	 $validatedExons,              $coverageThreshold,
-	 $SVpipeline,                  $ABRA,
-	 $ABRAwrapper,                 $StandardNormalsDirectory,
-	 $runABRA,                     $CountErrors,
-	 $PindelWrapper,               $PINDELBIN,
-	 $filter_Pindel,               $PON_AD_threshold,
-	 $PON_TPVF_threshold,          $Pindel_Min_Indel_Len,
-	 $Pindel_Max_Indel_Len,        $triallelic_fix,
-	 $FindCoveredIntervals,        $TargetRegionLIST,
-	 $CLUSTER,                     $BSUB,
-	 $ZCAT
+	$sampleFile,                  $stdNormal,
+	$titleFile,                   $fof,
+	$runBQSR,                     $mailID,
+	$list,                        $poolName,
+	$projectName,                 $barcodeFile,
+	$process,                     $standardNormalList,
+	$mvFiles,                     $mergeDinucleotide,
+	$fastqSource,                 $adaptorFile,
+	$TMPDIR,                      $JAVA_1_6,
+	$JAVA_1_7,                    $ExonToGenCov,
+	$FPGenotypesScript,           $GenerateMetricsFilesScript,
+	$FP_genotypes,                $GATK_SomaticIndel,
+	$GATK,                        $Reference,
+	$Refseq,                      $PICARD,
+	$Mutect,                      $filter_Mutect,
+	$filter_SomaticIndel,         $BaitInterval,
+	$TargetInterval,              $CompileMetrics,
+	$CAT,                         $PYTHON,
+	$TrimGalore,                  $PERL,
+	$BWA,                         $GeneInterval,
+	$GeneIntervalAnn,             $GeneCoord,
+	$TilingInterval,              $TilingIntervalAnn,
+	$FingerPrintInterval,         $canonicalExonIntervalsFile,
+	$dbSNP,                       $COSMIC,
+	$Mills_1000G_Indels,          $dbSNP_bitset,
+	$dbProperties,                $Oncotator,
+	$Mutation_Assessor,           $AnnotateAssessFilterVariants,
+	$LoessNormalization,          $BestCopyNumber,
+	$NormVsNormCopyNumber,        $StdNormalLoess_TM,
+	$StdNormalLoess_NVN,          $AllMetrics,
+	$SAMTOOLS,                    $BEDTOOLS,
+	$GenotypeAllele,              $cosmicHotspotsVcf,
+	$GCBiasFile,                  $HistNormDir,
+	$TNfreqRatio_MutectStdFilter, $TNfreqRatio_SomIndelStdFilter,
+	$TNfreqRatioThreshold,        $ad_SomIndelStdFilter,
+	$dp_SomIndelStdFilter,        $vf_SomIndelStdFilter,
+	$ad_MutectStdFilter,          $dp_MutectStdFilter,
+	$vf_MutectStdFilter,          $dp_snv,
+	$ad_snv,                      $vf_snv,
+	$dp_snvHS,                    $ad_snvHS,
+	$vf_snvHS,                    $dp_indel,
+	$ad_indel,                    $vf_indel,
+	$dp_indelHS,                  $ad_indelHS,
+	$vf_indelHS,                  $MAFthreshold,
+	$occurrencePercent,           $NormalVariantsVCF,
+	$queue,                       $deleteIntermediateFiles,
+	$MAPQ,                        $BASQ,
+	$QSUB,                        $RHOME,
+	$RLIBS,                       $RSYNC,
+	$filterGenotypedVariants,     $createPatientVCFfile,
+	$createCoverageFiles,         $ClinicalExons,
+	$HotspotMutations,            $IGVtools,
+	$translationFolder,           $exonIntervalsFile,
+	$validatedExons,              $coverageThreshold,
+	$SVpipeline,                  $ABRA,
+	$ABRAwrapper,                 $StandardNormalsDirectory,
+	$runABRA,                     $CountErrors,
+	$PindelWrapper,               $PINDELBIN,
+	$filter_Pindel,               $PON_AD_threshold,
+	$PON_TPVF_threshold,          $Pindel_Min_Indel_Len,
+	$Pindel_Max_Indel_Len,        $triallelic_fix,
+	$FindCoveredIntervals,        $TargetRegionLIST,
+	$CLUSTER,                     $BSUB,
+	$ZCAT
 );
 
-sub VersionMessage
-{
+sub VersionMessage {
 	our $VERSION = version->declare("v3.0.0");
 	print "You are running $0 version : $VERSION\n";
 	exit();
@@ -254,15 +249,13 @@ my ($Version) = &GetConfiguration($config_file);
 
 #Check the input parameters
 #Check for Sample Sheet & Title File
-if ( !$sampleFile )
-{
+if ( !$sampleFile ) {
 	$logger->warn(
 "Sample sheet is not given in the configuration file. Looking into the raw data directory."
 	);
 	$sampleFile = `ls $datadir/SampleSheet.csv`;
 	chomp($sampleFile);
-	if ( !$sampleFile )
-	{
+	if ( !$sampleFile ) {
 		$logger->fatal(
 "Sample sheet could not be located in the raw data directory, pipeline requires a sample sheet to run. Please see usage."
 		);
@@ -270,15 +263,13 @@ if ( !$sampleFile )
 		exit(1);
 	}
 }
-if ( !$titleFile )
-{
+if ( !$titleFile ) {
 	$logger->warn(
 "Title file is not given in the configuration file. Looking into the raw data directory."
 	);
 	$titleFile = `ls $datadir/title_file.txt`;
 	chomp($titleFile);
-	if ( !$titleFile )
-	{
+	if ( !$titleFile ) {
 		$logger->fatal(
 "Title file could not be located in the raw data directory, pipeline requires the title file to run. Please see usage."
 		);
@@ -289,42 +280,38 @@ if ( !$titleFile )
 
 #Read Sample File
 my (
-	 $fcId,        $lane,    $sampleId, $sampleRef, $index,
-	 $description, $control, $recipe,   $operator,  $sampleProject
+	$fcId,        $lane,    $sampleId, $sampleRef, $index,
+	$description, $control, $recipe,   $operator,  $sampleProject
 ) = &ReadSampleFile( $sampleFile, $projectName, $outdir );
 
 #Read Title File
 my (
-	 $barcode,      $pool,      $titleSampleId, $collabId,
-	 $patientId,    $class,     $sampleType,    $inputNg,
-	 $libraryYeild, $poolInput, $baitVersion
+	$barcode,      $pool,      $titleSampleId, $collabId,
+	$patientId,    $class,     $sampleType,    $inputNg,
+	$libraryYeild, $poolInput, $baitVersion
 ) = &ReadTitleFile( $titleFile, $outdir );
 my @sampleProject = @$sampleProject;
 my @pool          = @$pool;
 
 #Check for Project Name
-if ( !$projectName )
-{
+if ( !$projectName ) {
 	$logger->warn(
 "Project name is not given in the configuration file, pipeline will use the project name stated in the SampleSheet.csv file."
 	);
 	$projectName = $sampleProject[0];
-	if ( !$projectName )
-	{
+	if ( !$projectName ) {
 		$logger->fatal("Can not read project name from the sample sheet.");
 		exit(1);
 	}
 }
 
 #Check for Pool Name
-if ( !$poolName )
-{
+if ( !$poolName ) {
 	$logger->warn(
 "Pool name is not given in the configuration file, pipeline will use the pool name stated in the title file."
 	);
 	$poolName = $pool[0];
-	if ( !$poolName )
-	{
+	if ( !$poolName ) {
 		$logger->fatal("Can not read pool name from the title file.");
 		exit(1);
 	}
@@ -332,113 +319,99 @@ if ( !$poolName )
 my $outdir_final;
 
 #Check output directory
-if ( !$outdir )
-{
+if ( !$outdir ) {
 	$logger->fatal(
-"Please enter the directory that can be used as output directory.See Usage" );
+"Please enter the directory that can be used as output directory.See Usage"
+	);
 	Usage();
 	exit(1);
 }
 
 #Check Cluster
-if ( $CLUSTER eq "SGE" )
-{
-	if ( !$QSUB )
-	{
+if ( $CLUSTER eq "SGE" ) {
+	if ( !$QSUB ) {
 		$logger->fatal(
-"Please enter the path of QSUB executable for SGE job submission. See Usage" );
+"Please enter the path of QSUB executable for SGE job submission. See Usage"
+		);
 		Usage();
 		exit(1);
-	} else
-	{
+	}
+	else {
 		$logger->info("Pipeline will try to run on the given SGE cluster");
 	}
-} else
-{
-	if ( !$BSUB )
-	{
+}
+else {
+	if ( !$BSUB ) {
 		$logger->fatal(
-"Please enter the path of BSUB executable for LSF job submission. See Usage" );
+"Please enter the path of BSUB executable for LSF job submission. See Usage"
+		);
 		Usage();
 		exit(1);
-	} else
-	{
+	}
+	else {
 		$logger->info("Pipeline will try to run on the given LSF cluster");
 	}
 }
 
 #Check for runBQSR flag
-if ( !$runBQSR )
-{
+if ( !$runBQSR ) {
 	$logger->info("BQSR would be ran on the project but at sample level.");
 	$runBQSR = 1;
-} else
-{
-	if ( $runBQSR == 0 )
-	{
+}
+else {
+	if ( $runBQSR == 0 ) {
 		$logger->info("BQSR would not be ran on the project.");
 	}
-	if ( $runBQSR == 1 )
-	{
+	if ( $runBQSR == 1 ) {
 		$logger->info("BQSR would be ran on the project but at sample level.");
 	}
-	if ( $runBQSR == 2 )
-	{
+	if ( $runBQSR == 2 ) {
 		$logger->info("BQSR would be ran on the project but at lane level.");
 	}
 }
 
 #Check for Merge Dinucleotide flag
-if ( !$mergeDinucleotide )
-{
+if ( !$mergeDinucleotide ) {
 	$logger->info("Dinucleotide would be merged by default.");
 	$mergeDinucleotide = 1;
-} else
-{
-	if ( $mergeDinucleotide == 1 )
-	{
+}
+else {
+	if ( $mergeDinucleotide == 1 ) {
 		$logger->info("Dinucleotide would be merged by default.");
 	}
-	if ( $mergeDinucleotide == 2 )
-	{
+	if ( $mergeDinucleotide == 2 ) {
 		$logger->info("Dinucleotide would not be merged.");
 	}
 }
 
 #Check for move files flag
-if ( !$mvFiles )
-{
+if ( !$mvFiles ) {
 	$logger->info("Folders will be created and Files will be moved.");
 	$mvFiles = 1;
-} else
-{
-	if ( $mvFiles == 1 )
-	{
+}
+else {
+	if ( $mvFiles == 1 ) {
 		$logger->info("Folders will be created and Files will be moved.");
 	}
-	if ( $mvFiles == 2 )
-	{
+	if ( $mvFiles == 2 ) {
 		$logger->info(
-					"Folders will not be created and Files will not be moved.");
+			"Folders will not be created and Files will not be moved.");
 	}
 }
 
 #Check for delete files flag
-if ( !$deleteIntermediateFiles )
-{
+if ( !$deleteIntermediateFiles ) {
 	$logger->info(
 "DeleteIntermediateFiles: Flag not given. Default will delete all intermediate files"
 	);
 	$deleteIntermediateFiles = 1;
-} else
-{
-	if ( $deleteIntermediateFiles == 1 )
-	{
+}
+else {
+	if ( $deleteIntermediateFiles == 1 ) {
 		$logger->info(
 			"DeleteIntermediateFiles: Flag given to delete intermediate files");
 	}
-	if ( $deleteIntermediateFiles == 2 )
-	{
+	if ( $deleteIntermediateFiles == 2 ) {
 		$logger->info(
 "DeleteIntermediateFiles: Flag given so that intermediate files are not deleted."
 		);
@@ -446,37 +419,32 @@ if ( !$deleteIntermediateFiles )
 }
 
 #Check for runABRA flag
-if ( !$runABRA )
-{
+if ( !$runABRA ) {
 	$logger->info("GATK Re-alignment will be ran");
 	$runABRA = 2;
-} else
-{
-	if ( $runABRA == 1 )
-	{
+}
+else {
+	if ( $runABRA == 1 ) {
 		$logger->info("ABRA Re-alignment will be ran");
 	}
-	if ( $runABRA == 2 )
-	{
+	if ( $runABRA == 2 ) {
 		$logger->info("GATK Re-alignment will be ran");
 	}
 }
 
 #Check for fastq source
-if ( !$fastqSource )
-{
+if ( !$fastqSource ) {
 	$logger->info("Assuming that Fastq files are from GCL");
 	$fastqSource = "GCL";
-} else
-{
-	if ( $fastqSource eq "DMP" )
-	{
+}
+else {
+	if ( $fastqSource eq "DMP" ) {
 		$logger->info("Fastq files are from DMP");
-	} elsif ( $fastqSource eq "GCL" )
-	{
+	}
+	elsif ( $fastqSource eq "GCL" ) {
 		$logger->info("Fastq files are from GCL");
-	} else
-	{
+	}
+	else {
 		$logger->fatal("Please indicate fastqSource. See Usage");
 		Usage();
 		exit(1);
@@ -485,434 +453,404 @@ if ( !$fastqSource )
 
 #Check for process
 $process =~ s/\s//g;
-if ( !$process )
-{
+if ( !$process ) {
 	$logger->fatal("Please enter the number of process to be ran. See Usage");
 	Usage();
 	exit(1);
-} else
-{
+}
+else {
 	$logger->info("The process selected to run are $process");
 }
 
 #Check for barcode file
-if ($barcodeFile)
-{
+if ($barcodeFile) {
 	$logger->info("The barcode file in use is $barcodeFile.");
-} else
-{
+}
+else {
 	$barcodeFile = "/home/shahr2/Scripts/All/barcodeKey48.txt";
 	$logger->info("The barcode file in use is $barcodeFile.");
 }
 
 #Check for adaptor file
-if ($adaptorFile)
-{
+if ($adaptorFile) {
 	$logger->info("The adaptor file in use is $adaptorFile.");
-} else
-{
+}
+else {
 	$adaptorFile = "/home/shahr2/Scripts/All/adaptorKey48.txt";
 	$logger->info("The adaptor file in use is $adaptorFile.");
 }
 
 #Check for Standard Normal file
-if ( !$stdNormal )
-{
+if ( !$stdNormal ) {
 	$logger->info(
 "No standard normal is given. Thus assuming there is atleast one normal in the run"
 	);
 	$stdNormal = "NULL";
-} else
-{
+}
+else {
 	$logger->info("Starndard Normal is given: $stdNormal");
 }
 
 #Check for TNratio for mutect std filter
-if ( !$TNfreqRatio_MutectStdFilter )
-{
+if ( !$TNfreqRatio_MutectStdFilter ) {
 	$logger->info(
 "MutectStdFilter:Minimum Tumor Normal VF ratio not given default will be used"
 	);
 	$TNfreqRatio_MutectStdFilter = 5;
-} else
-{
+}
+else {
 	$logger->info("TNfreqRatio_MutectStdFilter:$TNfreqRatio_MutectStdFilter");
 }
 
 #Check DP for Mutect std filter
-if ( !$dp_MutectStdFilter )
-{
+if ( !$dp_MutectStdFilter ) {
 	$logger->info(
-		  "MutectStdFilter:Minimum total depth not given default will be used");
+		"MutectStdFilter:Minimum total depth not given default will be used");
 	$dp_MutectStdFilter = 0;
-} else
-{
+}
+else {
 	$logger->info("DP_MutectStdFilter:$dp_MutectStdFilter");
 }
 
 #Check AD for Mutect std filter
-if ( !$ad_MutectStdFilter )
-{
+if ( !$ad_MutectStdFilter ) {
 	$logger->info(
-		 "MutectStdFilter:Minimum Allele depth not given default will be used");
+		"MutectStdFilter:Minimum Allele depth not given default will be used");
 	$ad_MutectStdFilter = 3;
-} else
-{
+}
+else {
 	$logger->info("AD_MutectStdFilter:$ad_MutectStdFilter");
 }
 
 #Check VF for Mutect std filter
-if ( !$vf_MutectStdFilter )
-{
+if ( !$vf_MutectStdFilter ) {
 	$logger->info(
-"MutectStdFilter:Minimum variant frequenct not given default will be used" );
+"MutectStdFilter:Minimum variant frequenct not given default will be used"
+	);
 	$vf_MutectStdFilter = 0.01;
-} else
-{
+}
+else {
 	$logger->info("VF_MutectStdFilter:$vf_MutectStdFilter");
 }
 
 #Check TNratio for somatic indel detector std filter
-if ( !$TNfreqRatio_SomIndelStdFilter )
-{
+if ( !$TNfreqRatio_SomIndelStdFilter ) {
 	$logger->info(
 "SomIndelStdFilter:Minimum Tumor Normal VF ratio not given default will be used"
 	);
 	$TNfreqRatio_SomIndelStdFilter = 5;
-} else
-{
+}
+else {
 	$logger->info(
-				"TNfreqRatio_SomIndelStdFilter:$TNfreqRatio_SomIndelStdFilter");
+		"TNfreqRatio_SomIndelStdFilter:$TNfreqRatio_SomIndelStdFilter");
 }
 
 #Check DP for somatic indel detector std filter
-if ( !$dp_SomIndelStdFilter )
-{
+if ( !$dp_SomIndelStdFilter ) {
 	$logger->info(
 		"SomIndelStdFilter:Minimum total depth not given default will be used");
 	$dp_SomIndelStdFilter = 0;
-} else
-{
+}
+else {
 	$logger->info("DP_SomIndelStdFilter:$dp_SomIndelStdFilter");
 }
 
 #Check AD for somatic indel detector std filter
-if ( !$ad_SomIndelStdFilter )
-{
+if ( !$ad_SomIndelStdFilter ) {
 	$logger->info(
-		 "SomIndelStdFilter:Minimum Allele depth not given default will be used"
+		"SomIndelStdFilter:Minimum Allele depth not given default will be used"
 	);
 	$ad_SomIndelStdFilter = 3;
-} else
-{
+}
+else {
 	$logger->info("AD_SomIndelStdFilter:$ad_SomIndelStdFilter");
 }
 
 #Check VF for somatic indel detector std filter
-if ( !$vf_SomIndelStdFilter )
-{
+if ( !$vf_SomIndelStdFilter ) {
 	$logger->info(
-"SomIndelStdFilter:Minimum variant frequenct not given default will be used" );
+"SomIndelStdFilter:Minimum variant frequenct not given default will be used"
+	);
 	$vf_SomIndelStdFilter = 0.01;
-} else
-{
+}
+else {
 	$logger->info("VF_SomIndelStdFilter:$vf_SomIndelStdFilter");
 }
 
 #Check Base Quality threshold
-if ( !$BASQ )
-{
+if ( !$BASQ ) {
 	$logger->info("BASQ: Base Quality Threshold not given defult will be used");
 	$BASQ = 5;
-} else
-{
+}
+else {
 	$logger->info("BASQ:$BASQ");
 }
 
 #Check Mapping Quality threshold
-if ( !$MAPQ )
-{
+if ( !$MAPQ ) {
 	$logger->info(
-			   "MAPQ: Mapping Quality Threshold not given defult will be used");
+		"MAPQ: Mapping Quality Threshold not given defult will be used");
 	$MAPQ = 5;
-} else
-{
+}
+else {
 	$logger->info("MAPQ:$MAPQ");
 }
 
 #Check  for queue
-if ( !$queue )
-{
+if ( !$queue ) {
 	$logger->info("Name of the SGE queue not given default will be used");
 	$queue = "all.q";
-} else
-{
+}
+else {
 	$logger->info("SGE Queue:$queue");
 }
 
 #Check PON AD
-if ( !$PON_AD_threshold )
-{
+if ( !$PON_AD_threshold ) {
 	$logger->info(
 "PON_AD_Threshold:Panel of Normal AD threshold not given default will be used"
 	);
 	$PON_AD_threshold = 3;
-} else
-{
+}
+else {
 	$logger->info("PON_AD_Threshold:$PON_AD_threshold");
 }
 
 #Check PON TPVF
-if ( !$PON_TPVF_threshold )
-{
+if ( !$PON_TPVF_threshold ) {
 	$logger->info(
 "PON_TPVF_Threshold:Panel of Normal TPVF threshold not given default will be used"
 	);
 	$PON_TPVF_threshold = 10;
-} else
-{
+}
+else {
 	$logger->info("PON_TPVF_Threshold:$PON_TPVF_threshold");
 }
 
 #Check Pindel Min Indel Length
-if ( !$Pindel_Min_Indel_Len )
-{
+if ( !$Pindel_Min_Indel_Len ) {
 	$logger->info(
-"Pindel_Min_Indel_Len:Pindel Min Indel Len not given default will be used" );
+"Pindel_Min_Indel_Len:Pindel Min Indel Len not given default will be used"
+	);
 	$Pindel_Min_Indel_Len = 25;
-} else
-{
+}
+else {
 	$logger->info("Pindel_Min_Indel_Len:$Pindel_Min_Indel_Len");
 }
 
 #Check Pindel Max Indel Length
-if ( !$Pindel_Max_Indel_Len )
-{
+if ( !$Pindel_Max_Indel_Len ) {
 	$logger->info(
-"Pindel_Max_Indel_Len:Pindel Max Indel Len not given default will be used" );
+"Pindel_Max_Indel_Len:Pindel Max Indel Len not given default will be used"
+	);
 	$Pindel_Max_Indel_Len = 2000;
-} else
-{
+}
+else {
 	$logger->info("Pindel_Max_Indel_Len:$Pindel_Max_Indel_Len");
 }
 
 #Check for standard normal fof for genotyping
-if ( !$standardNormalList )
-{
+if ( !$standardNormalList ) {
 	$standardNormalList =
 	  "/ifs/e63data/bergerm1/Resources/StandardNormals/StandardNormals.list";
 	$logger->info(
-		 "Standard Normal File is not given thus the default file will be used."
+		"Standard Normal File is not given thus the default file will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info("Standard Normal File to be used is $standardNormalList");
 }
 
 #Check if path to exon2gene coverage script is given
-if ( !$ExonToGenCov )
-{
+if ( !$ExonToGenCov ) {
 	$ExonToGenCov = $supportScriptPath . "dmp_exon2gene_coverage.pl";
 	$logger->info(
 "Exon to gene coverage script path is not given, default location ($ExonToGenCov) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info("Exon to gene coverage script location: $ExonToGenCov.");
 }
 
 #Check if path to FP_genotypes script is given
-if ( !$FPGenotypesScript )
-{
+if ( !$FPGenotypesScript ) {
 	$FPGenotypesScript = $supportScriptPath . "dmp_fp_genotypes.pl";
 	$logger->info(
 "Fingerprint genotyping script path is not given, default location ($FPGenotypesScript) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info(
-				 "Fingerprint genotyping script location: $FPGenotypesScript.");
+		"Fingerprint genotyping script location: $FPGenotypesScript.");
 }
 
 #Check if path to filter mutect script is given
-if ( !$filter_Mutect )
-{
+if ( !$filter_Mutect ) {
 	$filter_Mutect = $supportScriptPath . "dmp_filter_mutect.pl";
 	$logger->info(
 "Filter mutect script path is not given, default location ($filter_Mutect) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info("Filter mutect  script location: $filter_Mutect.");
 }
 
 #Check if path to filter somatic indel script is given
-if ( !$filter_SomaticIndel )
-{
+if ( !$filter_SomaticIndel ) {
 	$filter_SomaticIndel = $supportScriptPath . "dmp_filter_indel.pl";
 	$logger->info(
 "Filter indel script path is not given, default location ($filter_SomaticIndel) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info("Filter indel script location: $filter_SomaticIndel.");
 }
 
 #Check if path to filter pindel script is given
-if ( !$filter_Pindel )
-{
+if ( !$filter_Pindel ) {
 	$filter_Pindel = $supportScriptPath . "dmp_filter_pindel.py";
 	$logger->info(
 "Filter pindel script path is not given, default location ($filter_Pindel) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info("Filter pindel script location: $filter_Pindel.");
 }
 
 #Check if path to compile metrics script is given
-if ( !$CompileMetrics )
-{
+if ( !$CompileMetrics ) {
 	$CompileMetrics = $binPath . "/dmp_compile_qc_metrics.pl";
 	$logger->info(
 "Compile metrics script path is not given, default location ($CompileMetrics) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info("Compile metrics script location: $CompileMetrics.");
 }
 
 #Check if path to abra wrapper script is given
-if ( !$ABRAwrapper )
-{
+if ( !$ABRAwrapper ) {
 	$ABRAwrapper = $binPath . "/Run_ABRArealignment.py";
 	$logger->info(
 "ABRAwrapper script path is not given, default location ($ABRAwrapper) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info("ABRA wrapper script location: $ABRAwrapper.");
 }
 
 #Check if path to pindel wrapper script is given
-if ( !$PindelWrapper )
-{
+if ( !$PindelWrapper ) {
 	$PindelWrapper = $binPath . "/Run_Pindel.py";
 	$logger->info(
 "PindelWrapper script path is not given, default location ($PindelWrapper) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info("Pindel wrapper script location: $PindelWrapper.");
 }
 
 #Check if path to Annotate assess filter variants script is given
-if ( !$AnnotateAssessFilterVariants )
-{
+if ( !$AnnotateAssessFilterVariants ) {
 	$AnnotateAssessFilterVariants =
 	  $supportScriptPath . "/dmp_annotate_filter_variants.pl";
 	$logger->info(
 "Variant annotation and filtering script path is not given, default location ($AnnotateAssessFilterVariants) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info(
 "Variant annotation and filtering script location: $AnnotateAssessFilterVariants."
 	);
 }
 
 #Check if path to genotype allele script is given
-if ( !$GenotypeAllele )
-{
+if ( !$GenotypeAllele ) {
 	$GenotypeAllele = $binPath . "/dmp_genotype_allele.pl";
 	$logger->info(
 "Genotype allele script path is not given, default location ($GenotypeAllele) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info("Genotype allele script location: $GenotypeAllele.");
 }
 
 #Check if path to filter genotyped variants script is given
-if ( !$filterGenotypedVariants )
-{
+if ( !$filterGenotypedVariants ) {
 	$filterGenotypedVariants =
 	  $supportScriptPath . "/dmp_filter_genotyped_variants.pl";
 	$logger->info(
 "Filter Genotyped Variants script path is not given, default location ($filterGenotypedVariants) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info(
-				 "Filter Genotyped Variants script location: $GenotypeAllele.");
+		"Filter Genotyped Variants script location: $GenotypeAllele.");
 }
 
 #Check if path to FindCoveredIntervals is given
-if ( !$FindCoveredIntervals )
-{
+if ( !$FindCoveredIntervals ) {
 	$FindCoveredIntervals = $supportScriptPath . "/Run_FindCoveredIntervals.py";
 	$logger->info(
 "Run_FindCoveredIntervals.py script path is not given, default location ($filterGenotypedVariants) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info(
-				 "FindCoveredIntevals script location: $FindCoveredIntervals.");
+		"FindCoveredIntevals script location: $FindCoveredIntervals.");
 }
 
 #Check if path to create coverage files script is given
-if ( !$createCoverageFiles )
-{
+if ( !$createCoverageFiles ) {
 	$createCoverageFiles =
 	  $supportScriptPath . "/dmp_create_coverage_files_and_clinical_reports.pl";
 	$logger->info(
 "Create coverage files script path is not given, default location ($createCoverageFiles) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info(
-			   "Create coverage files  script location: $createCoverageFiles.");
+		"Create coverage files  script location: $createCoverageFiles.");
 }
 
 #Check if path to create coverage files script is given
-if ( !$createPatientVCFfile )
-{
+if ( !$createPatientVCFfile ) {
 	$createPatientVCFfile =
 	  $supportScriptPath . "/dmp_create_patient_vcf_file.pl";
 	$logger->info(
 "Create patient VCF files script path is not given, default location ($createPatientVCFfile) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info(
-		   "Create patient VCF files  script location: $createPatientVCFfile.");
+		"Create patient VCF files  script location: $createPatientVCFfile.");
 }
 
 #Check if path to generate metrics files script is given
-if ( !$GenerateMetricsFilesScript )
-{
+if ( !$GenerateMetricsFilesScript ) {
 	$GenerateMetricsFilesScript =
 	  $supportScriptPath . "/dmp_generate_metrics_report.pl";
 	$logger->info(
 "Create patient VCF files script path is not given, default location ($GenerateMetricsFilesScript) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info(
-"Create patient VCF files  script location: $GenerateMetricsFilesScript." );
+"Create patient VCF files  script location: $GenerateMetricsFilesScript."
+	);
 }
 
 #Check if path to triallelic site fix script is given
-if ( !$triallelic_fix )
-{
+if ( !$triallelic_fix ) {
 	$triallelic_fix = $supportScriptPath . "/dmp_triallelic_fix.pl";
 	$logger->info(
 "Add entries to raw MUTECT output files in case of a triallelic site, default location ($triallelic_fix) will be used."
 	);
-} else
-{
+}
+else {
 	$logger->info(
-"Create patient VCF files  script location: $GenerateMetricsFilesScript." );
+"Create patient VCF files  script location: $GenerateMetricsFilesScript."
+	);
 }
 
 #Prin Version of tools and Files used
@@ -921,16 +859,15 @@ my $PrintConfigFile = "RunConfigration.txt";
 open( VERSION, ">", "$outdir/$PrintConfigFile" )
   or die( $logger->fatal("Cannot open $outdir/$PrintConfigFile. Error: $!") );
 print VERSION "Tools|Files\tVersion\n";
-while ( my ( $tools_files, $version ) = each(%$Version) )
-{
+while ( my ( $tools_files, $version ) = each(%$Version) ) {
 	print VERSION "$tools_files\t$version\n";
 }
 
 #print VERSION "RawDataDir\t$datadir\n";
 close(VERSION);
 tie( my %classPerBarcode, 'Tie::IxHash' );
-for ( my $i = 0 ; $i < scalar(@$barcode) ; $i++ )
-{
+for ( my $i = 0 ; $i < scalar(@$barcode) ; $i++ ) {
+
 	#print "$$barcode[$i] => $$class[$i]\n";
 	$classPerBarcode{ $$barcode[$i] } = $$class[$i];
 }
@@ -942,17 +879,17 @@ for ( my $i = 0 ; $i < scalar(@$barcode) ; $i++ )
 my @allProcess = split( ",", $process );
 
 #Check for raw data directory
-if ( $allProcess[0] == 1 && !$datadir )
-{
+if ( $allProcess[0] == 1 && !$datadir ) {
 	$logger->fatal(
-"Please enter the directory that contains the data to be processed.See Usage" );
+"Please enter the directory that contains the data to be processed.See Usage"
+	);
 	Usage();
 	exit(1);
-} elsif ( $allProcess[0] == 1 && $datadir )
-{
+}
+elsif ( $allProcess[0] == 1 && $datadir ) {
 	$logger->info("The raw data directory given is $datadir");
-} else
-{
+}
+else {
 	$logger->info(
 "Process 1 is not selected so I am not checking to see if the raw data directory is given or not."
 	);
@@ -961,8 +898,8 @@ my $allProcessList  = join( ",", @allProcess );
 my $numberOfProcess = scalar(@allProcess);
 my $processCount    = 0;
 my $parseFilenames;
-while ( $processCount < $numberOfProcess )
-{
+while ( $processCount < $numberOfProcess ) {
+
 	#print "@allProcess\n";
 	my $runProcess = shift(@allProcess);
 
@@ -970,22 +907,18 @@ while ( $processCount < $numberOfProcess )
 	($parseFilenames) = &Select( $runProcess, $parseFilenames );
 	$processCount++;
 }
-if ($fof)
-{
-	if ( $removeSymLinksFlag == 1 )
-	{
+if ($fof) {
+	if ( $removeSymLinksFlag == 1 ) {
 		$logger->warn("Removing Softlinked files form $outdir");
 		my @softlinks = ();
 		eval {
 			@softlinks =
 			  `find $outdir -maxdepth 1 -type l -print0 | xargs -0 ls -d`;
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->warn("Cannot find all softlinks in $outdir. Error:$@");
 		}
-		foreach my $sfLink (@softlinks)
-		{
+		foreach my $sfLink (@softlinks) {
 			eval { `unlink $sfLink`; };
 			if ($@) { $logger->warn("Cannot unlink $sfLink. Error:$@"); }
 		}
@@ -997,24 +930,25 @@ if ($@) { $logger->warn("Cannot change permissions for $outdir. Error:$@"); }
 
 #--Calculate total runtime (current time minus start time)
 $now = time - $now;
-if ( length($mailID) )
-{
+if ( length($mailID) ) {
+
 	# if email address exists email the user
 `echo \"IMPACT pipeline for $poolName has finished running the steps: $allProcessList. The output files can be found at $outdir. Thanks!\" | mail -s \"IMPACT run has completed!\" \"$mailID\"`;
 }
 
 #--Print runtime
-printf( "\n\nTotal Pipeline running time: %02d:%02d:%02d\n\n",
-		int( $now / 3600 ),
-		int( ( $now % 3600 ) / 60 ),
-		int( $now % 60 ) );
+printf(
+	"\n\nTotal Pipeline running time: %02d:%02d:%02d\n\n",
+	int( $now / 3600 ),
+	int( ( $now % 3600 ) / 60 ),
+	int( $now % 60 )
+);
 $logger->info("Impact_Pipeline:Done, Thanks for using the framework");
 exit(0);
 #####################################
 #####################################
 #How to use the script.
-sub Usage
-{
+sub Usage {
 	print "Unknow option: @_\n" if (@_);
 	print "\nUsage : RunIlluminaProcess.pl [options]
         [--config|c                        S Path to configration file(required)]
@@ -1059,7 +993,7 @@ sub Usage
         VF_Tthreshold_indel_high_AnnotationFilter   F Low Tumor Varaint Frequency threshold for indels(default:0.02,optional) 
         QUEUE_NAME                                 S Name of the Queue where the pipeline needs to run (default:all.q,optional)
 	\n";
-	
+
 	print "For any question please contact Ronak Shah (shahr2\@mskcc.org)\n";
 	print "!~!~! Comments, flames and suggestion are welcome !~!~!\n";
 	exit();
@@ -1067,8 +1001,7 @@ sub Usage
 ###################################################
 ###################################################
 #--GET CONFIGRATION DETAIL
-sub GetConfiguration
-{
+sub GetConfiguration {
 	my ($config_file) = @_;
 	my @data = ();
 	tie( my %config,     'Tie::IxHash' );
@@ -1082,15 +1015,12 @@ sub GetConfiguration
 	open( CONFIG, "$config_file" )
 	  or die( $logger->fatal("Cannot open $config_file. Error: $!") );
 	my $junk = <CONFIG>;
-	while (<CONFIG>)
-	{
+	while (<CONFIG>) {
 		next if ( $_ =~ /^#/ );
 		chomp($_);
 		my ( $defLine, @configLines ) = split /\n/, $_;
-		if ( $defLine =~ /Locations/ )
-		{
-			foreach my $config (@configLines)
-			{
+		if ( $defLine =~ /Locations/ ) {
+			foreach my $config (@configLines) {
 				next if ( $config =~ /^#/ );
 				@data = split( "=", $config, 2 );
 				$data[0] =~ s/\s//g;
@@ -1098,10 +1028,8 @@ sub GetConfiguration
 				$location{ $data[0] } = $data[1];
 			}
 		}
-		if ( $defLine =~ /Parameters/ )
-		{
-			foreach my $config (@configLines)
-			{
+		if ( $defLine =~ /Parameters/ ) {
+			foreach my $config (@configLines) {
 				next if ( $config =~ /^#/ );
 				@data = split( "=", $config, 2 );
 				$data[0] =~ s/\s//g;
@@ -1109,10 +1037,8 @@ sub GetConfiguration
 				$parameters{ $data[0] } = $data[1];
 			}
 		}
-		if ( $defLine =~ /Versions/ )
-		{
-			foreach my $config (@configLines)
-			{
+		if ( $defLine =~ /Versions/ ) {
+			foreach my $config (@configLines) {
 				next if ( $config =~ /^#/ );
 				@data = split( "=", $config, 2 );
 				$data[0] =~ s/\s//g;
@@ -1259,10 +1185,9 @@ sub GetConfiguration
 		$Pindel_Min_Indel_Len    = $parameters{"Pindel_Min_Indel_Len"};
 		$Pindel_Max_Indel_Len    = $parameters{"Pindel_Max_Indel_Len"};
 	};
-	if ($@)
-	{
+	if ($@) {
 		$logger->fatal(
-				   "Did not find a variable in configuration file.Error: $@\n");
+			"Did not find a variable in configuration file.Error: $@\n");
 		exit(1);
 	}
 	return ( \%version );
@@ -1270,8 +1195,7 @@ sub GetConfiguration
 ###################################################
 ###################################################
 #--Make Notification file
-sub MakeCSH
-{
+sub MakeCSH {
 	my ($outdir) = @_;
 	my $filename = $outdir . "/Notify.csh";
 	my $ntmp     = new IO::File(">$filename");
@@ -1281,8 +1205,7 @@ sub MakeCSH
 	$ntmp->close();
 	eval { `chmod +x $filename`; };
 
-	if ($@)
-	{
+	if ($@) {
 		$logger->fatal("Cannot change permissions for $filename. Error:$@");
 		exit(1);
 	}
@@ -1291,28 +1214,25 @@ sub MakeCSH
 ###################################################
 ###################################################
 #--Waiting for the process to finish
-sub WaitToFinish
-{
+sub WaitToFinish {
 	my ( $outdir, @waitfilenames ) = @_;
 	$logger->info("Waiting for the Process to finish...");
-	foreach my $wfile (@waitfilenames)
-	{
+	foreach my $wfile (@waitfilenames) {
 		next if ( $wfile eq "NULL" );
 		sleep 10 while ( !( -e "$outdir/$wfile" ) );
 
 		#print "$outdir/$wfile\n";
-		while ( -e "$outdir/$wfile" )
-		{
+		while ( -e "$outdir/$wfile" ) {
+
 			#print "$outdir/$wfile\n";
 			open( FH, "<", "$outdir/$wfile" );
-			while (<FH>)
-			{
-				if ( $_ =~ /This is Done/ig )
-				{
+			while (<FH>) {
+				if ( $_ =~ /This is Done/ig ) {
+
 					#print "\nFinished: $wfile\n";
 					last;
-				} else
-				{
+				}
+				else {
 					wait;
 				}
 			}
@@ -1320,8 +1240,7 @@ sub WaitToFinish
 		}
 		close(FH);
 	}
-	foreach my $wfile (@waitfilenames)
-	{
+	foreach my $wfile (@waitfilenames) {
 		next if ( $wfile eq "NULL" );
 		eval { `rm $outdir/$wfile`; };
 		if ($@) { $logger->warn("Cannot remove $outdir/$wfile. Error:$@"); }
@@ -1331,29 +1250,24 @@ sub WaitToFinish
 ###################################################
 ###################################################
 #--Check Error Files
-sub CheckErrorFiles
-{
+sub CheckErrorFiles {
 	my ( $outdir, @errorfilenames ) = @_;
 	$logger->info("Checking Error Files");
-	foreach my $efile (@errorfilenames)
-	{
+	foreach my $efile (@errorfilenames) {
 		next if ( $efile eq "NULL" );
-		if ( -e "$outdir/$efile" )
-		{
-			if ( ( -s "$outdir/$efile" ) != 0 )
-			{
+		if ( -e "$outdir/$efile" ) {
+			if ( ( -s "$outdir/$efile" ) != 0 ) {
 				$logger->warn("Please Check $efile; Something went wrong here");
-			} else
-			{
+			}
+			else {
 				eval { `rm $outdir/$efile`; };
-				if ($@)
-				{
+				if ($@) {
 					$logger->warn("Cannot remove $outdir/$efile. Error:$@");
 				}
 				next;
 			}
-		} else
-		{
+		}
+		else {
 			$logger->warn(
 "Please check, no error file was created named $efile; Something went wrong here."
 			);
@@ -1364,95 +1278,86 @@ sub CheckErrorFiles
 ###################################################
 ###################################################
 #--Check Output Files
-sub CheckOutputFiles
-{
+sub CheckOutputFiles {
 	my ( $outdir, $prog, @Outputfilenames ) = @_;
 	$logger->info("Checking Output Files");
 	$prog = "NULL" if ( !$prog );
-	if ( ( $prog eq "STDfilter" ) or ( $prog eq "RawMutationFiles" ) )
-	{
-		foreach my $ofile (@Outputfilenames)
-		{
-			if ( ( $ofile =~ /\// ) and ( !( $ofile =~ /,/ ) ) )
-			{
-				if ( -e "$ofile" )
-				{
+	if ( ( $prog eq "STDfilter" ) or ( $prog eq "RawMutationFiles" ) ) {
+		foreach my $ofile (@Outputfilenames) {
+			if ( ( $ofile =~ /\// ) and ( !( $ofile =~ /,/ ) ) ) {
+				if ( -e "$ofile" ) {
 					next;
-				} else
-				{
+				}
+				else {
 					$logger->fatal(
 "CheckFile:Please check, $ofile file was not created;Something went wrong here."
 					);
 					exit(1);
 				}
 			}
-			if ( -e "$outdir/$ofile" )
-			{
+			if ( -e "$outdir/$ofile" ) {
 				next;
-			} else
-			{
+			}
+			else {
 				$logger->fatal(
 "CheckFile:Please check, $outdir/$ofile file was not created;Something went wrong here."
 				);
 				exit(1);
 			}
 		}
-	} else
-	{
-		foreach my $ofile (@Outputfilenames)
-		{
-			if ( ( $ofile =~ /\// ) and ( !( $ofile =~ /,/ ) ) )
-			{
-				if ( ( -e "$ofile" ) and ( ( -s "$ofile" ) != 0 ) )
-				{
+	}
+	else {
+		foreach my $ofile (@Outputfilenames) {
+			if ( ( $ofile =~ /\// ) and ( !( $ofile =~ /,/ ) ) ) {
+				if ( ( -e "$ofile" ) and ( ( -s "$ofile" ) != 0 ) ) {
 					next;
-				} else
-				{
+				}
+				else {
 					$logger->fatal(
 "CheckFile:Please check, $ofile file was not created or the file size is zero; Something went wrong here."
 					);
 					exit(1);
 				}
-			} elsif ( ( $ofile =~ /,/ ) and ( !( $ofile =~ /\// ) ) )
-			{
+			}
+			elsif ( ( $ofile =~ /,/ ) and ( !( $ofile =~ /\// ) ) ) {
 				my ( $file1, $file2 ) = split( ",", $ofile );
-				if (     ( -e "$outdir/$file1" )
-					 and ( ( -s "$outdir/$file1" ) != 0 )
-					 and ( -e "$outdir/$file2" )
-					 and ( ( -s "$outdir/$file2" ) != 0 ) )
+				if (    ( -e "$outdir/$file1" )
+					and ( ( -s "$outdir/$file1" ) != 0 )
+					and ( -e "$outdir/$file2" )
+					and ( ( -s "$outdir/$file2" ) != 0 ) )
 				{
 					next;
-				} else
-				{
+				}
+				else {
 					$logger->fatal(
 "CheckFile:Please check,$file1 & $file2 files was not created or the file size is zero; Something went wrong here."
 					);
 					exit(1);
 				}
-			} elsif ( ( $ofile =~ /,/ ) and ( $ofile =~ /\// ) )
-			{
+			}
+			elsif ( ( $ofile =~ /,/ ) and ( $ofile =~ /\// ) ) {
 				my ( $file1, $file2 ) = split( ",", $ofile );
-				if (     ( -e "$file1" )
-					 and ( ( -s "$file1" ) != 0 )
-					 and ( -e "$file2" )
-					 and ( ( -s "$file2" ) != 0 ) )
+				if (    ( -e "$file1" )
+					and ( ( -s "$file1" ) != 0 )
+					and ( -e "$file2" )
+					and ( ( -s "$file2" ) != 0 ) )
 				{
 					next;
-				} else
-				{
+				}
+				else {
 					$logger->fatal(
 "CheckFile:Please check,$file1 & $file2 files was not created or the file size is zero; Something went wrong here."
 					);
 					exit(1);
 				}
-			} else
-			{
-				if (     ( -e "$outdir/$ofile" )
-					 and ( ( -s "$outdir/$ofile" ) != 0 ) )
+			}
+			else {
+				if (    ( -e "$outdir/$ofile" )
+					and ( ( -s "$outdir/$ofile" ) != 0 ) )
 				{
 					next;
-				} else
-				{
+				}
+				else {
 					$logger->fatal(
 "CheckFile:Please check, $outdir/$ofile file was not created or the file size is zero;Something went wrong here."
 					);
@@ -1467,14 +1372,12 @@ sub CheckOutputFiles
 ###################################################
 ###################################################
 #--Make array of file of files list from the outdir
-sub GetNames
-{
+sub GetNames {
 	my ( $fof, $outdir ) = @_;
 	my (@filenames) = ();
 	open( FOF, "$outdir/$fof" )
 	  or die( $logger->fatal("GetNames:Cannot open $outdir/$fof Error:$!") );
-	while (<FOF>)
-	{
+	while (<FOF>) {
 		chomp;
 		next
 		  if (/^\s$/)
@@ -1488,21 +1391,18 @@ sub GetNames
 ###################################################
 ###################################################
 #--Make Pairs of the files.
-sub MAKEPAIRS
-{
+sub MAKEPAIRS {
 	my ( $filenames, $outdir ) = @_;
 	my @names      = @$filenames;
 	my $count      = scalar @names;
 	my (@newnames) = ();
-	if ( $count % 2 != 0 )
-	{
+	if ( $count % 2 != 0 ) {
 		$logger->fatal(
-			   "MAKEPAIRS:Odd number of files given, please check Input file.");
+			"MAKEPAIRS:Odd number of files given, please check Input file.");
 		exit(1);
-	} else
-	{
-		for ( my $i = 0 ; $i < scalar(@names) ; $i += 2 )
-		{
+	}
+	else {
+		for ( my $i = 0 ; $i < scalar(@names) ; $i += 2 ) {
 			chomp( $names[$i] );
 			chomp( $names[ $i + 1 ] );
 			push( @newnames, "$names[$i],$names[$i+1]" );
@@ -1513,8 +1413,7 @@ sub MAKEPAIRS
 ###################################################
 ###################################################
 #--Reverse Complement of the sequence.
-sub RevComp
-{
+sub RevComp {
 	my ($seq) = @_;
 	my $revseq = reverse($seq);
 	$revseq = uc($revseq);
@@ -1524,26 +1423,23 @@ sub RevComp
 #####################################
 #####################################
 #Read data related to samples as well as barcodes.
-sub ReadSampleFile
-{
+sub ReadSampleFile {
 	my ( $sampleFile, $projectName, $outdir ) = @_;
 	my (
-		 @fcId,        @lane,    @sampleId, @sampleRef, @index,
-		 @description, @control, @recipe,   @operator,  @sampleProject
+		@fcId,        @lane,    @sampleId, @sampleRef, @index,
+		@description, @control, @recipe,   @operator,  @sampleProject
 	) = ();
 	my $sampleFileName = "";
-	if ( $sampleFile =~ /\// )
-	{
+	if ( $sampleFile =~ /\// ) {
 		$sampleFileName = pop @{ [ split( "/", $sampleFile ) ] };
-	} else
-	{
+	}
+	else {
 		$sampleFileName = $sampleFile;
 	}
 	open( SAMPLEFILE, $sampleFile )
 	  or
 	  die( $logger->fatal("ReadSampleFile:Cannot open $sampleFile. Error:$!") );
-	while (<SAMPLEFILE>)
-	{
+	while (<SAMPLEFILE>) {
 		next if $. == 1;
 		my @oldDataCols = split( ",", $_ );
 		my @dataCols =
@@ -1560,25 +1456,22 @@ sub ReadSampleFile
 		if ( $dataCols[9] ) { push( @sampleProject, $dataCols[9] ); }
 	}
 	close(SAMPLEFILE);
-	if ( !-e "$outdir/$sampleFileName" )
-	{
+	if ( !-e "$outdir/$sampleFileName" ) {
 		eval { `cp $sampleFile $outdir/$sampleFileName`; };
-		if ($@)
-		{
+		if ($@) {
 			$logger->warn("Cannot copy $outdir/$sampleFileName. Error:$@");
 		}
 	}
 	return (
-			 \@fcId,     \@lane,        \@sampleId, \@sampleRef,
-			 \@index,    \@description, \@control,  \@recipe,
-			 \@operator, \@sampleProject
+		\@fcId,     \@lane,        \@sampleId, \@sampleRef,
+		\@index,    \@description, \@control,  \@recipe,
+		\@operator, \@sampleProject
 	);
 }
 #####################################
 #####################################
 #Read data related to samples as well as barcodes from title file.
-sub ReadTitleFile
-{
+sub ReadTitleFile {
 	my ( $titleFile, $outdir ) = @_;
 	my @barcode      = ();
 	my @pool         = ();
@@ -1597,8 +1490,7 @@ sub ReadTitleFile
 	  or die(
 		$logger->fatal("ReadTitleFile:Cannot open file $titleFile. Error:$!") );
 
-	while (<TFH>)
-	{
+	while (<TFH>) {
 		next if ( $. == 1 );
 		my @dataCols = split( "\t", $_ );
 		my @newDatacols =
@@ -1618,65 +1510,62 @@ sub ReadTitleFile
 	close(TFH);
 	my $poolName         = $pool[0];
 	my $newtitleFileName = $poolName . "_title.txt";
-	if ( !-e "$outdir/$newtitleFileName" )
-	{
+	if ( !-e "$outdir/$newtitleFileName" ) {
 		eval { `cp $titleFile $outdir/$newtitleFileName`; };
-		if ($@)
-		{
+		if ($@) {
 			$logger->warn("Cannot copy $outdir/$newtitleFileName. Error:$@");
 		}
 	}
 	return (
-			 \@barcode,      \@pool,      \@sampleId,   \@collabId,
-			 \@patientId,    \@class,     \@sampleType, \@inputNg,
-			 \@libraryYeild, \@poolInput, \@baitVersion
+		\@barcode,      \@pool,      \@sampleId,   \@collabId,
+		\@patientId,    \@class,     \@sampleType, \@inputNg,
+		\@libraryYeild, \@poolInput, \@baitVersion
 	);
 }
 #####################################
 #####################################
 #Run only single process at a time.
-sub Select
-{
+sub Select {
 	my ( $process, $parseFilenames ) = @_;
-	if ( $process == 1 )
-	{
+	if ( $process == 1 ) {
 		$parseFilenames = &MergeDataFromDirectory();
-	} elsif ( $process == 2 )
-	{
+	}
+	elsif ( $process == 2 ) {
 		$parseFilenames = &DoMapping($parseFilenames);
-	} elsif ( $process == 3 )
-	{
+	}
+	elsif ( $process == 3 ) {
 		$parseFilenames = &ProcessBams($parseFilenames);
-	} elsif ( $process == 4 )
-	{
+	}
+	elsif ( $process == 4 ) {
 		$parseFilenames = &CalculateAndCompileMetrics($parseFilenames);
 		if ( $svTag == 2 ) { $parseFilenames = &CallSV($parseFilenames); }
-	} elsif ( $process == 5 )
-	{
+	}
+	elsif ( $process == 5 ) {
 		$parseFilenames = &CallingSNPsAndIndels($parseFilenames);
-	} elsif ( $process == 6 )
-	{
+	}
+	elsif ( $process == 6 ) {
 		$parseFilenames = &FilterSNPsAndIndels($parseFilenames);
-	} elsif ( $process == 7 )
-	{
+	}
+	elsif ( $process == 7 ) {
 		$parseFilenames =
 		  &AnnotateSNPsAndIndels( $parseFilenames, $outdir, $fof );
-	} elsif ( ( $process eq "qc" ) or ( $process eq "QC" ) )
-	{
+	}
+	elsif ( ( $process eq "qc" ) or ( $process eq "QC" ) ) {
 		$parseFilenames = &MergeDataFromDirectory();
 		$parseFilenames = &DoMapping($parseFilenames);
 		$parseFilenames = &ProcessBams($parseFilenames);
 		$parseFilenames = &CalculateAndCompileMetrics($parseFilenames);
-	} elsif ( ( $process eq "vc" ) or ( $process eq "VC" ) )
-	{
+	}
+	elsif ( ( $process eq "vc" ) or ( $process eq "VC" ) ) {
 		$parseFilenames = &CalculateAndCompileMetrics($parseFilenames);
 		if ( $svTag == 2 ) { $parseFilenames = &CallSV($parseFilenames); }
 		$parseFilenames = &CallingSNPsAndIndels($parseFilenames);
 		$parseFilenames = &FilterSNPsAndIndels($parseFilenames);
 		$parseFilenames = &AnnotateSNPsAndIndels($parseFilenames);
-	} elsif (    ( $process eq "all" )
-			  or ( $process eq "ALL" )
-			  or ( $process eq "All" ) )
+	}
+	elsif (( $process eq "all" )
+		or ( $process eq "ALL" )
+		or ( $process eq "All" ) )
 	{
 		$parseFilenames = &MergeDataFromDirectory();
 		$parseFilenames = &DoMapping($parseFilenames);
@@ -1686,25 +1575,24 @@ sub Select
 		$parseFilenames = &CallingSNPsAndIndels($parseFilenames);
 		$parseFilenames = &FilterSNPsAndIndels($parseFilenames);
 		$parseFilenames = &AnnotateSNPsAndIndels($parseFilenames);
-	} else
-	{
+	}
+	else {
 		$logger->fatal(
-"Select:The process number entered ($process) does not exist, See Usage." );
+"Select:The process number entered ($process) does not exist, See Usage."
+		);
 		exit(1);
 	}
 	return ($parseFilenames);
 }
 
-sub uniq (@)
-{
+sub uniq (@) {
 	my %seen = ();
 	grep { not $seen{$_}++ } @_;
 }
 #####################################
 #####################################
 #Merge data from reading data from the directory
-sub MergeDataFromDirectory
-{
+sub MergeDataFromDirectory {
 	my @lane            = @$lane;
 	my @sampleId        = @$sampleId;
 	my @index           = @$index;
@@ -1725,8 +1613,7 @@ sub MergeDataFromDirectory
 	  or
 	  die( $logger->fatal("BarcodeFile:Cannot open $barcodeFile. Error:$!") );
 
-	while (<BARCODEFILE>)
-	{
+	while (<BARCODEFILE>) {
 		next if ( $. == 1 );
 		my @dataCols = split( "\t", $_ );
 		$dataCols[0] =~ s/\s//g;
@@ -1736,10 +1623,8 @@ sub MergeDataFromDirectory
 	}
 	close(BARCODEFILE);
 	$logger->info("Running merge jobs on SGE/LSF");
-	if ( $fastqSource eq "DMP" )
-	{
-		foreach my $i ( 0 .. $#titleBarcode )
-		{
+	if ( $fastqSource eq "DMP" ) {
+		foreach my $i ( 0 .. $#titleBarcode ) {
 			my $newIndex = $titleBarcode[$i];
 			my $name =
 			    $titleSampleId[$i] . "_"
@@ -1747,10 +1632,8 @@ sub MergeDataFromDirectory
 			  . $titlePool[$i];
 			my $read1ListName = "";
 			my $read2ListName = "";
-			foreach my $j ( 0 .. $#sampleId )
-			{
-				if ( $index[$j] eq $indexHash{ $titleBarcode[$i] } )
-				{
+			foreach my $j ( 0 .. $#sampleId ) {
+				if ( $index[$j] eq $indexHash{ $titleBarcode[$i] } ) {
 					$read1ListName .=
 					    $datadir . "/"
 					  . $sampleId[$j] . "_"
@@ -1767,10 +1650,10 @@ sub MergeDataFromDirectory
 			}
 			my $read1Name = $outdir . "/" . $name . "_L000_R1_mrg.fastq.gz";
 			my $read2Name = $outdir . "/" . $name . "_L000_R2_mrg.fastq.gz";
-			if (     ( -e $read1Name )
-				 and ( ( -s $read1Name ) != 0 )
-				 and ( -e $read2Name )
-				 and ( ( -s $read2Name ) != 0 ) )
+			if (    ( -e $read1Name )
+				and ( ( -s $read1Name ) != 0 )
+				and ( -e $read2Name )
+				and ( ( -s $read2Name ) != 0 ) )
 			{
 				$logger->warn(
 "Files:\n$read1Name\n$read2Name\n they exists and process will not run to merge files."
@@ -1780,8 +1663,8 @@ sub MergeDataFromDirectory
 				push( @notifyNames,     $Null );
 				push( @checkErrorFiles, $Null );
 				push( @parseFilenames,  "$read1Name,$read2Name" );
-			} else
-			{
+			}
+			else {
 				eval {
 					if ( $CLUSTER eq "SGE" )
 					{
@@ -1799,8 +1682,9 @@ sub MergeDataFromDirectory
 						$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N MergeRead2.$newIndex.$i.$$ -e MergeRead2.$newIndex.$i.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$ZCAT $read2ListName | gzip > $read2Name"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid MergeRead2.$newIndex.$i.$$ -N NotifyMR.Read2.$i.$$ -e NotifyMR.Read2.$i.$$.stderr -o NotifyMR.Read2.$i.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-					} else
-					{
+					}
+					else {
+
 						#Read1
 						my $cmd =
 "$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$i.$$ -e MergeRead1.$newIndex.$i.$$.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read1ListName | gzip > $read1Name\"";
@@ -1816,8 +1700,7 @@ sub MergeDataFromDirectory
 `$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead2.$newIndex.$i.$$)" -J NotifyMR.Read2.$i.$$ -e NotifyMR.Read2.$i.$$.%J.stderr -o NotifyMR.Read2.$i.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 					}
 				};
-				if ($@)
-				{
+				if ($@) {
 					$logger->fatal("MergeFastq:Job Sumission failed");
 					exit(1);
 				}
@@ -1832,10 +1715,12 @@ sub MergeDataFromDirectory
 		&CheckErrorFiles( $outdir, @checkErrorFiles );
 		$now = time - $now;
 		$logger->info("Finished running merge jobs on SGE");
-		printf( "Total Merge Fastq run time: %02d:%02d:%02d\n\n",
-				int( $now / 3600 ),
-				int( ( $now % 3600 ) / 60 ),
-				int( $now % 60 ) );
+		printf(
+			"Total Merge Fastq run time: %02d:%02d:%02d\n\n",
+			int( $now / 3600 ),
+			int( ( $now % 3600 ) / 60 ),
+			int( $now % 60 )
+		);
 		my (@sortedparseFilenames) =
 		  sort { lowestNumber($a) <=> lowestNumber($b) } @parseFilenames;
 
@@ -1843,10 +1728,9 @@ sub MergeDataFromDirectory
 		my $prog;
 		&CheckOutputFiles( $outdir, $prog, @sortedparseFilenames );
 		return ( \@sortedparseFilenames );
-	} else
-	{
-		for ( my $i = 0 ; $i < scalar(@titleBarcode) ; $i++ )
-		{
+	}
+	elsif ( $fastqSource == "GCL" ) {
+		for ( my $i = 0 ; $i < scalar(@titleBarcode) ; $i++ ) {
 			$titleInfo{ $titleBarcode[$i] } =
 			    $titleSampleId[$i] . "_"
 			  . $titleBarcode[$i] . "_"
@@ -1855,7 +1739,7 @@ sub MergeDataFromDirectory
 		@sampleId = uniq(@sampleId);
 		@index    = uniq(@index);
 		for ( my $sampleNum = 0 ;
-			  $sampleNum < scalar(@sampleId) ; $sampleNum++ )
+			$sampleNum < scalar(@sampleId) ; $sampleNum++ )
 		{
 			my $read1ListName =
 			    $datadir . "/"
@@ -1867,26 +1751,25 @@ sub MergeDataFromDirectory
 			  . $sampleId[$sampleNum] . "_"
 			  . $index[$sampleNum] . "_L00*"
 			  . "_R2_*.fastq.gz";
-			if ( exists $barcodes{ $index[$sampleNum] } )
-			{
+			if ( exists $barcodes{ $index[$sampleNum] } ) {
 				$newIndex = $barcodes{ $index[$sampleNum] };
-				if ( exists $titleInfo{$newIndex} )
-				{
+				if ( exists $titleInfo{$newIndex} ) {
 					$name = $titleInfo{$newIndex};
-				} else
-				{
+				}
+				else {
 					$logger->fatal(
 "MergeFastq:The barcode $newIndex doesnot exists in the title file. Cannot move ahead. Please check and rerun."
 					);
 					exit(1);
 				}
-			} else
-			{
+			}
+			else {
 				$logger->fatal(
 "MergeFastq:The barcode sequence $barcodes{$index[$sampleNum]} does not exists in barcode file. Cannot move ahead. Please check and rerun."
 				);
 				exit(1);
 			}
+
 			my $read1Name =
 			  $outdir . "/" . $name . "_L000" . "_R1_mrg.fastq.gz";
 			my $read2Name =
@@ -1894,10 +1777,10 @@ sub MergeDataFromDirectory
 
 			#Run the qsub command to merge the files.
 			#Read1
-			if (     ( -e $read1Name )
-				 and ( ( -s $read1Name ) != 0 )
-				 and ( -e $read2Name )
-				 and ( ( -s $read2Name ) != 0 ) )
+			if (    ( -e $read1Name )
+				and ( ( -s $read1Name ) != 0 )
+				and ( -e $read2Name )
+				and ( ( -s $read2Name ) != 0 ) )
 			{
 				$logger->warn(
 "Files:\n$read1Name\n$read2Name\n they exists and process will not run to merge files."
@@ -1908,8 +1791,8 @@ sub MergeDataFromDirectory
 				push( @checkErrorFiles, $Null );
 				push( @parseFilenames,  "$read1Name,$read2Name" );
 				next;
-			} else
-			{
+			}
+			else {
 				eval {
 					if ( $CLUSTER eq "SGE" )
 					{
@@ -1927,8 +1810,9 @@ sub MergeDataFromDirectory
 						#Read2
 `$QSUB -q $queue -V -wd $outdir -N MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$ZCAT $read2ListName | gzip > $read2Name"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid MergeRead2.$newIndex.$sampleNum.$$ -N NotifyMR.Read2.$sampleNum.$$ -e NotifyMR.Read2.$sampleNum.$$.stderr -o NotifyMR.Read2.$sampleNum.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-					} else
-					{
+					}
+					else {
+
 						#Read1
 						my $cmd =
 "$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$sampleNum.$$ -e MergeRead1.$newIndex.$sampleNum.$$.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read1ListName | gzip > $read1Name\"";
@@ -1944,17 +1828,16 @@ sub MergeDataFromDirectory
 `$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead2.$newIndex.$sampleNum.$$)" -J MergeRead2.$newIndex.$sampleNum.$$ -e NotifyMR.Read2.$sampleNum.$$.%J.stderr -o NotifyMR.Read2.$sampleNum.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 					}
 				};
-				if ($@)
-				{
+				if ($@) {
 					$logger->fatal("MergeFastq:Job Sumission failed");
 					exit(1);
 				}
 				push( @notifyNames, "NotifyMR.Read1.$sampleNum.$$.stat" );
 				push( @checkErrorFiles,
-					  "MergeRead1.$newIndex.$sampleNum.$$.err" );
+					"MergeRead1.$newIndex.$sampleNum.$$.err" );
 				push( @notifyNames, "NotifyMR.Read2.$sampleNum.$$.stat" );
 				push( @checkErrorFiles,
-					  "MergeRead2.$newIndex.$sampleNum.$$.err" );
+					"MergeRead2.$newIndex.$sampleNum.$$.err" );
 				push( @parseFilenames, "$read1Name,$read2Name" );
 			}
 		}
@@ -1962,10 +1845,117 @@ sub MergeDataFromDirectory
 		&CheckErrorFiles( $outdir, @checkErrorFiles );
 		$now = time - $now;
 		$logger->info("Finished running merge jobs on SGE");
-		printf( "Total Merge Fastq run time: %02d:%02d:%02d\n\n",
-				int( $now / 3600 ),
-				int( ( $now % 3600 ) / 60 ),
-				int( $now % 60 ) );
+		printf(
+			"Total Merge Fastq run time: %02d:%02d:%02d\n\n",
+			int( $now / 3600 ),
+			int( ( $now % 3600 ) / 60 ),
+			int( $now % 60 )
+		);
+		my (@sortedparseFilenames) =
+		  sort { lowestNumber($a) <=> lowestNumber($b) } @parseFilenames;
+
+		#Check fastq files
+		my $prog;
+		&CheckOutputFiles( $outdir, $prog, @sortedparseFilenames );
+		return ( \@sortedparseFilenames );
+	}
+	else {
+		for ( my $i = 0 ; $i < scalar(@titleBarcode) ; $i++ ) {
+			my $name =
+			    $titleSampleId[$i] . "_"
+			  . $titleBarcode[$i] . "_"
+			  . $titlePool[$i];
+
+			my $read1ListName =
+			    $datadir . "/"
+			  . $sampleId[$sampleNum] . "_" . "*" . "_L00*"
+			  . "_R1_*.fastq.gz";
+			my $read2ListName =
+			    $datadir . "/"
+			  . $sampleId[$sampleNum] . "_" . "*" . "_L00*"
+			  . "_R2_*.fastq.gz";
+
+			my $read1Name =
+			  $outdir . "/" . $name . "_L000" . "_R1_mrg.fastq.gz";
+			my $read2Name =
+			  $outdir . "/" . $name . "_L000" . "_R2_mrg.fastq.gz";
+
+			#Run the qsub command to merge the files.
+			#Read1
+			if (    ( -e $read1Name )
+				and ( ( -s $read1Name ) != 0 )
+				and ( -e $read2Name )
+				and ( ( -s $read2Name ) != 0 ) )
+			{
+				$logger->warn(
+"Files:\n$read1Name\n$read2Name\n they exists and process will not run to merge files."
+				);
+				push( @notifyNames,     $Null );
+				push( @checkErrorFiles, $Null );
+				push( @notifyNames,     $Null );
+				push( @checkErrorFiles, $Null );
+				push( @parseFilenames,  "$read1Name,$read2Name" );
+				next;
+			}
+			else {
+				eval {
+					if ( $CLUSTER eq "SGE" )
+					{
+						my $cmd =
+"$QSUB -q $queue -V -wd $outdir -N MergeRead1.$newIndex.$sampleNum.$$ -e MergeRead1.$newIndex.$sampleNum.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y \"$ZCAT $read1ListName | gzip > $read1Name\"";
+						$logger->debug("COMMAND: $cmd");
+
+						#Read1
+`$QSUB -q $queue -V -wd $outdir -N MergeRead1.$newIndex.$sampleNum.$$ -e MergeRead1.$newIndex.$sampleNum.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$ZCAT $read1ListName | gzip > $read1Name"`;
+`$QSUB -q $queue -V -wd $outdir -hold_jid MergeRead1.$newIndex.$sampleNum.$$ -N NotifyMR.Read1.$sampleNum.$$ -e NotifyMR.Read1.$sampleNum.$$.stderr -o NotifyMR.Read1.$sampleNum.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
+						$cmd =
+"$QSUB -q $queue -V -wd $outdir -N MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y \"$ZCAT $read2ListName | gzip > $read2Name\"";
+						$logger->debug("COMMAND: $cmd");
+
+						#Read2
+`$QSUB -q $queue -V -wd $outdir -N MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$ZCAT $read2ListName | gzip > $read2Name"`;
+`$QSUB -q $queue -V -wd $outdir -hold_jid MergeRead2.$newIndex.$sampleNum.$$ -N NotifyMR.Read2.$sampleNum.$$ -e NotifyMR.Read2.$sampleNum.$$.stderr -o NotifyMR.Read2.$sampleNum.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
+					}
+					else {
+
+						#Read1
+						my $cmd =
+"$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$sampleNum.$$ -e MergeRead1.$newIndex.$sampleNum.$$.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read1ListName | gzip > $read1Name\"";
+						$logger->debug("COMMAND: $cmd");
+`$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$sampleNum.$$ -e MergeRead1.$newIndex.$sampleNum.$$.stderr -We 0:59 -R "rusage[mem=2]" -M 4 -n 1 "$ZCAT $read1ListName | gzip > $read1Name"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead1.$newIndex.$sampleNum.$$)" -J MergeRead1.$newIndex.$sampleNum.$$ -e NotifyMR.Read1.$sampleNum.$$.%J.stderr -o NotifyMR.Read1.$sampleNum.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
+
+						#Read2
+						$cmd =
+"$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read2ListName | gzip > $read2Name\"";
+						$logger->debug("COMMAND: $cmd");
+`$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.stderr -We 0:59 -R "rusage[mem=2]" -M 4 -n 1 "$ZCAT $read2ListName | gzip > $read2Name"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead2.$newIndex.$sampleNum.$$)" -J MergeRead2.$newIndex.$sampleNum.$$ -e NotifyMR.Read2.$sampleNum.$$.%J.stderr -o NotifyMR.Read2.$sampleNum.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
+					}
+				};
+				if ($@) {
+					$logger->fatal("MergeFastq:Job Sumission failed");
+					exit(1);
+				}
+				push( @notifyNames, "NotifyMR.Read1.$sampleNum.$$.stat" );
+				push( @checkErrorFiles,
+					"MergeRead1.$newIndex.$sampleNum.$$.err" );
+				push( @notifyNames, "NotifyMR.Read2.$sampleNum.$$.stat" );
+				push( @checkErrorFiles,
+					"MergeRead2.$newIndex.$sampleNum.$$.err" );
+				push( @parseFilenames, "$read1Name,$read2Name" );
+			}
+		}
+		&WaitToFinish( $outdir, @notifyNames );
+		&CheckErrorFiles( $outdir, @checkErrorFiles );
+		$now = time - $now;
+		$logger->info("Finished running merge jobs on SGE");
+		printf(
+			"Total Merge Fastq run time: %02d:%02d:%02d\n\n",
+			int( $now / 3600 ),
+			int( ( $now % 3600 ) / 60 ),
+			int( $now % 60 )
+		);
 		my (@sortedparseFilenames) =
 		  sort { lowestNumber($a) <=> lowestNumber($b) } @parseFilenames;
 
@@ -1978,11 +1968,10 @@ sub MergeDataFromDirectory
 #####################################
 #####################################
 #sort by barcode name:
-sub lowestNumber
-{
-	my $files     = shift;
+sub lowestNumber {
+	my $files = shift;
 	my @filenames = split( ",", $files );
-	my ($number)  = $filenames[0] =~ m/.*_bc(\d+)_.*/g;
+	my ($number) = $filenames[0] =~ m/.*_bc(\d+)_.*/g;
 	return $number;
 }
 #####################################
@@ -1992,13 +1981,11 @@ sub lowestNumber
 #Run BWA
 #Filter ProperPairs
 #Mark Duplicates
-sub DoMapping
-{
+sub DoMapping {
 	my ($filenames) = @_;
 	my @names = ();
 	if ($filenames) { (@names) = @$filenames; }
-	if ( ( scalar(@names) == 0 ) and ($fof) )
-	{
+	if ( ( scalar(@names) == 0 ) and ($fof) ) {
 		my @fnames = &GetNames( $fof, $outdir );
 		@names = &MAKEPAIRS( \@fnames, $outdir );
 	}
@@ -2015,8 +2002,7 @@ sub DoMapping
 	my %adaptorList        = ();
 	open( ADAPTORFILE, $adaptorFile )
 	  or die( $logger->fatal("DoMapping:Cannot open $adaptorFile,Error:$!") );
-	while (<ADAPTORFILE>)
-	{
+	while (<ADAPTORFILE>) {
 		my @dataCols = split( "\t", $_ );
 		$dataCols[0] =~ s/\s//g;
 		$dataCols[1] =~ s/\s//g;
@@ -2026,8 +2012,7 @@ sub DoMapping
 
 	#Running Cutadapt through Trim Galore
 	$logger->info("Started runing clipping jobs on SGE");
-	for ( my $i = 0 ; $i < scalar @names ; $i++ )
-	{
+	for ( my $i = 0 ; $i < scalar @names ; $i++ ) {
 		my ( $file1, $file2 ) = split( ",", $names[$i] );
 
 		#print "$file1\n$file2\n";
@@ -2041,10 +2026,12 @@ sub DoMapping
 	&WaitToFinish( $outdir, @notifyNames );
 	$logger->info("Finished running clipping jobs on SGE");
 	$now = time - $now;
-	printf( "Total Adaptor Clipping run time: %02d:%02d:%02d\n\n",
-			int( $now / 3600 ),
-			int( ( $now % 3600 ) / 60 ),
-			int( $now % 60 ) );
+	printf(
+		"Total Adaptor Clipping run time: %02d:%02d:%02d\n\n",
+		int( $now / 3600 ),
+		int( ( $now % 3600 ) / 60 ),
+		int( $now % 60 )
+	);
 
 	#Check clipped read files
 	my $prog;
@@ -2054,8 +2041,7 @@ sub DoMapping
 	$now = time;
 	$logger->info("Started runing bwa mem jobs on SGE");
 	@notifyNames = ();
-	for ( my $i = 0 ; $i < scalar(@clippedFilenames) ; $i++ )
-	{
+	for ( my $i = 0 ; $i < scalar(@clippedFilenames) ; $i++ ) {
 		my ( $file1, $file2 ) = split( ",", $clippedFilenames[$i] );
 
 		#print "$file1\n$file2\n";
@@ -2070,10 +2056,12 @@ sub DoMapping
 	&WaitToFinish( $outdir, @notifyNames );
 	$logger->info("Finished running bwa mem jobs on SGE");
 	$now = time - $now;
-	printf( "Total running time: %02d:%02d:%02d\n\n",
-			int( $now / 3600 ),
-			int( ( $now % 3600 ) / 60 ),
-			int( $now % 60 ) );
+	printf(
+		"Total running time: %02d:%02d:%02d\n\n",
+		int( $now / 3600 ),
+		int( ( $now % 3600 ) / 60 ),
+		int( $now % 60 )
+	);
 
 	#Check bwa sampe files
 	&CheckOutputFiles( $outdir, $prog, @SamFilenames );
@@ -2082,8 +2070,7 @@ sub DoMapping
 	$now = time;
 	$logger->info("Started running Sort Sam jobs on SGE");
 	@notifyNames = ();
-	for ( my $i = 0 ; $i < scalar(@SamFilenames) ; $i++ )
-	{
+	for ( my $i = 0 ; $i < scalar(@SamFilenames) ; $i++ ) {
 		my ( $sortedBamFile, $notifyname ) =
 		  &RunSortSam( $SamFilenames[$i], $outdir, $i );
 		push( @notifyNames,        $notifyname );
@@ -2105,50 +2092,48 @@ sub DoMapping
 		(@clfastq)  = `ls $outdir/*_cl.fastq.gz`;
 		(@mrgfastq) = `ls $outdir/*_mrg.fastq.gz`;
 	};
-	if ($@)
-	{
+	if ($@) {
 		$logger->warn(
-					 "Cannot list files for deletion at mapping step.Error:$@");
+			"Cannot list files for deletion at mapping step.Error:$@");
 	}
 	my $flag = 0;
-	foreach my $file (@sortedBamFilenames)
-	{
-		if ( ( -e "$outdir/$file" ) and ( ( -s "$outdir/$file" ) != 0 ) )
-		{
+	foreach my $file (@sortedBamFilenames) {
+		if ( ( -e "$outdir/$file" ) and ( ( -s "$outdir/$file" ) != 0 ) ) {
 			next;
-		} else
-		{
+		}
+		else {
 			$flag = 1;
 		}
 	}
 	@filesToDelete = ( @srtSam, @clfastq, @mrgfastq );
-	if ( ( $flag == 0 ) and ( $deleteIntermediateFiles == 1 ) )
-	{
+	if ( ( $flag == 0 ) and ( $deleteIntermediateFiles == 1 ) ) {
 		$logger->info("Deleting files from mapping step.");
 		&DeleteFiles( \@filesToDelete );
 	}
 	elsif (
-			( $flag == 1 )
-			and (    ( $deleteIntermediateFiles == 1 )
-				  or ( $deleteIntermediateFiles == 2 ) )
+		( $flag == 1 )
+		and (  ( $deleteIntermediateFiles == 1 )
+			or ( $deleteIntermediateFiles == 2 ) )
 	  )
 	{
 		$logger->fatal(
 "Sorry, some of the bam files are not present from Mapping step, thus files will not be deleted please review and then rerun it"
 		);
 		exit(1);
-	} elsif ( ( $flag == 0 ) and ( $deleteIntermediateFiles == 2 ) )
-	{
+	}
+	elsif ( ( $flag == 0 ) and ( $deleteIntermediateFiles == 2 ) ) {
 		$logger->info("Files from mapping step will not be deleted.");
-	} else
-	{
+	}
+	else {
 		$logger->info("Deleting files from mapping step.");
 		&DeleteFiles( \@filesToDelete );
 	}
-	printf( "Total Mapping step run time: %02d:%02d:%02d\n\n",
-			int( $now / 3600 ),
-			int( ( $now % 3600 ) / 60 ),
-			int( $now % 60 ) );
+	printf(
+		"Total Mapping step run time: %02d:%02d:%02d\n\n",
+		int( $now / 3600 ),
+		int( ( $now % 3600 ) / 60 ),
+		int( $now % 60 )
+	);
 	return ( \@sortedBamFilenames );
 }
 #####################################
@@ -2160,13 +2145,11 @@ sub DoMapping
 #Table Recalibration
 #Count Covariates
 #BAM File Metrics Calculation
-sub ProcessBams
-{
+sub ProcessBams {
 	my ($filenames) = @_;
 	my @names = ();
 	if ($filenames) { (@names) = @$filenames; }
-	if ( ( scalar @names == 0 ) and ($fof) )
-	{
+	if ( ( scalar @names == 0 ) and ($fof) ) {
 		@names = &GetNames( $fof, $outdir );
 	}
 	my (@sortedparseFilenames) =
@@ -2185,8 +2168,7 @@ sub ProcessBams
 	##################
 	#Run Mark Duplicates
 	$logger->info("Started running Mark Duplicates jobs on SGE");
-	for ( my $i = 0 ; $i < scalar(@names) ; $i++ )
-	{
+	for ( my $i = 0 ; $i < scalar(@names) ; $i++ ) {
 		my ( $MarkDuplicatesBamFile, $notifyname ) =
 		  &RunMarkDuplicates( $names[$i], $outdir, $i );
 		push( @notifyNames,                $notifyname );
@@ -2197,34 +2179,34 @@ sub ProcessBams
 	&WaitToFinish( $outdir, @notifyNames );
 	$now = time - $now;
 	$logger->info("Finished running Mark Duplicates jobs on SGE");
-	printf( "Total MarkDuplicates run time: %02d:%02d:%02d\n\n",
-			int( $now / 3600 ),
-			int( ( $now % 3600 ) / 60 ),
-			int( $now % 60 ) );
+	printf(
+		"Total MarkDuplicates run time: %02d:%02d:%02d\n\n",
+		int( $now / 3600 ),
+		int( ( $now % 3600 ) / 60 ),
+		int( $now % 60 )
+	);
 
 	#Check Mark duplicate files
 	my $prog;
 	&CheckOutputFiles( $outdir, $prog, @MarkDuplicatesBamFilenames );
 
 	#Run ABRA or GATK
-	if ( $runABRA == 1 )
-	{
+	if ( $runABRA == 1 ) {
+
 		#Group files of Indel Realignment
 		my $fCount = 0;
-		foreach my $file (@MarkDuplicatesBamFilenames)
-		{
+		foreach my $file (@MarkDuplicatesBamFilenames) {
 			my $irFile = $file;
 			$irFile =~ s/\.bam/_IR\.bam/;
 			push( @realignedBams, $irFile );
 			my $indelRealignerList =
 			  @$patientId[$fCount] . "_IndelRealignerInput.list";
-			if ( exists $groupedFilenames{$indelRealignerList} )
-			{
+			if ( exists $groupedFilenames{$indelRealignerList} ) {
 				my $files = $groupedFilenames{$indelRealignerList};
 				$files = "$files" . ",$file";
 				$groupedFilenames{$indelRealignerList} = "$files";
-			} else
-			{
+			}
+			else {
 				$groupedFilenames{$indelRealignerList} = "$file";
 			}
 			$indelRealignerIntervals{$file} = $indelRealignerList;
@@ -2238,6 +2220,7 @@ sub ProcessBams
 		my $pcount = 0;
 		while ( ( my $outputListFile, my $bamFiles ) = each(%groupedFilenames) )
 		{
+
 			#print "$outputListFile=>$bamFiles\n\n";
 			my $inputFilename = $outputListFile;
 			my ($patient_ID) =
@@ -2247,12 +2230,11 @@ sub ProcessBams
 			#print "$inputFilename\n";
 			open( FH, ">", "$outdir/$inputFilename" )
 			  or die(
-					  $logger->fatal(
-						   "ABRA_OpenFile:Cannot open $inputFilename, ERROR:$!")
+				$logger->fatal(
+					"ABRA_OpenFile:Cannot open $inputFilename, ERROR:$!")
 			  );
 			my @data = split( ",", $bamFiles );
-			foreach my $file (@data)
-			{
+			foreach my $file (@data) {
 				print FH "$outdir/$file\n";
 			}
 
@@ -2262,8 +2244,7 @@ sub ProcessBams
 			  &RunABRA( $inputFilename, $patient_ID, $outdir, $pcount );
 			push( @notifyNames, $notifyname );
 			$pcount++;
-			if ( $pcount >= 8 )
-			{
+			if ( $pcount >= 8 ) {
 				&WaitToFinish( $outdir, @notifyNames );
 				@notifyNames = ();
 				$pcount      = 0;
@@ -2272,17 +2253,18 @@ sub ProcessBams
 		&WaitToFinish( $outdir, @notifyNames );
 		$now = time - $now;
 		$logger->info("Finished running ABRA Realignment jobs on SGE");
-		printf( "Total ABRA run time: %02d:%02d:%02d\n\n",
-				int( $now / 3600 ),
-				int( ( $now % 3600 ) / 60 ),
-				int( $now % 60 ) );
+		printf(
+			"Total ABRA run time: %02d:%02d:%02d\n\n",
+			int( $now / 3600 ),
+			int( ( $now % 3600 ) / 60 ),
+			int( $now % 60 )
+		);
 
 		#Run FixMate
 		$now = time;
 		$logger->info("Started running Fix Mate jobs on SGE");
 		@notifyNames = ();
-		for ( my $i = 0 ; $i < scalar(@realignedBams) ; $i++ )
-		{
+		for ( my $i = 0 ; $i < scalar(@realignedBams) ; $i++ ) {
 			my ( $sortedRealignedBamFile, $notifyname ) =
 			  &RunFixMateInformation( $realignedBams[$i], $outdir, $i );
 			push( @notifyNames,                 $notifyname );
@@ -2293,21 +2275,20 @@ sub ProcessBams
 		&WaitToFinish( $outdir, @notifyNames );
 		$now = time - $now;
 		$logger->info("Finished running Sort Sam jobs on SGE");
-	} else
-	{
+	}
+	else {
+
 		#Group files of Indel Realignment
 		my $fCount = 0;
-		foreach my $file (@MarkDuplicatesBamFilenames)
-		{
+		foreach my $file (@MarkDuplicatesBamFilenames) {
 			my $indelIntervals =
 			  @$patientId[$fCount] . "_IndelRealigner.intervals";
-			if ( exists $groupedFilenames{$indelIntervals} )
-			{
+			if ( exists $groupedFilenames{$indelIntervals} ) {
 				my $files = $groupedFilenames{$indelIntervals};
 				$files = "$files" . ",$file";
 				$groupedFilenames{$indelIntervals} = "$files";
-			} else
-			{
+			}
+			else {
 				$groupedFilenames{$indelIntervals} = "$file";
 			}
 			$indelRealignerIntervals{$file} = $indelIntervals;
@@ -2319,8 +2300,9 @@ sub ProcessBams
 		$now         = time;
 		$logger->info("Started running Realigner Target Creator jobs on SGE");
 		while ( ( my $outputIntervalFile, my $bamFiles ) =
-				each(%groupedFilenames) )
+			each(%groupedFilenames) )
 		{
+
 			#print "$outputIntervalFile=>$bamFiles\n\n";
 			my $inputFilename = $outputIntervalFile;
 			$inputFilename =~ s/\.intervals/Input\.list/;
@@ -2328,12 +2310,11 @@ sub ProcessBams
 			#print "$inputFilename\n";
 			open( FH, ">", "$outdir/$inputFilename" )
 			  or die(
-					  $logger->fatal(
-							"RTC_OpenFile:Cannot open $inputFilename, ERROR:$!")
+				$logger->fatal(
+					"RTC_OpenFile:Cannot open $inputFilename, ERROR:$!")
 			  );
 			my @data = split( ",", $bamFiles );
-			foreach my $file (@data)
-			{
+			foreach my $file (@data) {
 				print FH "$outdir/$file\n";
 			}
 
@@ -2341,17 +2322,19 @@ sub ProcessBams
 			close(FH);
 			my ($notifyname) =
 			  &RunRealignerTargetCreator( $outputIntervalFile, $inputFilename,
-										  $outdir );
+				$outdir );
 			push( @notifyNames,      $notifyname );
 			push( @RTCintervalFiles, $outputIntervalFile );
 		}
 		&WaitToFinish( $outdir, @notifyNames );
 		$now = time - $now;
 		$logger->info("Finished running Realigner Target Creator jobs on SGE");
-		printf( "Total Realign Target Creator run time: %02d:%02d:%02d\n\n",
-				int( $now / 3600 ),
-				int( ( $now % 3600 ) / 60 ),
-				int( $now % 60 ) );
+		printf(
+			"Total Realign Target Creator run time: %02d:%02d:%02d\n\n",
+			int( $now / 3600 ),
+			int( ( $now % 3600 ) / 60 ),
+			int( $now % 60 )
+		);
 
 		#Check Realign Target Creator files
 		&CheckOutputFiles( $outdir, $prog, @RTCintervalFiles );
@@ -2360,23 +2343,24 @@ sub ProcessBams
 		@notifyNames = ();
 		$now         = time;
 		$logger->info("Started running Indel Realignment jobs on SGE");
-		for ( my $i = 0 ; $i < scalar(@MarkDuplicatesBamFilenames) ; $i++ )
-		{
+		for ( my $i = 0 ; $i < scalar(@MarkDuplicatesBamFilenames) ; $i++ ) {
 			my $indelRealignInterval =
 			  $indelRealignerIntervals{ $MarkDuplicatesBamFilenames[$i] };
 			my ( $bamFile, $notifyname ) =
 			  &RunIndelRealigner( $MarkDuplicatesBamFilenames[$i],
-								  $indelRealignInterval, $outdir, $i );
+				$indelRealignInterval, $outdir, $i );
 			push( @notifyNames,   $notifyname );
 			push( @realignedBams, $bamFile );
 		}
 		&WaitToFinish( $outdir, @notifyNames );
 		$now = time - $now;
 		$logger->info("Finished running Indel Realignment jobs on SGE");
-		printf( "Total Indel Realignment run time: %02d:%02d:%02d\n\n",
-				int( $now / 3600 ),
-				int( ( $now % 3600 ) / 60 ),
-				int( $now % 60 ) );
+		printf(
+			"Total Indel Realignment run time: %02d:%02d:%02d\n\n",
+			int( $now / 3600 ),
+			int( ( $now % 3600 ) / 60 ),
+			int( $now % 60 )
+		);
 		@sortedRealignedBamFilenames = @realignedBams;
 
 		#Check Realigned bam files
@@ -2387,23 +2371,21 @@ sub ProcessBams
 	@notifyNames = ();
 
 	#Sample level Processing
-	if ( $runBQSR == 1 )
-	{
+	if ( $runBQSR == 1 ) {
 		$now = time;
 		$logger->info(
-				"Started running Base Quality Score Recalibration jobs on SGE");
-		for ( my $i = 0 ; $i < scalar(@sortedRealignedBamFilenames) ; $i++ )
-		{
+			"Started running Base Quality Score Recalibration jobs on SGE");
+		for ( my $i = 0 ; $i < scalar(@sortedRealignedBamFilenames) ; $i++ ) {
 			my ( $recalTable, $notifyname ) =
 			  &RunBaseQualityRecalibration( $sortedRealignedBamFilenames[$i],
-											$outdir, $i );
+				$outdir, $i );
 			push( @notifyNames,     $notifyname );
 			push( @recalTableFiles, $recalTable );
 		}
 		&WaitToFinish( $outdir, @notifyNames );
 		$now = time - $now;
 		$logger->info(
-			   "Finished running Base Quality Score Recalibration jobs on SGE");
+			"Finished running Base Quality Score Recalibration jobs on SGE");
 		printf(
 "\n\nTotal Base Quality Score Recalibration run time: %02d:%02d:%02d\n\n",
 			int( $now / 3600 ),
@@ -2418,43 +2400,41 @@ sub ProcessBams
 		@notifyNames = ();
 		$now         = time;
 		$logger->info("Started running print BQSR reads jobs on SGE");
-		for ( my $i = 0 ; $i < scalar(@sortedRealignedBamFilenames) ; $i++ )
-		{
+		for ( my $i = 0 ; $i < scalar(@sortedRealignedBamFilenames) ; $i++ ) {
 			my ( $recalBamFile, $notifyname ) =
 			  &PrintBQSRreads( $sortedRealignedBamFilenames[$i],
-							   $recalTableFiles[$i], $outdir, $i );
+				$recalTableFiles[$i], $outdir, $i );
 			push( @notifyNames,      $notifyname );
 			push( @recalibratedBams, $recalBamFile );
 		}
 		&WaitToFinish( $outdir, @notifyNames );
 		$now = time - $now;
 		$logger->info("Finished running print BQSR reads jobs on SGE");
-		printf( "Total Print BQSR Reads run time: %02d:%02d:%02d\n\n",
-				int( $now / 3600 ),
-				int( ( $now % 3600 ) / 60 ),
-				int( $now % 60 ) );
+		printf(
+			"Total Print BQSR Reads run time: %02d:%02d:%02d\n\n",
+			int( $now / 3600 ),
+			int( ( $now % 3600 ) / 60 ),
+			int( $now % 60 )
+		);
 
 		#Check Recalibrated bam files
 		&CheckOutputFiles( $outdir, $prog, @recalibratedBams );
 	}
 
 	#Lane Level Processing
-	elsif ( $runBQSR == 2 )
-	{
+	elsif ( $runBQSR == 2 ) {
 		$now = time;
 		$logger->info(
-				"Started running Base Quality Score Recalibration jobs on SGE");
+			"Started running Base Quality Score Recalibration jobs on SGE");
 		my $allBams = "$outdir/RecalibrationInputBams.list";
-		if ( -e $allBams )
-		{
+		if ( -e $allBams ) {
 			$logger->info(
-					 "File $allBams exists and the program will overwrite it.");
+				"File $allBams exists and the program will overwrite it.");
 		}
 		open( FH, ">", $allBams )
 		  or
 		  die( $logger->fatal("BQSR:Cannot open AllBAMs:$allBams, Error:$!") );
-		foreach my $file (@sortedRealignedBamFilenames)
-		{
+		foreach my $file (@sortedRealignedBamFilenames) {
 			print FH "$outdir/$file\n";
 		}
 		close(FH);
@@ -2465,7 +2445,7 @@ sub ProcessBams
 		&WaitToFinish( $outdir, @notifyNames );
 		$now = time - $now;
 		$logger->info(
-			   "Finished running Base Quality Score Recalibration jobs on SGE");
+			"Finished running Base Quality Score Recalibration jobs on SGE");
 		printf(
 "Total Base Quality Score Recalibration run time: %02d:%02d:%02d\n\n",
 			int( $now / 3600 ),
@@ -2480,36 +2460,36 @@ sub ProcessBams
 		@notifyNames = ();
 		$now         = time;
 		$logger->info("Started running print BQSR reads jobs on SGE");
-		for ( my $i = 0 ; $i < scalar(@sortedRealignedBamFilenames) ; $i++ )
-		{
+		for ( my $i = 0 ; $i < scalar(@sortedRealignedBamFilenames) ; $i++ ) {
 			my ( $bamFile, $notifyname ) =
 			  &PrintBQSRreads( $sortedRealignedBamFilenames[$i],
-							   $BQSRtable, $outdir, $i );
+				$BQSRtable, $outdir, $i );
 			push( @notifyNames,      $notifyname );
 			push( @recalibratedBams, $bamFile );
 		}
 		&WaitToFinish( $outdir, @notifyNames );
 		$now = time - $now;
 		$logger->info("Finished running Print BQSR Reads jobs on SGE");
-		printf( "Total Print BQSR Reads run time: %02d:%02d:%02d\n\n",
-				int( $now / 3600 ),
-				int( ( $now % 3600 ) / 60 ),
-				int( $now % 60 ) );
+		printf(
+			"Total Print BQSR Reads run time: %02d:%02d:%02d\n\n",
+			int( $now / 3600 ),
+			int( ( $now % 3600 ) / 60 ),
+			int( $now % 60 )
+		);
 
 		#Check Recalibrated bam files
 		&CheckOutputFiles( $outdir, $prog, @recalibratedBams );
 	}
 
 	#No BQSR
-	else
-	{
+	else {
 		$logger->warn("BQSR is being skipped");
 		@recalibratedBams = @realignedBams;
 	}
 	#################
 	###Files to delete
 	my ( @filesToDelete, @srtBam, @MDFiles, @IRFiles, @FXFiles, @InterValList,
-		 @recalGrp )
+		@recalGrp )
 	  = ();
 	my $flag = 0;
 	eval {
@@ -2520,65 +2500,61 @@ sub ProcessBams
 		(@InterValList) = `ls $outdir/*_IndelRealigner*`;
 		(@recalGrp)     = `ls $outdir/*_recalReport.grp`;
 	};
-	if ($@)
-	{
+	if ($@) {
 		$logger->warn(
-			  "Cannot list files for deletion at processing bam step.Error:$@");
+			"Cannot list files for deletion at processing bam step.Error:$@");
 	}
-	foreach my $file (@recalibratedBams)
-	{
-		if ( ( -e "$outdir/$file" ) and ( ( -s "$outdir/$file" ) != 0 ) )
-		{
+	foreach my $file (@recalibratedBams) {
+		if ( ( -e "$outdir/$file" ) and ( ( -s "$outdir/$file" ) != 0 ) ) {
 			next;
-		} else
-		{
+		}
+		else {
 			$flag = 1;
 		}
 	}
 	@filesToDelete =
 	  ( @srtBam, @MDFiles, @IRFiles, @FXFiles, @InterValList, @recalGrp );
-	if ( ( $flag == 0 ) and ( $deleteIntermediateFiles == 1 ) )
-	{
+	if ( ( $flag == 0 ) and ( $deleteIntermediateFiles == 1 ) ) {
 		$logger->info("Deleting files from processing bams step.");
 		&DeleteFiles( \@filesToDelete );
 	}
 	elsif (
-			( $flag == 1 )
-			and (    ( $deleteIntermediateFiles == 1 )
-				  or ( $deleteIntermediateFiles == 2 ) )
+		( $flag == 1 )
+		and (  ( $deleteIntermediateFiles == 1 )
+			or ( $deleteIntermediateFiles == 2 ) )
 	  )
 	{
 		$logger->fatal(
 "Sorry, some of the bam files are not present from processing bams step, thus files will not be deleted please review and then rerun it"
 		);
 		exit(1);
-	} elsif ( ( $flag == 0 ) and ( $deleteIntermediateFiles == 2 ) )
-	{
+	}
+	elsif ( ( $flag == 0 ) and ( $deleteIntermediateFiles == 2 ) ) {
 		$logger->info("Files from processing bams step will not be deleted.");
-	} else
-	{
+	}
+	else {
 		$logger->info("Deleting files from processing bams step.");
 		&DeleteFiles( \@filesToDelete );
 	}
 	$now = time;
-	printf( "Total run time: %02d:%02d:%02d\n\n",
-			int( $now / 3600 ),
-			int( ( $now % 3600 ) / 60 ),
-			int( $now % 60 ) );
+	printf(
+		"Total run time: %02d:%02d:%02d\n\n",
+		int( $now / 3600 ),
+		int( ( $now % 3600 ) / 60 ),
+		int( $now % 60 )
+	);
 	return ( \@recalibratedBams );
 }
 #####################################
 #####################################
 #This will calculate and compile metrics for BAM files:
-sub CalculateAndCompileMetrics
-{
+sub CalculateAndCompileMetrics {
 	my ($filenames) = @_;
 	my @names = ();
 	if ($filenames) { (@names) = @$filenames; }
 
 	#print "F:$fof\n";
-	if ( ( scalar(@names) == 0 ) and ($fof) )
-	{
+	if ( ( scalar(@names) == 0 ) and ($fof) ) {
 		@names = &GetNames( $fof, $outdir );
 	}
 	my ( @notifyNames, @metricsOutNames ) = ();
@@ -2589,16 +2565,13 @@ sub CalculateAndCompileMetrics
 	#Calculate Metrics
 	$now = time;
 	$logger->info("Started running metrics calculation jobs on SGE");
-	for ( my $i = 0 ; $i < scalar(@names) ; $i++ )
-	{
+	for ( my $i = 0 ; $i < scalar(@names) ; $i++ ) {
 		my ( $metricsOutFiles, $waitFileNames ) =
 		  &RunMetricsCalculations( $names[$i], $outdir, $i );
-		foreach my $waitName (@$waitFileNames)
-		{
+		foreach my $waitName (@$waitFileNames) {
 			push( @notifyNames, $waitName );
 		}
-		foreach my $outName (@$metricsOutFiles)
-		{
+		foreach my $outName (@$metricsOutFiles) {
 			push( @metricsOutNames, $outName );
 		}
 	}
@@ -2607,10 +2580,12 @@ sub CalculateAndCompileMetrics
 	&WaitToFinish( $outdir, @notifyNames );
 	$now = time - $now;
 	$logger->info("Finished running metrics calculation jobs on SGE");
-	printf( "Total Metrics Calculation run time: %02d:%02d:%02d\n\n",
-			int( $now / 3600 ),
-			int( ( $now % 3600 ) / 60 ),
-			int( $now % 60 ) );
+	printf(
+		"Total Metrics Calculation run time: %02d:%02d:%02d\n\n",
+		int( $now / 3600 ),
+		int( ( $now % 3600 ) / 60 ),
+		int( $now % 60 )
+	);
 
 	#Check metrics out files
 	my $prog;
@@ -2619,73 +2594,69 @@ sub CalculateAndCompileMetrics
 	#Genotype COSMIC variants on normal samples
 	$now = time;
 	$logger->info(
-				 "Started genotyping COSMIC variants on normal samples on SGE");
+		"Started genotyping COSMIC variants on normal samples on SGE");
 	my @normalSamples = ();
 	my @tumorSamples  = ();
 	my %ptNormHash    = ();
 	my %tmPtHash      = ();
 	my $fCount        = 0;
 
-	foreach my $name (@names)
-	{
+	foreach my $name (@names) {
 		my ($fileBarcode) = $name =~ /.*_(bc\d+)_.*/;
 		my $fileClass = $classPerBarcode{$fileBarcode};
-		if ( $fileClass =~ m/Normal/i )
-		{
+		if ( $fileClass =~ m/Normal/i ) {
 			push( @normalSamples, $name );
 			$ptNormHash{$name} = @$patientId[$fCount];
 		}
-		if ( $fileClass =~ m/Tumor/i )
-		{
+		if ( $fileClass =~ m/Tumor/i ) {
 			push( @tumorSamples, $name );
 			$tmPtHash{ @$patientId[$fCount] } = $name;
 		}
 		$fCount++;
 	}
 	my @matchedTm = ();
-	foreach my $name (@normalSamples)
-	{
-		if (    exists $ptNormHash{$name}
-			 && exists $tmPtHash{ $ptNormHash{$name} } )
+	foreach my $name (@normalSamples) {
+		if (   exists $ptNormHash{$name}
+			&& exists $tmPtHash{ $ptNormHash{$name} } )
 		{
 			push @matchedTm, $tmPtHash{ $ptNormHash{$name} };
-		} else
-		{
+		}
+		else {
 			push @matchedTm, "";
 		}
 	}
-	&GenotypeHotspotsOnNormals( \@normalSamples, \@tumorSamples,
-								\@matchedTm,     $cosmicHotspotsVcf );
+	&GenotypeHotspotsOnNormals( \@normalSamples, \@tumorSamples, \@matchedTm,
+		$cosmicHotspotsVcf );
 	$now = time - $now;
 	$logger->info("Finished genotyping hotspot mutations on SGE");
-	printf( "Total Genotype Hotspots on Normals run time: %02d:%02d:%02d\n\n",
-			int( $now / 3600 ),
-			int( ( $now % 3600 ) / 60 ),
-			int( $now % 60 ) );
+	printf(
+		"Total Genotype Hotspots on Normals run time: %02d:%02d:%02d\n\n",
+		int( $now / 3600 ),
+		int( ( $now % 3600 ) / 60 ),
+		int( $now % 60 )
+	);
 	##################
 	# Gentoype expected normal variants on pooled normal sample
 	$now = time;
 	$logger->info(
-			"Started genotyping expected variants on the pooled normal sample");
+		"Started genotyping expected variants on the pooled normal sample");
 	my $pooledNormal;
-	foreach my $name (@names)
-	{
+	foreach my $name (@names) {
 		my ($fileBarcode) = $name =~ /.*_(bc\d+)_.*/;
 		my $fileClass = $classPerBarcode{$fileBarcode};
-		if ( $fileClass =~ m/PoolNormal/i )
-		{
+		if ( $fileClass =~ m/PoolNormal/i ) {
 			$pooledNormal = $name;
 		}
 	}
-	if ($pooledNormal)
-	{
+	if ($pooledNormal) {
 		&GenotypePooledNormal( $pooledNormal, $NormalVariantsVCF );
 		$now = time - $now;
 		$logger->info("Finished genotyping pooled normal sample");
-	} else
-	{
+	}
+	else {
 		$logger->info(
-"Pooled normal sample is not present in this run, skipping this step" );
+"Pooled normal sample is not present in this run, skipping this step"
+		);
 	}
 	##################
 	#Complie Metrics
@@ -2699,30 +2670,29 @@ sub CalculateAndCompileMetrics
 	&WaitToFinish( $outdir, @notifyNames );
 	$now = time - $now;
 	$logger->info("Finished running compile metrics calculation jobs on SGE");
-	printf( "Total Compile Metrics run time: %02d:%02d:%02d\n\n",
-			int( $now / 3600 ),
-			int( ( $now % 3600 ) / 60 ),
-			int( $now % 60 ) );
+	printf(
+		"Total Compile Metrics run time: %02d:%02d:%02d\n\n",
+		int( $now / 3600 ),
+		int( ( $now % 3600 ) / 60 ),
+		int( $now % 60 )
+	);
 	return ( \@names );
 }
 #####################################
 #####################################
 #Genotype COSMIC variants on normal samples
-sub GenotypeHotspotsOnNormals
-{
+sub GenotypeHotspotsOnNormals {
 	my ( $normalSamples, $tumorSamples, $matchedTm, $cosmicHotspotVcf ) = @_;
 	my @bamFilesToGenotypeAgainst = ();
 	my %descHash                  = ();
 	my %matchedTmHash             = ();
-	foreach my $i ( 0 .. $#$normalSamples )
-	{
+	foreach my $i ( 0 .. $#$normalSamples ) {
 		my $normalSample = @$normalSamples[$i];
 		push @bamFilesToGenotypeAgainst, $normalSample;
 		$descHash{$normalSample}      = "normal";
 		$matchedTmHash{$normalSample} = @$matchedTm[$i];
 	}
-	foreach my $tumorSample (@$tumorSamples)
-	{
+	foreach my $tumorSample (@$tumorSamples) {
 		push @bamFilesToGenotypeAgainst, $tumorSample;
 		$descHash{$tumorSample} = "tumor";
 	}
@@ -2731,21 +2701,18 @@ sub GenotypeHotspotsOnNormals
 	my %cosmicNameHash = ();
 	my ($GHNout) = $bamFilesToGenotypeAgainst[0] =~ /.*_bc\d+_(.*)_L\d{1,3}.*/;
 	$GHNout = $GHNout . "_ALL_genotypehotspotnormals.txt";
-	if ( -e "$outdir/$GHNout" )
-	{
+	if ( -e "$outdir/$GHNout" ) {
 		$logger->warn(
 "GenotypeHotSpots:$GHNout file exists and genotyping hotspots will not be run."
 		);
 		return;
 	}
-	open IN,
-	  "<${cosmicHotspotVcf}"
+	open IN, "<${cosmicHotspotVcf}"
 	  or die(
-			$logger->fatal(
-				"GenotypeHotSpots:Cannot open file $cosmicHotspotVcf. Error:$!")
+		$logger->fatal(
+			"GenotypeHotSpots:Cannot open file $cosmicHotspotVcf. Error:$!")
 	  );
-	while (<IN>)
-	{
+	while (<IN>) {
 		next if ( $_ =~ /^\#/ );
 		chomp($_);
 		my @f = split( '\t', $_ );
@@ -2759,8 +2726,7 @@ sub GenotypeHotspotsOnNormals
 	my $count    = 0;
 	my $totcount = 0;
 	my $total    = scalar(@bamFilesToGenotypeAgainst);
-	foreach my $bamFile (@bamFilesToGenotypeAgainst)
-	{
+	foreach my $bamFile (@bamFilesToGenotypeAgainst) {
 		my ($bamID) = $bamFile =~ /(.*)_bc\d+/;
 		my $mpileUpMutationOut = $bamFile;
 		$mpileUpMutationOut =~ s/\.bam/.mpileup/;
@@ -2768,22 +2734,21 @@ sub GenotypeHotspotsOnNormals
 		$alleleDepthMutationOut =~ s/\.bam/_mpileup\.alleledepth/;
 		$descHash{$alleleDepthMutationOut} =
 		  $descHash{$bamFile};    # tumor or normal
-		if ( exists $matchedTmHash{$bamFile} )
-		{
+		if ( exists $matchedTmHash{$bamFile} ) {
 			$matchedTmHash{$alleleDepthMutationOut} = $matchedTmHash{$bamFile};
 			$matchedTmHash{$alleleDepthMutationOut} =~
 			  s/\.bam/_mpileup\.alleledepth/;
 		}
 
 		#Mutation File
-		if (     ( -e "$outdir/$alleleDepthMutationOut" )
-			 and ( ( -s "$outdir/$alleleDepthMutationOut" ) != 0 ) )
+		if (    ( -e "$outdir/$alleleDepthMutationOut" )
+			and ( ( -s "$outdir/$alleleDepthMutationOut" ) != 0 ) )
 		{
 			push( @GenotypedFiles, $alleleDepthMutationOut );
 			$totcount++;
 			next;
-		} else
-		{
+		}
+		else {
 			eval {
 				if ( $CLUSTER eq "SGE" )
 				{
@@ -2792,8 +2757,8 @@ sub GenotypeHotspotsOnNormals
 					$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -N AD.$bamID.$$ -wd $outdir -e AD.$bamID.$$.stderr -o AD.$bamID.$$.stdout -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y $PERL $GenotypeAllele -fmv $cosmicHotspotVcf -bam $outdir/$bamFile -rf $Reference -s $SAMTOOLS -o $outdir -of $alleleDepthMutationOut -mof $mpileUpMutationOut -bi $bamID -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -qsub $QSUB`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid AD.$bamID.$$ -N NotityAD.$bamID.$$ -e NotifyAD.$bamID.$$.stderr -o NotifyAD.$bamID.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-				} else
-				{
+				}
+				else {
 					my $cmd =
 "$BSUB -q $queue -J AD.$bamID.$$ -cwd $outdir -e AD.$bamID.$$.%J.stderr -o AD.$bamID.$$.%J.stdout -R \"rusage[mem=2]\" -R \"rusage[iounits=0]\" -M 4 -n 1 \"$PERL $GenotypeAllele -fmv $cosmicHotspotVcf -bam $outdir/$bamFile -rf $Reference -s $SAMTOOLS -o $outdir -of $alleleDepthMutationOut -mof $mpileUpMutationOut -bi $bamID -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB\"";
 					$logger->debug("COMMAND: $cmd");
@@ -2801,10 +2766,9 @@ sub GenotypeHotspotsOnNormals
 `$BSUB -q $queue -cwd $outdir -w "post_done(AD.$bamID.$$)" -J NotityAD.$bamID.$$ -e NotifyAD.$bamID.$$.%J.stderr -o NotifyAD.$bamID.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 				}
 			};
-			if ($@)
-			{
+			if ($@) {
 				$logger->fatal(
-							 "GenotypeHotSpot:Job Submission Failed. Error:$!");
+					"GenotypeHotSpot:Job Submission Failed. Error:$!");
 				exit(1);
 			}
 			push( @notifyNames,    "NotifyAD.$bamID.$$.stat" );
@@ -2812,8 +2776,7 @@ sub GenotypeHotspotsOnNormals
 			$count++;
 			$totcount++;
 		}
-		if ( ( $count >= 10 ) or ( $totcount == $total ) )
-		{
+		if ( ( $count >= 10 ) or ( $totcount == $total ) ) {
 			&WaitToFinish( $outdir, @notifyNames );
 			@notifyNames = ();
 			$count       = 0;
@@ -2823,19 +2786,16 @@ sub GenotypeHotspotsOnNormals
 	#my @pstr = ();
 	my $normposcnt  = 0;
 	my %normposHash = ();
-	foreach my $GenotypedFile (@GenotypedFiles)
-	{
+	foreach my $GenotypedFile (@GenotypedFiles) {
 		if ( $descHash{$GenotypedFile} eq "tumor" ) { next; }
 		my ($samplename) = $GenotypedFile =~ /(.*)_bc\d+_/;
-		open IN,
-		  "<$outdir/${GenotypedFile}"
+		open IN, "<$outdir/${GenotypedFile}"
 		  or die(
 			$logger->fatal(
 "GenotypeHotSpots:Cannot open file $outdir/$GenotypedFile. Error:$!"
 			)
 		  );
-		while (<IN>)
-		{
+		while (<IN>) {
 			next if ( $_ =~ /^Ref_BAM/ );
 			chomp($_);
 			my @f      = split( '\t', $_ );
@@ -2849,10 +2809,11 @@ sub GenotypeHotspotsOnNormals
 			my $ad     = $f[8];
 			my $vf     = $f[9];
 
-			if (    $dp > 0
-				 && ( $vf >= 0.02 or $ad >= 5 )
-				 && exists $cosmicNameHash{$key} )
+			if (   $dp > 0
+				&& ( $vf >= 0.02 or $ad >= 5 )
+				&& exists $cosmicNameHash{$key} )
 			{
+
 #push @pstr, "$sample\t$cosmicNameHash{$key}\t$chr\t$pos\t$ref\t$alt\t$dp\t$ad\t$vf";
 				push @{ $normposHash{$key} },
 "$GenotypedFile\t$sample\t$cosmicNameHash{$key}\t$chr\t$pos\t$ref\t$alt\t$dp\t$ad\t$vf";
@@ -2861,8 +2822,7 @@ sub GenotypeHotspotsOnNormals
 		}
 		close IN;
 		eval { `rm $outdir/${GenotypedFile}`; };
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal(
 				"GenotypeHotSpot:Cannot remove $outdir/$GenotypedFile. Error:$@"
 			);
@@ -2870,19 +2830,16 @@ sub GenotypeHotspotsOnNormals
 		}
 	}
 	my %tmposHash = ();
-	foreach my $GenotypedFile (@GenotypedFiles)
-	{
+	foreach my $GenotypedFile (@GenotypedFiles) {
 		if ( $descHash{$GenotypedFile} ne "tumor" ) { next; }
 		my ($samplename) = $GenotypedFile =~ /(.*)_bc\d+_/;
-		open IN,
-		  "<$outdir/${GenotypedFile}"
+		open IN, "<$outdir/${GenotypedFile}"
 		  or die(
 			$logger->fatal(
 "GenotypeHotSpots:Cannot open file $outdir/$GenotypedFile. Error:$!"
 			)
 		  );
-		while (<IN>)
-		{
+		while (<IN>) {
 			next if ( $_ =~ /^Ref_BAM/ );
 			chomp($_);
 			my @f      = split( '\t', $_ );
@@ -2896,17 +2853,14 @@ sub GenotypeHotspotsOnNormals
 			my $ad     = $f[8];
 			my $vf     = $f[9];
 
-			if ( exists $normposHash{$key} )
-			{
-				foreach my $norm_i ( @{ $normposHash{$key} } )
-				{
+			if ( exists $normposHash{$key} ) {
+				foreach my $norm_i ( @{ $normposHash{$key} } ) {
 					my @g = split( '\t', $norm_i );
-					if ( $GenotypedFile eq $matchedTmHash{ $g[0] } )
-					{
+					if ( $GenotypedFile eq $matchedTmHash{ $g[0] } ) {
 						push @{ $tmposHash{$key} },
 "MATCHED_TM\t$sample\t$cosmicNameHash{$key}\t$chr\t$pos\t$ref\t$alt\t$dp\t$ad\t$vf";
-					} elsif ( $dp > 0 && ( $vf >= 0.02 or $ad >= 5 ) )
-					{
+					}
+					elsif ( $dp > 0 && ( $vf >= 0.02 or $ad >= 5 ) ) {
 						push @{ $tmposHash{$key} },
 "TM\t$sample\t$cosmicNameHash{$key}\t$chr\t$pos\t$ref\t$alt\t$dp\t$ad\t$vf";
 					}
@@ -2915,42 +2869,35 @@ sub GenotypeHotspotsOnNormals
 		}
 		close IN;
 		eval { `rm $outdir/${GenotypedFile}`; };
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal(
 				"GenotypeHotSpot:Cannot remove $outdir/$GenotypedFile. Error:$@"
 			);
 			exit(1);
 		}
 	}
-	open GHNOUT,
-	  ">$outdir/${GHNout}"
+	open GHNOUT, ">$outdir/${GHNout}"
 	  or die(
-			  $logger->fatal(
-				  "GenotypeHotSpots:Cannot open file $outdir/$GHNout. Error:$!")
+		$logger->fatal(
+			"GenotypeHotSpots:Cannot open file $outdir/$GHNout. Error:$!")
 	  );
 
 	#if(scalar (@pstr) > 0)
-	if ( $normposcnt == 0 )
-	{
+	if ( $normposcnt == 0 ) {
 		print GHNOUT "No hotspots detected in any normals\n";
-	} else
-	{
-		foreach my $key ( sort keys %normposHash )
-		{
+	}
+	else {
+		foreach my $key ( sort keys %normposHash ) {
 			my %toPrint;
-			foreach my $norm_i ( @{ $normposHash{$key} } )
-			{
+			foreach my $norm_i ( @{ $normposHash{$key} } ) {
 				my @g = split( '\t', $norm_i );
 				$g[0] = "NORMAL";
 				print GHNOUT join( "\t", @g ) . "\n";
 			}
-			foreach my $tm_i ( @{ $tmposHash{$key} } )
-			{
+			foreach my $tm_i ( @{ $tmposHash{$key} } ) {
 				$toPrint{$tm_i} = 1;
 			}
-			foreach my $key ( sort keys %toPrint )
-			{
+			foreach my $key ( sort keys %toPrint ) {
 				print GHNOUT "$key\n";
 			}
 			print GHNOUT "\n";
@@ -2963,8 +2910,7 @@ sub GenotypeHotspotsOnNormals
 #####################################
 #####################################
 # Genotype Pooled Normal
-sub GenotypePooledNormal
-{
+sub GenotypePooledNormal {
 	my ( $pooledNormal, $NormalVariantsVCF ) = @_;
 	my ( %expectedVFs, %observedVFs, @notifyNames );
 	my ($GPNout) = $pooledNormal =~ /.*_bc\d+_(.*)_L\d{1,3}.*/;
@@ -2973,8 +2919,7 @@ sub GenotypePooledNormal
 	$outfile =~ s/.bam/.mpileup.alleledepth/;
 
 	#print "$outdir/$outfile\n";
-	if ( !-e $GPNout )
-	{
+	if ( !-e $GPNout ) {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -2983,8 +2928,8 @@ sub GenotypePooledNormal
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -N GenotypePooledNormal.$$ -wd $outdir -e GenotypePooledNormal.$$.stderr -o GenotypePooledNormal.$$.stdout -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y $PERL $GenotypeAllele -fmv $NormalVariantsVCF -bam $outdir/$pooledNormal -rf $Reference -s $SAMTOOLS -o $outdir -of $outfile -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -qsub $QSUB`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid GenotypePooledNormal.$$ -N NotifyGenotypePooledNormal.$$ -e NotifyGenotypePooledNormal.$$.stderr -o NotifyGenotypePooledNormal.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -J GenotypePooledNormal.$$ -cwd $outdir -e GenotypePooledNormal.$$.%J.stderr -o GenotypePooledNormal.$$.%J.stdout -R \"rusage[mem=2]\" -R \"rusage[iounits=0]\" -M 4 -n 1 \"$PERL $GenotypeAllele -fmv $NormalVariantsVCF -bam $outdir/$pooledNormal -rf $Reference -s $SAMTOOLS -o $outdir -of $outfile -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB\"";
 				$logger->debug("COMMAND: $cmd");
@@ -2992,10 +2937,9 @@ sub GenotypePooledNormal
 `$BSUB -q $queue -cwd $outdir -w "post_done(GenotypePooledNormal.$$)" -J NotifyGenotypePooledNormal.$$ -e NotifyGenotypePooledNormal.%J.$$.stderr -o NotifyGenotypePooledNormal.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal(
-						"GenotypePooledNormal:Job Submission Failed. Error:$!");
+				"GenotypePooledNormal:Job Submission Failed. Error:$!");
 			exit(1);
 		}
 		push( @notifyNames, "NotifyGenotypePooledNormal.$$.stat" );
@@ -3003,25 +2947,23 @@ sub GenotypePooledNormal
 		@notifyNames = ();
 		open NORMALVCF, "<", $NormalVariantsVCF
 		  || die $logger->fatal(
-							" Can not open $NormalVariantsVCF file. Error: $!");
-		while (<NORMALVCF>)
-		{
+			" Can not open $NormalVariantsVCF file. Error: $!");
+		while (<NORMALVCF>) {
 			chomp;
 			next if (/^#/);
-			my @line    = split("\t");
-			my $chr     = $line[0];
-			my $pos     = $line[1];
-			my $ref     = $line[3];
-			my $alt     = $line[4];
-			my @annot   = split( ";", $line[7] );
+			my @line  = split("\t");
+			my $chr   = $line[0];
+			my $pos   = $line[1];
+			my $ref   = $line[3];
+			my $alt   = $line[4];
+			my @annot = split( ";", $line[7] );
 			my ($VFexp) = $annot[0] =~ /VF_EXPECTED=(.*)/;
 			$expectedVFs{"$chr:$pos:$ref:$alt"} = $VFexp;
 		}
 		close NORMALVCF;
 		open POOLEDALLELEDEPTH, "<", "$outdir/$outfile"
 		  || die $logger->fatal(" Can not open $outfile file. Error: $!");
-		while (<POOLEDALLELEDEPTH>)
-		{
+		while (<POOLEDALLELEDEPTH>) {
 			chomp;
 			next if (/^Ref_BAM\t/);
 			my @line  = split("\t");
@@ -3037,8 +2979,7 @@ sub GenotypePooledNormal
 		  || die $logger->info("Can not open $GPNout file: Error: $!");
 		print OUT
 "Chromosome\tPosition\tReference\tAlternative\tExpectedVF\tObservedVF\n";
-		foreach my $key ( sort keys %observedVFs )
-		{
+		foreach my $key ( sort keys %observedVFs ) {
 			my ( $chr, $pos, $ref, $alt ) = split( ":", $key );
 			my $VFexp = $expectedVFs{$key};
 			my $VFobs = $observedVFs{$key};
@@ -3054,15 +2995,13 @@ sub GenotypePooledNormal
 #GermLine Indels: Unified Genotyper
 #Somatic SNPs: Mutect
 #Somatics Indels: SomaticIndelCaller
-sub CallingSNPsAndIndels
-{
+sub CallingSNPsAndIndels {
 	my ($filenames) = @_;
 	my @names = ();
 	if ($filenames) { (@names) = @$filenames; }
 
 	#print "F:$fof\n";
-	if ( ( scalar(@names) == 0 ) and ($fof) )
-	{
+	if ( ( scalar(@names) == 0 ) and ($fof) ) {
 		@names = &GetNames( $fof, $outdir );
 	}
 	my @notifyNames  = ();
@@ -3091,15 +3030,13 @@ sub CallingSNPsAndIndels
 	my $fCount = 0;
 
 	#Group the files
-	foreach my $file (@names)
-	{
-		if ( exists $groupedFilenames{ @$patientId[$fCount] } )
-		{
+	foreach my $file (@names) {
+		if ( exists $groupedFilenames{ @$patientId[$fCount] } ) {
 			my $files = $groupedFilenames{ @$patientId[$fCount] };
 			$files = "$files" . ",$file";
 			$groupedFilenames{ @$patientId[$fCount] } = "$files";
-		} else
-		{
+		}
+		else {
 			$groupedFilenames{ @$patientId[$fCount] } = "$file";
 		}
 		$fCount++;
@@ -3108,14 +3045,11 @@ sub CallingSNPsAndIndels
 	#Get Mean Coverage from HSmetrics file.
 	my $poolNormalMeanCov;
 	my $poolNormal;
-	foreach my $file (@names)
-	{
+	foreach my $file (@names) {
 		my ($fileBarcode) = $file =~ /.*_(bc\d+)_.*/;
 		my $fileClass = $classPerBarcode{$fileBarcode};
-		if ( $fileClass =~ m/Normal/i )
-		{
-			if ( $fileClass =~ m/PoolN/i )
-			{
+		if ( $fileClass =~ m/Normal/i ) {
+			if ( $fileClass =~ m/PoolN/i ) {
 				$poolNormal = $file;
 				my $HSmetricsFile = $file;
 				$HSmetricsFile =~ s/\.bam/\.HSmetrics\.txt/g;
@@ -3127,11 +3061,9 @@ sub CallingSNPsAndIndels
 "CallSomaticSNP:Cannot Open $outdir/$HSmetricsFile, Error:$!"
 					)
 				  );
-				while (<FH>)
-				{
+				while (<FH>) {
 					next until ( $_ =~ /^BAIT_SET/ );
-					while (<FH>)
-					{
+					while (<FH>) {
 						next if ( ( $_ =~ /^BAIT_SET/ ) or ( $_ =~ /^\s$/ ) );
 						my (@values) = split( "\t", $_ );
 						$poolNormalMeanCov = $values[21];
@@ -3139,8 +3071,8 @@ sub CallingSNPsAndIndels
 				}
 				close(FH);
 				next;
-			} else
-			{
+			}
+			else {
 				my $HSmetricsFile = $file;
 				$HSmetricsFile =~ s/\.bam/\.HSmetrics\.txt/g;
 
@@ -3153,11 +3085,9 @@ sub CallingSNPsAndIndels
 				  );
 				my $meanCov;
 				my $CovForFile;
-				while (<FH>)
-				{
+				while (<FH>) {
 					next until ( $_ =~ /^BAIT_SET/ );
-					while (<FH>)
-					{
+					while (<FH>) {
 						next if ( ( $_ =~ /^BAIT_SET/ ) or ( $_ =~ /^\s$/ ) );
 						my (@values) = split( "\t", $_ );
 
@@ -3170,8 +3100,8 @@ sub CallingSNPsAndIndels
 				$coverageForNormal{$file} = $CovForFile;
 				push( @CoveragePerSample, $meanCov );
 			}
-		} else
-		{
+		}
+		else {
 			next;
 		}
 	}
@@ -3180,18 +3110,15 @@ sub CallingSNPsAndIndels
 	my $maxCoverage = max @CoveragePerSample;
 
 	#print "MAX:$maxCoverage\n";
-	while ( ( my $key, my $value ) = each(%coverageForNormal) )
-	{
-		if ( $value == $maxCoverage )
-		{
+	while ( ( my $key, my $value ) = each(%coverageForNormal) ) {
+		if ( $value == $maxCoverage ) {
 			$standardNormal = $key;
-		} else
-		{
+		}
+		else {
 			next;
 		}
 	}
-	if ( !$standardNormal )
-	{
+	if ( !$standardNormal ) {
 		$standardNormal = $stdNormal;
 	}
 
@@ -3199,8 +3126,7 @@ sub CallingSNPsAndIndels
 	#print "PN:$poolNormal:$poolNormalMeanCov\n";
 	#Running Mutect and Somatic Indel Caller
 	my $count = 0;
-	while ( ( my $key, my $value ) = each(%groupedFilenames) )
-	{
+	while ( ( my $key, my $value ) = each(%groupedFilenames) ) {
 		my @files = split( ",", $value );
 
 		# Section of Normal
@@ -3210,22 +3136,18 @@ sub CallingSNPsAndIndels
 		my $normal;
 
 		#	my $poolNormal;
-		foreach my $file (@files)
-		{
+		foreach my $file (@files) {
 			my ($fileBarcode) = $file =~ /.*_(bc\d+)_.*/;
 			my $fileClass = $classPerBarcode{$fileBarcode};
-			if ( $fileClass =~ m/Normal/i )
-			{
+			if ( $fileClass =~ m/Normal/i ) {
 				push( @normalSamples, $file );
-			} else
-			{
+			}
+			else {
 				next;
 			}
 		}
-		if ( scalar @normalSamples != 0 )
-		{
-			foreach my $file (@normalSamples)
-			{
+		if ( scalar @normalSamples != 0 ) {
+			foreach my $file (@normalSamples) {
 				my $HSmetricsFile = $file;
 				$HSmetricsFile =~ s/\.bam/\.HSmetrics\.txt/g;
 
@@ -3238,11 +3160,9 @@ sub CallingSNPsAndIndels
 				  );
 				my $meanCov;
 				my $CovForFile;
-				while (<FH>)
-				{
+				while (<FH>) {
 					next until ( $_ =~ /^BAIT_SET/ );
-					while (<FH>)
-					{
+					while (<FH>) {
 						next if ( ( $_ =~ /^BAIT_SET/ ) or ( $_ =~ /^\s$/ ) );
 						my (@values) = split( "\t", $_ );
 
@@ -3260,121 +3180,109 @@ sub CallingSNPsAndIndels
 			my $maxCoverage = max @CoverageForMultipleNormal;
 
 			#print "MAX:$maxCoverage\n";
-			if ( scalar @normalSamples > 1 )
-			{
+			if ( scalar @normalSamples > 1 ) {
 				while ( ( my $key, my $value ) =
-						each(%coverageForSampleNormals) )
+					each(%coverageForSampleNormals) )
 				{
-					if ( ( $value == $maxCoverage ) and ( $value >= 50 ) )
-					{
+					if ( ( $value == $maxCoverage ) and ( $value >= 50 ) ) {
 						$normal = $key;
-					} else
-					{
-						if ( $poolNormalMeanCov <= 50 )
-						{
+					}
+					else {
+						if ( $poolNormalMeanCov <= 50 ) {
 							$normal = $standardNormal;
-						} else
-						{
+						}
+						else {
 							$normal = $poolNormal;
 						}
 					}
 				}
-			} else
-			{
-				if ( scalar @normalSamples == 1 )
-				{
+			}
+			else {
+				if ( scalar @normalSamples == 1 ) {
 					my $coverage =
 					  $coverageForSampleNormals{ $normalSamples[0] };
-					if ( $coverage >= 50 )
-					{
+					if ( $coverage >= 50 ) {
 						$normal = $normalSamples[0];
-					} else
-					{
-						if ( $poolNormalMeanCov <= 50 )
-						{
+					}
+					else {
+						if ( $poolNormalMeanCov <= 50 ) {
 							$normal = $standardNormal;
-						} else
-						{
+						}
+						else {
 							$normal = $poolNormal;
 						}
 					}
-				} else
-				{
+				}
+				else {
 					$normal = $poolNormal;
 				}
 			}
-		} else
-		{
-			if ( $poolNormalMeanCov <= 50 )
-			{
+		}
+		else {
+			if ( $poolNormalMeanCov <= 50 ) {
 				$normal = $standardNormal;
-			} else
-			{
+			}
+			else {
 				$normal = $poolNormal;
 			}
 		}
 
 		#Check if the normal file is with full path
-		if ( $normal =~ /\// )
-		{
+		if ( $normal =~ /\// ) {
 			$normal = pop @{ [ split( "/", $normal ) ] };
-		} else
-		{
+		}
+		else {
 			$normal = $normal;
 		}
 
 		#RUN Mutation Calling Jobs
 		my $pcount = 0;
-		foreach my $file (@files)
-		{
+		foreach my $file (@files) {
 			my ($fileBarcode) = $file =~ /.*_(bc\d+)_.*/;
 			my $fileClass = $classPerBarcode{$fileBarcode};
 			next if ( $fileClass =~ m/Normal/i );
 			print "Final2:$file\t$normal\n";
-			my ($tFileId) = $file =~ /(.*)_bc\d+_/;
+			my ($tFileId) = $file   =~ /(.*)_bc\d+_/;
 			my ($nFileId) = $normal =~ /(.*)_bc\d+_/;
 			$NormalPerFile{$tFileId} = $nFileId;
 			##PindelCofig
 			my $pconfig = "$outdir/$tFileId" . "_pindel_config.cfg";
 			open( PFH, ">", "$pconfig" )
 			  or die(
-					  $logger->fatal(
-								 "CallSomaticSNP:Cannot Open $pconfig, Error:$!"
-					  )
+				$logger->fatal(
+					"CallSomaticSNP:Cannot Open $pconfig, Error:$!"
+				)
 			  );
 			print PFH
 			  "$outdir/$file\t150\t$tFileId\n$outdir/$normal\t150\t$nFileId\n";
 			close(PFH);
 			my (
-				 $somaticMutationFile, $somaticIndelFile,
-				 $somaticPindelFile,   $waitFileNames
+				$somaticMutationFile, $somaticIndelFile,
+				$somaticPindelFile,   $waitFileNames
 			  )
 			  = &RunMutect_SomaticIndelDetector( $key, $normal, $file, $pconfig,
-												 $outdir, $count );
-			foreach my $waitName (@$waitFileNames)
-			{
+				$outdir, $count );
+			foreach my $waitName (@$waitFileNames) {
 				push( @notifyNames, $waitName );
 			}
-			
-			if ( $fileClass =~ m/NTC/i )
-			{
+
+			if ( $fileClass =~ m/NTC/i ) {
 				push( @NTCsomaticMutationFiles,
-					  "$somaticMutationFile" . ":" . "$count" );
+					"$somaticMutationFile" . ":" . "$count" );
 				push( @NTCsomaticIndelFiles,
-					  "$somaticIndelFile" . ":" . "$count" );
-			} else
-			{
+					"$somaticIndelFile" . ":" . "$count" );
+			}
+			else {
 				push( @somaticMutationFiles, $somaticMutationFile );
 				push( @somaticIndelFiles,    $somaticIndelFile );
 				push( @somaticPindelFiles,   $somaticPindelFile );
 			}
 			$count++;
 			$pcount++;
-			if ( $pcount >= 8 )
-			{
+			if ( $pcount >= 8 ) {
 				&WaitToFinish( $outdir, @notifyNames );
 				@notifyNames = ();
-				$pcount = 0;
+				$pcount      = 0;
 			}
 		}
 	}
@@ -3389,18 +3297,15 @@ sub CallingSNPsAndIndels
 	#Check Indel out files
 	#&CheckOutputFiles($outdir,$prog, @somaticIndelFiles);
 	#push the NTC files back to the place they came from.
-	foreach (@NTCsomaticMutationFiles)
-	{
+	foreach (@NTCsomaticMutationFiles) {
 		my ( $name, $num ) = split( ":", $_ );
 		splice @somaticMutationFiles, $num, 0, $name;
 	}
-	foreach (@NTCsomaticIndelFiles)
-	{
+	foreach (@NTCsomaticIndelFiles) {
 		my ( $name, $num ) = split( ":", $_ );
 		splice @somaticIndelFiles, $num, 0, $name;
 	}
-	foreach (@NTCsomaticPindelFiles)
-	{
+	foreach (@NTCsomaticPindelFiles) {
 		my ( $name, $num ) = split( ":", $_ );
 		splice @somaticPindelFiles, $num, 0, $name;
 	}
@@ -3408,10 +3313,9 @@ sub CallingSNPsAndIndels
 	#Output what normal file is used
 	open( NFH, ">", "$outdir/$NormalUsed" )
 	  or die(
-		  $logger->fatal("NormalUsed:Cannot open $outdir/$NormalUsed. Error:$!")
+		$logger->fatal("NormalUsed:Cannot open $outdir/$NormalUsed. Error:$!")
 	  );
-	while ( my ( $key, $value ) = each(%NormalPerFile) )
-	{
+	while ( my ( $key, $value ) = each(%NormalPerFile) ) {
 		print NFH "$key\t$value\n";
 	}
 	close(NFH);
@@ -3430,13 +3334,11 @@ sub CallingSNPsAndIndels
 #This will help to Filter SNPS:
 #Somatic SNPs: Mutect Filter
 #Somatics Indels: SomaticIndelCaller Filter
-sub FilterSNPsAndIndels
-{
+sub FilterSNPsAndIndels {
 	my ($filenames) = @_;
 	my @names = ();
 	if ($filenames) { (@names) = @$filenames; }
-	if ( ( scalar(@names) == 0 ) and ($fof) )
-	{
+	if ( ( scalar(@names) == 0 ) and ($fof) ) {
 		@names = &GetNames( $fof, $outdir );
 	}
 	my (@sortedparseFilenames) =
@@ -3462,40 +3364,37 @@ sub FilterSNPsAndIndels
 	$logger->info("Started running Filter SNPs and Indels jobs on SGE");
 	my $count = 0;
 
-	for ( my $i = 0 ; $i < scalar(@names) ; $i++ )
-	{
+	for ( my $i = 0 ; $i < scalar(@names) ; $i++ ) {
 		my ($fileBarcode) = $names[$i] =~ /.*_(bc\d+)_.*/;
 		my $fileClass = $classPerBarcode{$fileBarcode};
 		next if ( $fileClass =~ m/Normal/i );
 		my (
-			 $somaticMutationVcfFile, $somaticMutationTxtFile,
-			 $somaticIndelVcfFile,    $somaticIndelTxtFile,
-			 $somaticPindelVcfFile,   $somaticPindelTxtFile,
-			 $waitFileNames
+			$somaticMutationVcfFile, $somaticMutationTxtFile,
+			$somaticIndelVcfFile,    $somaticIndelTxtFile,
+			$somaticPindelVcfFile,   $somaticPindelTxtFile,
+			$waitFileNames
 		) = &RunSomaticMutIndelFilter( $names[$i], $outdir, $i );
-		foreach my $waitName (@$waitFileNames)
-		{
+		foreach my $waitName (@$waitFileNames) {
 			push( @notifyNames, $waitName );
 		}
 		my ($filename) = $names[$i] =~ /(.*)\.bam/;
 		$filename = $filename . ".bed";
-		if ( $fileClass =~ m/NTC/i )
-		{
+		if ( $fileClass =~ m/NTC/i ) {
 			push( @NTCbedFileNames, "$filename" . ":" . "$count" );
 			push( @NTCsomaticMutationVcfFiles,
-				  "$somaticMutationVcfFile" . ":" . "$count" );
+				"$somaticMutationVcfFile" . ":" . "$count" );
 			push( @NTCsomaticIndelVcfFiles,
-				  "$somaticIndelVcfFile" . ":" . "$count" );
+				"$somaticIndelVcfFile" . ":" . "$count" );
 			push( @NTCsomaticPindelVcfFiles,
-				  "$somaticPindelVcfFile" . ":" . "$count" );
+				"$somaticPindelVcfFile" . ":" . "$count" );
 			push( @NTCsomaticMutationTxtFiles,
-				  "$somaticMutationTxtFile" . ":" . "$count" );
+				"$somaticMutationTxtFile" . ":" . "$count" );
 			push( @NTCsomaticIndelTxtFiles,
-				  "$somaticIndelTxtFile" . ":" . "$count" );
+				"$somaticIndelTxtFile" . ":" . "$count" );
 			push( @NTCsomaticPindelTxtFiles,
-				  "$somaticPindelTxtFile" . ":" . "$count" );
-		} else
-		{
+				"$somaticPindelTxtFile" . ":" . "$count" );
+		}
+		else {
 			push( @bedFileNames,            $filename );
 			push( @somaticMutationVcfFiles, $somaticMutationVcfFile );
 			push( @somaticIndelVcfFiles,    $somaticIndelVcfFile );
@@ -3523,44 +3422,37 @@ sub FilterSNPsAndIndels
 	&CheckOutputFiles( $outdir, $prog, @somaticPindelTxtFiles );
 
 	#push the NTC files back to the place they came from.
-	foreach (@NTCbedFileNames)
-	{
+	foreach (@NTCbedFileNames) {
 		my ( $name, $num ) = split( ":", $_ );
 		splice @bedFileNames, $num, 0, $name;
 	}
-	foreach (@NTCsomaticMutationVcfFiles)
-	{
+	foreach (@NTCsomaticMutationVcfFiles) {
 		my ( $name, $num ) = split( ":", $_ );
 		splice @somaticMutationVcfFiles, $num, 0, $name;
 	}
-	foreach (@NTCsomaticIndelVcfFiles)
-	{
+	foreach (@NTCsomaticIndelVcfFiles) {
 		my ( $name, $num ) = split( ":", $_ );
 		splice @somaticIndelVcfFiles, $num, 0, $name;
 	}
-	foreach (@NTCsomaticPindelVcfFiles)
-	{
+	foreach (@NTCsomaticPindelVcfFiles) {
 		my ( $name, $num ) = split( ":", $_ );
 		splice @somaticPindelVcfFiles, $num, 0, $name;
 	}
-	foreach (@NTCsomaticMutationTxtFiles)
-	{
+	foreach (@NTCsomaticMutationTxtFiles) {
 		my ( $name, $num ) = split( ":", $_ );
 		splice @somaticMutationTxtFiles, $num, 0, $name;
 	}
-	foreach (@NTCsomaticIndelTxtFiles)
-	{
+	foreach (@NTCsomaticIndelTxtFiles) {
 		my ( $name, $num ) = split( ":", $_ );
 		splice @somaticIndelTxtFiles, $num, 0, $name;
 	}
-	foreach (@NTCsomaticPindelTxtFiles)
-	{
+	foreach (@NTCsomaticPindelTxtFiles) {
 		my ( $name, $num ) = split( ":", $_ );
 		splice @somaticPindelTxtFiles, $num, 0, $name;
 	}
 
 	#Concatenate all Coding Entries
-	my ($poolName)             = $names[0] =~ /.*_bc\d+_(.*)_L\d{1,3}.*/;
+	my ($poolName) = $names[0] =~ /.*_bc\d+_(.*)_L\d{1,3}.*/;
 	my $AllStdFilterEntriesTxt = $poolName . "_AllSomaticMutIndel.txt";
 	my $AllStdFilterEntriesVcf = $poolName . "_AllSomaticMutIndel.vcf";
 	my $NormalUsed             = $poolName . "_NormalUsedInMutationCalling.txt";
@@ -3568,10 +3460,9 @@ sub FilterSNPsAndIndels
 	#store normal used file
 	open( NFH, "<", "$outdir/$NormalUsed" )
 	  or die(
-		  $logger->fatal("FilterSNPs:Cannot open $outdir/$NormalUsed. Error:$!")
+		$logger->fatal("FilterSNPs:Cannot open $outdir/$NormalUsed. Error:$!")
 	  );
-	while (<NFH>)
-	{
+	while (<NFH>) {
 		chomp($_);
 		my @data = split( "\t", $_ );
 		$NormalPerFile{ $data[0] } = $data[1];
@@ -3579,13 +3470,13 @@ sub FilterSNPsAndIndels
 	close(NFH);
 	open( TFH, ">", "$outdir/$AllStdFilterEntriesTxt" )
 	  or die(
-		 $logger->fatal(
-			 "FilterSNPs:Cannot open $outdir/$AllStdFilterEntriesTxt, Error:$!")
+		$logger->fatal(
+			"FilterSNPs:Cannot open $outdir/$AllStdFilterEntriesTxt, Error:$!")
 	  );
 	open( VFH, ">", "$outdir/$AllStdFilterEntriesVcf" )
 	  or die(
-		 $logger->fatal(
-			 "FilterSNPs:Cannot open $outdir/$AllStdFilterEntriesTxt, Error:$!")
+		$logger->fatal(
+			"FilterSNPs:Cannot open $outdir/$AllStdFilterEntriesTxt, Error:$!")
 	  );
 
 	#Get Header Lines of both files
@@ -3607,46 +3498,39 @@ sub FilterSNPsAndIndels
 	my %SIDrecords = ();
 	open( HMV, "$outdir/$headerMutationVcf" )
 	  or die(
-			  $logger->fatal(
-				  "FilterSNPs:Cannot Open $outdir/$headerMutationVcf, Error:$!")
+		$logger->fatal(
+			"FilterSNPs:Cannot Open $outdir/$headerMutationVcf, Error:$!")
 	  );
 	open( HIV, "$outdir/$headerIndelVcf" )
 	  or die(
-			  $logger->fatal(
-					 "FilterSNPs:Cannot Open $outdir/$headerIndelVcf, Error:$!")
+		$logger->fatal(
+			"FilterSNPs:Cannot Open $outdir/$headerIndelVcf, Error:$!")
 	  );
 	open( HPV, "$outdir/$headerPindelVcf" )
 	  or die(
-			  $logger->fatal(
-					"FilterSNPs:Cannot Open $outdir/$headerPindelVcf, Error:$!")
+		$logger->fatal(
+			"FilterSNPs:Cannot Open $outdir/$headerPindelVcf, Error:$!")
 	  );
 	print "before here\n";
 	$vcfVersion = <HMV>;
 	chomp($vcfVersion);
 
-	while (<HMV>)
-	{
-		if ( $_ =~ /^#/ )
-		{
+	while (<HMV>) {
+		if ( $_ =~ /^#/ ) {
 			chomp($_);
-			if ( $_ =~ /^##FILTER/ )
-			{
+			if ( $_ =~ /^##FILTER/ ) {
 				push( @filter, $_ );
 			}
-			if ( $_ =~ /^##FORMAT/ )
-			{
+			if ( $_ =~ /^##FORMAT/ ) {
 				push( @format, $_ );
 			}
-			if ( $_ =~ /^##INFO/ )
-			{
+			if ( $_ =~ /^##INFO/ ) {
 				push( @info, $_ );
 			}
-			if ( $_ =~ /^##contig/ )
-			{
+			if ( $_ =~ /^##contig/ ) {
 				push( @contigs, $_ );
 			}
-			if ( $_ =~ /^#CHROM/ )
-			{
+			if ( $_ =~ /^#CHROM/ ) {
 				my @splitHeaderLine = split( "\t", $_ );
 				my $elementsNum = scalar(@splitHeaderLine);
 				splice @splitHeaderLine, $elementsNum - 2, 2;
@@ -3654,66 +3538,54 @@ sub FilterSNPsAndIndels
 				my $joinLine = join( "\t", @splitHeaderLine );
 				push( @headerLine, $joinLine );
 			}
-		} else
-		{
+		}
+		else {
 			next;
 		}
 	}
 	close(HMV);
-	while (<HIV>)
-	{
-		if ( $_ =~ /^#/ )
-		{
+	while (<HIV>) {
+		if ( $_ =~ /^#/ ) {
 			chomp($_);
-			if ( ( $_ =~ /ID=AD/ ) or ( $_ =~ /ID=DP/ ) )
-			{
+			if ( ( $_ =~ /ID=AD/ ) or ( $_ =~ /ID=DP/ ) ) {
 				next;
 			}
-			if ( $_ =~ /^##FILTER/ )
-			{
+			if ( $_ =~ /^##FILTER/ ) {
 				push( @filter, $_ );
 			}
-			if ( $_ =~ /^##FORMAT/ )
-			{
+			if ( $_ =~ /^##FORMAT/ ) {
 				push( @format, $_ );
 			}
-			if ( $_ =~ /^##INFO/ )
-			{
+			if ( $_ =~ /^##INFO/ ) {
 				push( @info, $_ );
 				push( @info, $customInfo );
 				push( @info, $customInfoMethod );
 			}
-		} else
-		{
+		}
+		else {
 			next;
 		}
 	}
 	close(HIV);
-	while (<HPV>)
-	{
-		if ( $_ =~ /^#/ )
-		{
+	while (<HPV>) {
+		if ( $_ =~ /^#/ ) {
 			chomp($_);
-			if ( ( $_ =~ /ID=AD/ ) or ( $_ =~ /ID=DP/ ) )
-			{
+			if ( ( $_ =~ /ID=AD/ ) or ( $_ =~ /ID=DP/ ) ) {
 				next;
 			}
-			if ( $_ =~ /^##FILTER/ )
-			{
+			if ( $_ =~ /^##FILTER/ ) {
 				push( @filter, $_ );
 			}
-			if ( $_ =~ /^##FORMAT/ )
-			{
+			if ( $_ =~ /^##FORMAT/ ) {
 				push( @format, $_ );
 			}
-			if ( $_ =~ /^##INFO/ )
-			{
+			if ( $_ =~ /^##INFO/ ) {
 				push( @info, $_ );
 				push( @info, $customInfo );
 				push( @info, $customInfoMethod );
 			}
-		} else
-		{
+		}
+		else {
 			next;
 		}
 	}
@@ -3728,19 +3600,21 @@ sub FilterSNPsAndIndels
 	#Txt Header
 	print TFH
 	  "Sample\tNormalUsed\tChrom\tStart\tRef\tAlt\tFailureReason\tCallMethod\n";
+
 	#
 	#populate vcf file
-	foreach my $line (@VCFheader)
-	{
+	foreach my $line (@VCFheader) {
 		print VFH "$line\n";
 	}
 	my $sampleId = "";
-	for ( my $fileNum = 0 ;
-		  $fileNum < scalar(@somaticMutationVcfFiles) ;
-		  $fileNum++ )
+	for (
+		my $fileNum = 0 ;
+		$fileNum < scalar(@somaticMutationVcfFiles) ;
+		$fileNum++
+	  )
 	{
-		if ( -s "$outdir/$somaticMutationVcfFiles[$fileNum]" )
-		{
+		if ( -s "$outdir/$somaticMutationVcfFiles[$fileNum]" ) {
+
 			#Mutation VCF
 			my $Mvcf =
 			  Vcf->new( file => "$outdir/$somaticMutationVcfFiles[$fileNum]" );
@@ -3749,36 +3623,31 @@ sub FilterSNPsAndIndels
 
 			#Get Sample ID
 			my $Mname1 = $Mvcf->get_column_name(9);
-			if ( $Mname1 =~ /\// )
-			{
+			if ( $Mname1 =~ /\// ) {
 				$Mname1 = basename($Mname1);
 			}
 			my $Mname2 = $Mvcf->get_column_name(10);
-			if ( $Mname2 =~ /\// )
-			{
+			if ( $Mname2 =~ /\// ) {
 				$Mname2 = basename($Mname2);
 			}
 
 			#Match Sample Id to column
 			my ($mCol);
-			if ( $sampleId eq $Mname1 )
-			{
+			if ( $sampleId eq $Mname1 ) {
 				$mCol = 9;
 			}
-			if ( $sampleId eq $Mname2 )
-			{
+			if ( $sampleId eq $Mname2 ) {
 				$mCol = 10;
 			}
-			while ( my $rec = $Mvcf->next_data_array() )
-			{
+			while ( my $rec = $Mvcf->next_data_array() ) {
 				$$rec[7] =
 				  "Sample=" . $sampleId . ";CallMethod=MuTect;" . $$rec[7];
 				print VFH
 "$$rec[0]\t$$rec[1]\t$$rec[2]\t$$rec[3]\t$$rec[4]\t$$rec[5]\t$$rec[6]\t$$rec[7]\t$$rec[8]\t$$rec[$mCol]\n";
 			}
 			$Mvcf->close();
-		} else
-		{
+		}
+		else {
 			$logger->fatal(
 "FILTER SNPS: $sampleId: MuTect vcf was not created. You wont have any SNPs Results"
 			);
@@ -3786,8 +3655,7 @@ sub FilterSNPsAndIndels
 
 		#Indels VCF
 		#Store record for pindel
-		if ( -s "$outdir/$somaticIndelVcfFiles[$fileNum]" )
-		{
+		if ( -s "$outdir/$somaticIndelVcfFiles[$fileNum]" ) {
 			%SIDrecords = ();
 			my $Ivcf =
 			  Vcf->new( file => "$outdir/$somaticIndelVcfFiles[$fileNum]" );
@@ -3796,28 +3664,23 @@ sub FilterSNPsAndIndels
 
 			#Get Sample ID
 			my $Iname1 = $Ivcf->get_column_name(9);
-			if ( $Iname1 =~ /\// )
-			{
+			if ( $Iname1 =~ /\// ) {
 				$Iname1 = basename($Iname1);
 			}
 			my $Iname2 = $Ivcf->get_column_name(10);
-			if ( $Iname2 =~ /\// )
-			{
+			if ( $Iname2 =~ /\// ) {
 				$Iname2 = basename($Iname2);
 			}
 
 			#Match Sample Id to Column
 			my ($iCol);
-			if ( $sampleId eq $Iname1 )
-			{
+			if ( $sampleId eq $Iname1 ) {
 				$iCol = 9;
 			}
-			if ( $sampleId eq $Iname2 )
-			{
+			if ( $sampleId eq $Iname2 ) {
 				$iCol = 10;
 			}
-			while ( my $rec = $Ivcf->next_data_array() )
-			{
+			while ( my $rec = $Ivcf->next_data_array() ) {
 				$SIDrecords{"$$rec[0]\t$$rec[1]\t$$rec[2]\t$$rec[3]\t$$rec[4]"}
 				  = 0;
 				$$rec[7] =
@@ -3838,45 +3701,39 @@ sub FilterSNPsAndIndels
 
 			#Get Sample ID
 			my $Pname1 = $Pvcf->get_column_name(9);
-			if ( $Pname1 =~ /\// )
-			{
+			if ( $Pname1 =~ /\// ) {
 				$Pname1 = basename($Pname1);
 			}
 			my $Pname2 = $Pvcf->get_column_name(10);
-			if ( $Pname2 =~ /\// )
-			{
+			if ( $Pname2 =~ /\// ) {
 				$Pname2 = basename($Pname2);
 			}
 
 			#Match Sample Id to Column
 			my ($pCol);
-			if ( $sampleId eq $Pname1 )
-			{
+			if ( $sampleId eq $Pname1 ) {
 				$pCol = 9;
 			}
-			if ( $sampleId eq $Pname2 )
-			{
+			if ( $sampleId eq $Pname2 ) {
 				$pCol = 10;
 			}
-			while ( my $rec = $Pvcf->next_data_array() )
-			{
+			while ( my $rec = $Pvcf->next_data_array() ) {
 				my $pindelKey =
 				  "$$rec[0]\t$$rec[1]\t$$rec[2]\t$$rec[3]\t$$rec[4]";
 				$$rec[7] =
 				  "Sample=" . $sampleId . ";CallMethod=Pindel;" . $$rec[7];
-				if ( exists $SIDrecords{$pindelKey} )
-				{
+				if ( exists $SIDrecords{$pindelKey} ) {
 					$logger->info(
-							 "$sampleId: $pindelKey was also called by Pindel");
-				} else
-				{
+						"$sampleId: $pindelKey was also called by Pindel");
+				}
+				else {
 					print VFH
 "$$rec[0]\t$$rec[1]\t$$rec[2]\t$$rec[3]\t$$rec[4]\t$$rec[5]\t$$rec[6]\t$$rec[7]\t$$rec[8]\t$$rec[$iCol]\n";
 				}
 			}
 			$Pvcf->close();
-		} else
-		{
+		}
+		else {
 			$logger->fatal(
 "FILTER INDEL: $sampleId: SID vcf was not created. You wont have any Indel Results"
 			);
@@ -3913,17 +3770,15 @@ sub FilterSNPsAndIndels
 		my $mafStart;
 		my $mafEnd;
 
-		while (<SMTFH>)
-		{
+		while (<SMTFH>) {
 			chomp($_);
 			@newDataCols = ();
 			(@newDataCols) = split( "\t", $_ );
 			$normalUsed = "";
-			if ( exists $NormalPerFile{ $newDataCols[0] } )
-			{
+			if ( exists $NormalPerFile{ $newDataCols[0] } ) {
 				$normalUsed = $NormalPerFile{ $newDataCols[0] };
-			} else
-			{
+			}
+			else {
 				$normalUsed = "NULL";
 			}
 			$mafStart = $newDataCols[2];
@@ -3935,19 +3790,17 @@ sub FilterSNPsAndIndels
 		}
 		close(SMTFH);
 		%SIDrecords = ();
-		while (<SITFH>)
-		{
+		while (<SITFH>) {
 			chomp($_);
 			@dataCols = ();
 			(@dataCols) = split( "\t", $_ );
 			@newDataCols = ();
 			@newDataCols = grep( s/\s*$//g, @dataCols );
 			$normalUsed  = "";
-			if ( exists $NormalPerFile{ $newDataCols[0] } )
-			{
+			if ( exists $NormalPerFile{ $newDataCols[0] } ) {
 				$normalUsed = $NormalPerFile{ $newDataCols[0] };
-			} else
-			{
+			}
+			else {
 				$normalUsed = "NULL";
 			}
 			if ( ( length( $newDataCols[3] ) ) > ( length( $newDataCols[4] ) ) )
@@ -3955,33 +3808,31 @@ sub FilterSNPsAndIndels
 				my $deletionLength = ( length( $newDataCols[3] ) ) - 1;
 				$mafStart = $newDataCols[2];
 				$mafEnd   = $newDataCols[2] + $deletionLength;
-			} else
-			{
+			}
+			else {
 				$mafStart = $newDataCols[2];
 				$mafEnd   = $newDataCols[2];
 			}
 			$SIDrecords{
 "$newDataCols[0]\t$normalUsed\t$newDataCols[1]\t$newDataCols[2]\t$newDataCols[3]\t$newDataCols[4]"
-			} = 0;
+			  } = 0;
 
 #print TFH "$newDataCols[0]\t$normalUsed\t$newDataCols[1]\t$newDataCols[2]\t$newDataCols[3]\t$newDataCols[4]\tSID\n";
 			print BFH
 "$newDataCols[1]\t$mafStart\t$mafEnd\t$newDataCols[0]:$normalUsed\n";
 		}
 		close(SITFH);
-		while (<PITFH>)
-		{
+		while (<PITFH>) {
 			chomp($_);
 			@dataCols = ();
 			(@dataCols) = split( "\t", $_ );
 			@newDataCols = ();
 			@newDataCols = grep( s/\s*$//g, @dataCols );
 			$normalUsed  = "";
-			if ( exists $NormalPerFile{ $newDataCols[0] } )
-			{
+			if ( exists $NormalPerFile{ $newDataCols[0] } ) {
 				$normalUsed = $NormalPerFile{ $newDataCols[0] };
-			} else
-			{
+			}
+			else {
 				$normalUsed = "NULL";
 			}
 			if ( ( length( $newDataCols[3] ) ) > ( length( $newDataCols[4] ) ) )
@@ -3989,22 +3840,21 @@ sub FilterSNPsAndIndels
 				my $deletionLength = ( length( $newDataCols[3] ) ) - 1;
 				$mafStart = $newDataCols[2];
 				$mafEnd   = $newDataCols[2] + $deletionLength;
-			} else
-			{
+			}
+			else {
 				$mafStart = $newDataCols[2];
 				$mafEnd   = $newDataCols[2];
 			}
 			my $pindelKey =
 "$newDataCols[0]\t$normalUsed\t$newDataCols[1]\t$newDataCols[2]\t$newDataCols[3]\t$newDataCols[4]";
-			if ( exists $SIDrecords{$pindelKey} )
-			{
+			if ( exists $SIDrecords{$pindelKey} ) {
 				$logger->info(
-						"$newDataCols[0]:$pindelKey was called by Pindel also");
+					"$newDataCols[0]:$pindelKey was called by Pindel also");
 				print TFH
 "$newDataCols[0]\t$normalUsed\t$newDataCols[1]\t$newDataCols[2]\t$newDataCols[3]\t$newDataCols[4]\t.\tSID,PINDEL\n";
 				delete $SIDrecords{$pindelKey};
-			} else
-			{
+			}
+			else {
 				print TFH
 "$newDataCols[0]\t$normalUsed\t$newDataCols[1]\t$newDataCols[2]\t$newDataCols[3]\t$newDataCols[4]\t.\tPINDEL\n";
 				print BFH
@@ -4013,8 +3863,7 @@ sub FilterSNPsAndIndels
 		}
 		close(PITFH);
 		close(BFH);
-		while ( my ( $sidKey, $sidVal ) = each(%SIDrecords) )
-		{
+		while ( my ( $sidKey, $sidVal ) = each(%SIDrecords) ) {
 			print TFH "$sidKey\t.\tSID\n";
 		}
 	}
@@ -4023,28 +3872,24 @@ sub FilterSNPsAndIndels
 
 	#Genotype these variants.
 	my ($mergeOutFile) =
-	  &GenotypeAllele_And_MergeFiles(
-									  \@names,
-									  $poolName,
-									  $AllStdFilterEntriesVcf,
-									  $AllStdFilterEntriesTxt,
-									  $NormalUsed
-	  );
+	  &GenotypeAllele_And_MergeFiles( \@names, $poolName,
+		$AllStdFilterEntriesVcf, $AllStdFilterEntriesTxt, $NormalUsed );
 	$now = time - $now;
 	$logger->info("Finished running Somatic Variant Filter jobs on SGE");
-	printf( "Total Somatic Variant Filter run time: %02d:%02d:%02d\n\n",
-			int( $now / 3600 ),
-			int( ( $now % 3600 ) / 60 ),
-			int( $now % 60 ) );
+	printf(
+		"Total Somatic Variant Filter run time: %02d:%02d:%02d\n\n",
+		int( $now / 3600 ),
+		int( ( $now % 3600 ) / 60 ),
+		int( $now % 60 )
+	);
 	return ( \@names );
 }
 #####################################
 #####################################
 #Genotype varinats from each filtered vcf file
-sub GenotypeAllele_And_MergeFiles
-{
+sub GenotypeAllele_And_MergeFiles {
 	my ( $bamFiles, $poolName, $AllStdFilterEntriesVcf, $AllStdFilterEntriesTxt,
-		 $NormalUsed )
+		$NormalUsed )
 	  = @_;
 	my @bamFilesToGenotypeAgainst = @$bamFiles;
 	my @notifyNames               = ();
@@ -4052,8 +3897,7 @@ sub GenotypeAllele_And_MergeFiles
 	my @stdNormals                = ();
 	my @stdNormalIds              = ();
 	my @typeOfSample              = ();
-	foreach my $file (@bamFilesToGenotypeAgainst)
-	{
+	foreach my $file (@bamFilesToGenotypeAgainst) {
 		my ($fileBarcode) = $file =~ /.*_(bc\d+)_.*/;
 		my $fileClass = $classPerBarcode{$fileBarcode};
 		push( @typeOfSample, $fileClass );
@@ -4066,12 +3910,10 @@ sub GenotypeAllele_And_MergeFiles
 	my @stdNormalBams = glob("$StandardNormalsDirectory/*bam");
 
 	#Added if mutation calling normal exists
-	if ( $stdNormal ne "NULL" )
-	{
+	if ( $stdNormal ne "NULL" ) {
 		push( @stdNormalBams, $stdNormal );
 	}
-	foreach (@stdNormalBams)
-	{
+	foreach (@stdNormalBams) {
 		chomp($_);
 		my $bamfilename = basename($_);
 		my ($stdBamId) = $bamfilename =~ /(.*)_bc\d+/;
@@ -4079,11 +3921,10 @@ sub GenotypeAllele_And_MergeFiles
 		push( @typeOfSample,              "Normal" );
 		push( @stdNormals,                $bamfilename );
 		push( @stdNormalIds,              $stdBamId );
-		if ( -e "$outdir/$bamfilename" )
-		{
+		if ( -e "$outdir/$bamfilename" ) {
 			next;
-		} else
-		{
+		}
+		else {
 			chop($_);
 			eval {
 				if ( $CLUSTER eq "SGE" )
@@ -4095,8 +3936,8 @@ sub GenotypeAllele_And_MergeFiles
 
 #`$QSUB -q $queue -V -N RSYNC.$stdBamId.$$ -wd $outdir -e RSYNC.$stdBamId.$$.stderr -o RSYNC.$stdBamId.$$.stdout -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y echo "Run Rsync"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid RSYNC.$stdBamId.$$ -N NotityRsync.$stdBamId.$$ -e NotifyRsync.$stdBamId.$$.stderr -o NotifyRsync.$stdBamId.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-				} else
-				{
+				}
+				else {
 					my $cmd =
 "$BSUB -q $queue -J RSYNC.$stdBamId.$$ -cwd $outdir -e RSYNC.$stdBamId.$$.%J.stderr -o RSYNC.$stdBamId.$$.%J.stdout -R \"rusage[mem=2]\" -M 4 -n 1 \"$RSYNC -a -L $_\* $outdir/.\"";
 					$logger->debug("COMMAND: $cmd");
@@ -4104,10 +3945,10 @@ sub GenotypeAllele_And_MergeFiles
 `$BSUB -q $queue -cwd $outdir -w "post_done(RSYNC.$stdBamId.$$)" -J NotityRsync.$stdBamId.$$ -e NotifyRsync.$stdBamId.$$.%J.stderr -o NotifyRsync.$stdBamId.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 				}
 			};
-			if ($@)
-			{
+			if ($@) {
 				$logger->fatal(
-"GenotypeMutations:Cannot rsync standard normal list. Error:$@" );
+"GenotypeMutations:Cannot rsync standard normal list. Error:$@"
+				);
 				exit(1);
 			}
 			push( @notifyNames, "NotifyRsync.$stdBamId.$$.stat" );
@@ -4124,8 +3965,8 @@ sub GenotypeAllele_And_MergeFiles
 	my $totcount = 0;
 	my $index    = 0;
 	my $total    = scalar(@bamFilesToGenotypeAgainst);
-	foreach my $bamFile (@bamFilesToGenotypeAgainst)
-	{
+	foreach my $bamFile (@bamFilesToGenotypeAgainst) {
+
 		#print "$bamFile\n";
 		my ($bamID) = $bamFile =~ /(.*)_bc\d+/;
 		my $mpileUpMutationOut = $bamFile;
@@ -4134,14 +3975,14 @@ sub GenotypeAllele_And_MergeFiles
 		$alleleDepthMutationOut =~ s/\.bam/_mpileup\.alleledepth/;
 
 		#Mutation File
-		if (     ( -e "$outdir/$alleleDepthMutationOut" )
-			 and ( ( -s "$outdir/$alleleDepthMutationOut" ) != 0 ) )
+		if (    ( -e "$outdir/$alleleDepthMutationOut" )
+			and ( ( -s "$outdir/$alleleDepthMutationOut" ) != 0 ) )
 		{
 			push( @GenotypedFiles, $alleleDepthMutationOut );
 			$totcount++;
 			next;
-		} else
-		{
+		}
+		else {
 			eval {
 				if ( $CLUSTER eq "SGE" )
 				{
@@ -4150,8 +3991,8 @@ sub GenotypeAllele_And_MergeFiles
 					$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -N AD.$bamID.$$ -wd $outdir -e AD.$bamID.$$.stderr -o AD.$bamID.$$.stdout -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y $PERL $GenotypeAllele -fmv $outdir/$AllStdFilterEntriesVcf -bam $outdir/$bamFile -rf $Reference -s $SAMTOOLS -o $outdir -of $alleleDepthMutationOut -mof $mpileUpMutationOut -bi $bamID -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -qsub $QSUB -tos $typeOfSample[$index]`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid AD.$bamID.$$ -N NotifyAD.$bamID.$$ -e NotifyAD.$bamID.$$.stderr -o NotifyAD.$bamID.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-				} else
-				{
+				}
+				else {
 					my $cmd =
 "$BSUB -q $queue -J AD.$bamID.$$ -cwd $outdir -e AD.$bamID.$$.%J.stderr -o AD.$bamID.$$.%J.stdout -R \"rusage[mem=2]\" -R \"rusage[iounits=0]\" -M 4 -n 1 \"$PERL $GenotypeAllele -fmv $outdir/$AllStdFilterEntriesVcf -bam $outdir/$bamFile -rf $Reference -s $SAMTOOLS -o $outdir -of $alleleDepthMutationOut -mof $mpileUpMutationOut -bi $bamID -mmq $MAPQ -mbq $BASQ -q $queue -b $BEDTOOLS -bsub $BSUB -tos $typeOfSample[$index]\"";
 					$logger->debug("COMMAND: $cmd");
@@ -4159,8 +4000,7 @@ sub GenotypeAllele_And_MergeFiles
 `$BSUB -q $queue -cwd $outdir -w "post_done(AD.$bamID.$$)" -J NotifyAD.$bamID.$$ -e NotifyAD.$bamID.$$.%J.stderr -o NotifyAD.$bamID.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 				}
 			};
-			if ($@)
-			{
+			if ($@) {
 				$logger->fatal("Genotype_Merge:Job Sumission Failed. Error:$@");
 				exit(1);
 			}
@@ -4169,8 +4009,7 @@ sub GenotypeAllele_And_MergeFiles
 			$count++;
 			$totcount++;
 		}
-		if ( ( $count >= 10 ) or ( $totcount == $total ) )
-		{
+		if ( ( $count >= 10 ) or ( $totcount == $total ) ) {
 			&WaitToFinish( $outdir, @notifyNames );
 			@notifyNames = ();
 			$count       = 0;
@@ -4183,14 +4022,13 @@ sub GenotypeAllele_And_MergeFiles
 	my $prog;
 	&CheckOutputFiles( $outdir, $prog, @GenotypedFiles );
 	print "Deleting Standard Normal Files\n";
-	foreach my $stdFiles (@stdNormals)
-	{
+	foreach my $stdFiles (@stdNormals) {
 		chop($stdFiles);
 		eval { `rm $outdir/$stdFiles\*`; };
-		if ($@)
-		{
+		if ($@) {
 			$logger->warn(
-"GenotypeMutations:Cannot remove standard normal list files. Error:$@" );
+"GenotypeMutations:Cannot remove standard normal list files. Error:$@"
+			);
 		}
 	}
 
@@ -4207,30 +4045,26 @@ sub GenotypeAllele_And_MergeFiles
 	my $titleFile = "$outdir/$poolName" . "_title.txt";
 	open( TFH, "<", $titleFile )
 	  or die(
-		 $logger->fatal("GenotypeMutations:Cannot open $titleFile, Error:$!") );
-	while (<TFH>)
-	{
+		$logger->fatal("GenotypeMutations:Cannot open $titleFile, Error:$!") );
+	while (<TFH>) {
 		next if ( $. == 1 );
 		my @ndataCols = split( "\t", $_ );
 		my @dataCols = grep( s/\s*$//g, @ndataCols );
 
 		#print "$dataCols[2]:$dataCols[5]\n";
-		if ( $dataCols[5] =~ /Normal/i )
-		{
+		if ( $dataCols[5] =~ /Normal/i ) {
 			tie %{ $NormalDataHash{ $dataCols[2] } }, 'Tie::IxHash';
-		} else
-		{
+		}
+		else {
 			tie %{ $TumorDataHash{ $dataCols[2] } }, 'Tie::IxHash';
 		}
 	}
-	foreach my $stdNormal (@stdNormalIds)
-	{
+	foreach my $stdNormal (@stdNormalIds) {
 		tie %{ $NormalDataHash{$stdNormal} }, 'Tie::IxHash';
 	}
 
 	#populating Normal and Tumor Hash from the genotyped files
-	for ( my $i = 0 ; $i < scalar(@GenotypedFiles) ; $i++ )
-	{
+	for ( my $i = 0 ; $i < scalar(@GenotypedFiles) ; $i++ ) {
 		open( FH, "$outdir/$GenotypedFiles[$i]" )
 		  or die(
 			$logger->fatal(
@@ -4238,17 +4072,16 @@ sub GenotypeAllele_And_MergeFiles
 			)
 		  );
 		my $header = <FH>;
-		while (<FH>)
-		{
+		while (<FH>) {
 			next if ( $_ =~ /^\s*$/ );
 			chomp($_);
 			my @ndataCols = split( "\t", $_ );
 			my @dataCols = grep( s/\s*$//g, @ndataCols );
 			my (
-				 $refBamId, $sampleId, $chr,        $pos,
-				 $alt,      $ref,      $totalDepth, $totalRefCount,
-				 $altCount, $altFreq,  $refFwd,     $refRev,
-				 $altFwd,   $altRev
+				$refBamId, $sampleId, $chr,        $pos,
+				$alt,      $ref,      $totalDepth, $totalRefCount,
+				$altCount, $altFreq,  $refFwd,     $refRev,
+				$altFwd,   $altRev
 			);
 			if   ( $dataCols[0] ) { $refBamId = $dataCols[0]; }
 			else                  { $refBamId = ""; }
@@ -4279,20 +4112,18 @@ sub GenotypeAllele_And_MergeFiles
 			if   ( $dataCols[13] ) { $altRev = $dataCols[13]; }
 			else                   { $altRev = 0; }
 
-			if ( exists $NormalDataHash{$refBamId} )
-			{
-				$NormalDataHash{$refBamId}{ $sampleId . ":"
-					  . $chr . ":"
-					  . $pos . ":"
+			if ( exists $NormalDataHash{$refBamId} ) {
+				$NormalDataHash{$refBamId}{ $sampleId . ":" 
+					  . $chr . ":" 
+					  . $pos . ":" 
 					  . $ref . ":"
 					  . $alt } =
 				  "$totalDepth\t$totalRefCount\t$altCount\t$altFreq";
 			}
-			if ( exists $TumorDataHash{$refBamId} )
-			{
-				$TumorDataHash{$refBamId}{ $sampleId . ":"
-					  . $chr . ":"
-					  . $pos . ":"
+			if ( exists $TumorDataHash{$refBamId} ) {
+				$TumorDataHash{$refBamId}{ $sampleId . ":" 
+					  . $chr . ":" 
+					  . $pos . ":" 
 					  . $ref . ":"
 					  . $alt } =
 "$totalDepth\t$totalRefCount\t$altCount\t$altFreq\t$refFwd\t$refRev\t$altFwd\t$altRev";
@@ -4306,8 +4137,8 @@ sub GenotypeAllele_And_MergeFiles
 	$mergedOutFile =~ s/\.txt/_withAlleleDepth\.txt/;
 	open( OMFMH, ">", "$outdir/$mergedOutFile" )
 	  or die(
-		   $logger->fatal(
-			   "GenotypeMutations:Cannot open $outdir/$mergedOutFile, Error:$!")
+		$logger->fatal(
+			"GenotypeMutations:Cannot open $outdir/$mergedOutFile, Error:$!")
 	  );
 	open( FMH, "<", "$outdir/$AllStdFilterEntriesTxt" )
 	  or die(
@@ -4318,7 +4149,7 @@ sub GenotypeAllele_And_MergeFiles
 	my $Orgheader = <FMH>;
 	chomp($Orgheader);
 	my ( $sampleId, $NsampleId, $chr, $pos, $ref, $alt, $failureReason,
-		 $callMethod )
+		$callMethod )
 	  = split( "\t", $Orgheader );
 	my $OncotatorHeader =
 "Hugo_Symbol\tCall_Confidence\tComments\t$failureReason\t$callMethod\tVariant_Class\tdbSNP_RS\tdbSNP_Val\tProtein_Change\tCOSMIC_site";
@@ -4337,11 +4168,10 @@ sub GenotypeAllele_And_MergeFiles
 #my $MutationAssessorHeader = "MA:FImpact\tMA:link.MSA\tMA:link.PDB\tMA:link.var";
 	print OMFMH
 "$sampleId\t$NsampleId\t$chr\t$pos\t$ref\t$alt\t$OncotatorHeader\t$sampleNormalHeader\t$sampleTumorHeader\t$AllnormalAggregate\t$AllnormalFreq\t$AlltumornormalFreq\t$OccurenceInNormals\t$allNormalHeader\t$allTumorHeader\n";
-	while (<FMH>)
-	{
+	while (<FMH>) {
 		chomp($_);
 		my ( $sampleId, $NsampleId, $chr, $pos, $ref, $alt, $failureReason,
-			 $callMethod )
+			$callMethod )
 		  = split( "\t", $_ );
 		my $orgKey =
 		  $sampleId . ":" . $chr . ":" . $pos . ":" . $ref . ":" . $alt;
@@ -4357,10 +4187,8 @@ sub GenotypeAllele_And_MergeFiles
 		my @AllFreqAD = ();
 
 		#Processing for Normal Samples
-		while ( my ( $key, $value ) = each(%NormalDataHash) )
-		{
-			if ( exists $NormalDataHash{$key}{$orgKey} )
-			{
+		while ( my ( $key, $value ) = each(%NormalDataHash) ) {
+			if ( exists $NormalDataHash{$key}{$orgKey} ) {
 				my $eachNormalSampleMpileup = $NormalDataHash{$key}{$orgKey};
 
 				#print "Each:$eachNormalSampleMpileup\n";
@@ -4390,7 +4218,7 @@ sub GenotypeAllele_And_MergeFiles
 
 		#Sample Tumor divided my All normal median frequency
 		my ( $T_totalDepth, $T_totalRefCount, $T_altCount, $T_altFreq,
-			 $T_refFwd, $T_refRev, $T_altFwd, $T_altRev )
+			$T_refFwd, $T_refRev, $T_altFwd, $T_altRev )
 		  = split( "\t", $SampleTumorMpileUpvalues );
 		my $Tfreq_AllNfreq = 0;
 		$Tfreq_AllNfreq = sprintf( "%.5f", ( $T_altFreq / $totnFreqAD ) )
@@ -4399,44 +4227,40 @@ sub GenotypeAllele_And_MergeFiles
 
 # AZ Aug 29th, changed the dash to pipe. with small numbers, excel changes dash to dates
 		my $Tpvf = sprintf( "%.5f", ( $T_altFreq / $PON_TPVF_threshold ) );
-		if ( $Tpvf < 0.01 )
-		{
+		if ( $Tpvf < 0.01 ) {
 			$Tpvf = 0.01;
 		}
 		my $OccurenceCount      = 0;
 		my $OccurencePercentage = 0;
 
 		#calculating Occurence
-		for ( my $sCount = 0 ; $sCount < scalar(@AllFreqAD) ; $sCount++ )
-		{
-			if (     ( $AllAltAD[$sCount] >= $PON_AD_threshold )
-				 and ( $AllFreqAD[$sCount] >= $Tpvf ) )
+		for ( my $sCount = 0 ; $sCount < scalar(@AllFreqAD) ; $sCount++ ) {
+			if (    ( $AllAltAD[$sCount] >= $PON_AD_threshold )
+				and ( $AllFreqAD[$sCount] >= $Tpvf ) )
 			{
+
 				#print "$AllAltAD[$sCount] $AllFreqAD[$sCount]\n";
 				#print "$_";
 				$OccurenceCount++;
 			}
 		}
-		if ( ($OccurenceCount) and ( $OccurenceCount != 0 ) )
-		{
+		if ( ($OccurenceCount) and ( $OccurenceCount != 0 ) ) {
 			$OccurencePercentage =
 			  sprintf( "%.3f", $OccurenceCount / keys(%NormalDataHash) );
-		} else
-		{
+		}
+		else {
 			$OccurencePercentage = 0.0;
 		}
 		my $allNormalCols = join( "\t", @addNcols );
 
 		#Processing for Tumor Samples
-		while ( my ( $key, $value ) = each(%TumorDataHash) )
-		{
-			if ( exists $TumorDataHash{$key}{$orgKey} )
-			{
+		while ( my ( $key, $value ) = each(%TumorDataHash) ) {
+			if ( exists $TumorDataHash{$key}{$orgKey} ) {
 				my $eachTumorSampleMpileup = $TumorDataHash{$key}{$orgKey};
 
 				#print "$key\t$orgKey\t$eachTumorSampleMpileup\n";
 				my ( $totalDepth, $totalRefCount, $altCount, $altFreq, $refFwd,
-					 $refRev, $altFwd, $altRev )
+					$refRev, $altFwd, $altRev )
 				  = split( "\t", $eachTumorSampleMpileup );
 				$altFreq = sprintf( "%.3f", $altFreq );
 				my $altLine =
@@ -4454,11 +4278,10 @@ sub GenotypeAllele_And_MergeFiles
 	close(OMFMH);
 	close(FMH);
 	$logger->info("Competed Merging of Mutation & Genotyped Files");
-	if ( $mergeDinucleotide == 1 )
-	{
+	if ( $mergeDinucleotide == 1 ) {
 		&MergeDinucleotides( $mergedOutFile, $poolName, $outdir );
-	} else
-	{
+	}
+	else {
 		$logger->warn("Not merging the Dinucleotides");
 	}
 	return ($mergedOutFile);
@@ -4466,27 +4289,24 @@ sub GenotypeAllele_And_MergeFiles
 #####################################
 #####################################
 #calculate median from the array
-sub median
-{
+sub median {
 	@_ == 1 or die('Sub usage: $median = median(\@array);');
 	my ($array_ref) = @_;
 	my $count = scalar @$array_ref;
 
 	# Sort a COPY of the array, leaving the original untouched
 	my @array = sort { $a <=> $b } @$array_ref;
-	if ( $count % 2 )
-	{
+	if ( $count % 2 ) {
 		return $array[ int( $count / 2 ) ];
-	} else
-	{
+	}
+	else {
 		return ( $array[ $count / 2 ] + $array[ $count / 2 - 1 ] ) / 2;
 	}
 }
 #####################################
 #####################################
 #Merge Dinucleotide
-sub MergeDinucleotides
-{
+sub MergeDinucleotides {
 	my ( $genotypeFile, $poolName, $outdir ) = @_;
 	my $mdnFile = $genotypeFile;
 	$mdnFile =~ s/\.txt/_mergedDNP\.txt/;
@@ -4506,8 +4326,8 @@ sub MergeDinucleotides
 	#Open Merge Dinucleotide File
 	open( OFH, ">", "$outdir/$mdnFile" )
 	  or die(
-			  $logger->fatal(
-					 "MergeDinucleotide:Cannot open $outdir/$mdnFile, Error:$!")
+		$logger->fatal(
+			"MergeDinucleotide:Cannot open $outdir/$mdnFile, Error:$!")
 	  );
 
 	#Open Input to oncotator file
@@ -4520,37 +4340,34 @@ sub MergeDinucleotides
 	#Open Merge Dinucleotide stats File
 	open( MFH, ">", "$outdir/$MergedStats" )
 	  or die(
-			 $logger->fatal(
-				 "MergeDinucleotide:Cannot open $outdir/$MergedStats, Error:$!")
+		$logger->fatal(
+			"MergeDinucleotide:Cannot open $outdir/$MergedStats, Error:$!")
 	  );
 
 	#Open UnMerge Dinucleotide stats File
 	open( UMFH, ">", "$outdir/$UnMergedStats" )
 	  or die(
-		   $logger->fatal(
-			   "MergeDinucleotide:Cannot open $outdir/$UnMergedStats, Error:$!")
+		$logger->fatal(
+			"MergeDinucleotide:Cannot open $outdir/$UnMergedStats, Error:$!")
 	  );
 
 	#Open Genotype File
 	open( FH, "$outdir/$genotypeFile" )
 	  or die(
-			$logger->fatal(
-				"MergeDinucleotide:Cannot open $outdir/$genotypeFile, Error:$!")
+		$logger->fatal(
+			"MergeDinucleotide:Cannot open $outdir/$genotypeFile, Error:$!")
 	  );
 	my $header = <FH>;
-	while (<FH>)
-	{
+	while (<FH>) {
 		chomp($_);
 		my (@dataCols) = split( "\t", $_ );
-		if ( ( length( $dataCols[4] ) ) == ( length( $dataCols[5] ) ) )
-		{
-			if ( exists $SCHash{ $dataCols[0] } )
-			{
+		if ( ( length( $dataCols[4] ) ) == ( length( $dataCols[5] ) ) ) {
+			if ( exists $SCHash{ $dataCols[0] } ) {
 				my $val = $SCHash{ $dataCols[0] };
 				$val = $val . ";" . $dataCols[2] . ":" . $dataCols[3];
 				$SCHash{ $dataCols[0] } = $val;
-			} else
-			{
+			}
+			else {
 				$SCHash{ $dataCols[0] } = $dataCols[2] . ":" . $dataCols[3];
 			}
 		}
@@ -4564,26 +4381,23 @@ sub MergeDinucleotides
 	close(FH);
 	print MFH
 "Sample\tChr1:Pos1\tChr2:Pos2\tRef1\tRef2\tAlt1\tAlt2\tDP1\tDP2\tAD1\tAD2\tVF1\tVF2\n";
-	while ( my ( $key, $val ) = each(%SCHash) )
-	{
+	while ( my ( $key, $val ) = each(%SCHash) ) {
 		my (@coords) = ();
 		@coords = split( ";", $val );
 		my %searchHash = ();
 		foreach my $coord (@coords) { $searchHash{$coord} = () }
-		foreach my $coord (@coords)
-		{
+		foreach my $coord (@coords) {
 			my ( $chr, $adCoord ) = split( ":", $coord );
 			$adCoord = $adCoord + 1;
 			$adCoord = $chr . ":" . $adCoord;
-			if ( exists $searchHash{$adCoord} )
-			{
+			if ( exists $searchHash{$adCoord} ) {
 				my $dataval = $SCAHash{$key}{$coord};
 				my ( $ref1, $alt1, $dp1, $ad1, $vf1 ) = split( "#", $dataval );
 				$dataval = $SCAHash{$key}{$adCoord};
 				my ( $ref2, $alt2, $dp2, $ad2, $vf2 ) = split( "#", $dataval );
 				my ( $ref, $alt );
-				if (    ( abs( $dp1 - $dp2 ) <= 10 )
-					 && ( abs( $ad1 - $ad2 ) <= 5 ) )
+				if (   ( abs( $dp1 - $dp2 ) <= 10 )
+					&& ( abs( $ad1 - $ad2 ) <= 5 ) )
 				{
 					$ref = $ref1 . $ref2;
 					$alt = $alt1 . $alt2;
@@ -4592,8 +4406,8 @@ sub MergeDinucleotides
 					print MFH
 "$key\t$coord\t$adCoord\t$ref1\t$ref2\t$alt1\t$alt2\t$dp1\t$dp2\t$ad1\t$ad2\t$vf1\t$vf2\tMerged\n";
 					delete $SCAHash{$key}{$adCoord};
-				} else
-				{
+				}
+				else {
 					print UMFH
 "$key\t$coord\t$adCoord\t$ref1\t$ref2\t$alt1\t$alt2\t$dp1\t$dp2\t$ad1\t$ad2\t$vf1\t$vf2\tUnMerged\n";
 					next;
@@ -4607,20 +4421,20 @@ sub MergeDinucleotides
 "Chromosome\tStart_Position\tEnd_Position\tReference_Allele\tTumor_Seq_Allele1\tTumor_Seq_Allele2\tNCBI_Build\n";
 	open( FH, "$outdir/$genotypeFile" )
 	  or die(
-			$logger->fatal(
-				"MergeDinucleotide:Cannot open $outdir/$genotypeFile, Error:$!")
+		$logger->fatal(
+			"MergeDinucleotide:Cannot open $outdir/$genotypeFile, Error:$!")
 	  );
 	$header = <FH>;
 	print OFH "$header";
-	while (<FH>)
-	{
+	while (<FH>) {
 		chomp($_);
 		my (@dataCols) = split( "\t", $_ );
 		if (
-			exists $SCAHash{ $dataCols[0] }{ $dataCols[2] . ":" . $dataCols[3] }
-		  )
+			exists $SCAHash{ $dataCols[0] }
+			{ $dataCols[2] . ":" . $dataCols[3] } )
 		{
-			my ( $ref, $alt, $dp, $ad, $vf ) = split( "#",
+			my ( $ref, $alt, $dp, $ad, $vf ) =
+			  split( "#",
 				$SCAHash{ $dataCols[0] }{ $dataCols[2] . ":" . $dataCols[3] } );
 			$dataCols[4]  = $ref;
 			$dataCols[5]  = $alt;
@@ -4630,17 +4444,16 @@ sub MergeDinucleotides
 			my $data = join( "\t", @dataCols );
 			my ( $mafStart, $mafEnd );
 
-			if ( ( length($ref) ) > ( length($alt) ) )
-			{
+			if ( ( length($ref) ) > ( length($alt) ) ) {
 				my $deletionLength = ( length($ref) ) - 1;
 				$mafStart = $dataCols[3];
 				$mafEnd   = $dataCols[3] + $deletionLength;
-			} elsif ( ( length($ref) == 2 ) && ( length($alt) == 2 ) )
-			{
+			}
+			elsif ( ( length($ref) == 2 ) && ( length($alt) == 2 ) ) {
 				$mafStart = $dataCols[3];
 				$mafEnd   = $dataCols[3] + 1;
-			} else
-			{
+			}
+			else {
 				$mafStart = $dataCols[3];
 				$mafEnd   = $dataCols[3];
 			}
@@ -4657,16 +4470,14 @@ sub MergeDinucleotides
 #####################################
 #Annotate as well as Assess the
 #SNPs & Indels
-sub AnnotateSNPsAndIndels
-{
+sub AnnotateSNPsAndIndels {
 	my ( $filenames, $outdir, $fof ) = @_;
 
 	#print "$filenames\t$outdir\t$fof\n";
 	my @names = ();
 	my @notifyNames;
 	if ($filenames) { (@names) = @$filenames; }
-	if ( ( scalar(@names) == 0 ) and ($fof) )
-	{
+	if ( ( scalar(@names) == 0 ) and ($fof) ) {
 		@names = &GetNames( $fof, $outdir );
 	}
 	my (@sortedparseFilenames) =
@@ -4691,15 +4502,14 @@ sub AnnotateSNPsAndIndels
 # Annotate variants:
 	$somaticMutIndelFile =
 	  $poolName . "_AllSomaticMutIndel_withAlleleDepth.txt";
-	if ( $CLUSTER eq "SGE" )
-	{
+	if ( $CLUSTER eq "SGE" ) {
 		my $cmd =
 "$QSUB -q $queue -V -wd $outdir -N AnnotateVariants.$$ -o AnnotateVariants.$$.stdout -e AnnotateVariants.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $AnnotateAssessFilterVariants -si $outdir/$somaticMutIndelFile -c $config_file -t $titleFile -o $outdir -d $deleteIntermediateFiles";
 		$logger->debug("COMMAND : $cmd");
 `$QSUB -q $queue -V -wd $outdir -N AnnotateVariants.$$ -o AnnotateVariants.$$.stdout -e AnnotateVariants.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $AnnotateAssessFilterVariants -si $outdir/$somaticMutIndelFile -c $config_file -t $titleFile -o $outdir -d $deleteIntermediateFiles`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid AnnotateVariants.$$ -N NotifyAV.$$ -e NotifyAV.$$.stderr -o NotifyAV.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-	} else
-	{
+	}
+	else {
 		my $cmd =
 "$BSUB -q $queue -cwd $outdir -J AnnotateVariants.$$ -o AnnotateVariants.$$.%J.stdout -e AnnotateVariants.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $AnnotateAssessFilterVariants -si $outdir/$somaticMutIndelFile -c $config_file -t $titleFile -o $outdir -d $deleteIntermediateFiles\"";
 		$logger->debug("COMMAND : $cmd");
@@ -4712,16 +4522,15 @@ sub AnnotateSNPsAndIndels
 	# Filter annotated and gentoyped variants
 	$somaticMutIndelFile = $poolName
 	  . "_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedExonic.txt";
-	if ( $CLUSTER eq "SGE" )
-	{
+	if ( $CLUSTER eq "SGE" ) {
 		my $cmd =
 "$QSUB -q $queue -V -wd $outdir -N FilterExonicVariants.$$ -o FilterVariants.$$.stdout -e FilterVariants.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold ";
 		$logger->debug("COMMAND : $cmd");
 		@notifyNames = ();
 `$QSUB -q $queue -V -wd $outdir -N FilterExonicVariants.$$ -o FilterVariants.$$.stdout -e FilterVariants.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid FilterExonicVariants.$$ -N NotifyFV.$$ -e NotifyFV.$$.stderr -o NotifyFV.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-	} else
-	{
+	}
+	else {
 		my $cmd =
 "$BSUB -q $queue -cwd $outdir -J FilterExonicVariants.$$ -o FilterVariants.$$.%J.stdout -e FilterVariants.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold\"";
 		$logger->debug("COMMAND : $cmd");
@@ -4736,16 +4545,15 @@ sub AnnotateSNPsAndIndels
 	`cp $filteredExonicVariants annotated_exonic_variants.txt`;
 	$somaticMutIndelFile = $poolName
 	  . "_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelExonic.txt";
-	if ( $CLUSTER eq "SGE" )
-	{
+	if ( $CLUSTER eq "SGE" ) {
 		my $cmd =
 "$QSUB -q $queue -V -wd $outdir -N FilterNpVariants.$$ -o FilterVariants.$$.stdout -e FilterVariants.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold ";
 		$logger->debug("COMMAND : $cmd");
 		@notifyNames = ();
 `$QSUB -q $queue -V -wd $outdir -N FilterNpVariants.$$ -o FilterVariants.$$.stdout -e FilterVariants.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid FilterNpVariants.$$ -N NotifyNpFV.$$ -e NotifyFV.$$.stderr -o NotifyNpFV.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-	} else
-	{
+	}
+	else {
 		my $cmd =
 "$BSUB -q $queue -cwd $outdir -J FilterNpVariants.$$ -o FilterVariants.$$.%J.stdout -e FilterVariants.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold\"";
 		$logger->debug("COMMAND : $cmd");
@@ -4762,16 +4570,15 @@ sub AnnotateSNPsAndIndels
 	# Filter annotated and gentoyped SILENT variants
 	$somaticMutIndelFile = $poolName
 	  . "_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedSilent.txt";
-	if ( $CLUSTER eq "SGE" )
-	{
+	if ( $CLUSTER eq "SGE" ) {
 		my $cmd =
 "$QSUB -q $queue -V -wd $outdir -N FilterSilentVariants.$$ -o FilterVariants.$$.stdout -e FilterVariants.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold ";
 		$logger->debug("COMMAND : $cmd");
 		@notifyNames = ();
 `$QSUB -q $queue -V -wd $outdir -N FilterSilentVariants.$$ -o FilterSilentVariants.$$.stdout -e FilterSilentVariants.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid FilterSilentVariants.$$ -N NotifySilentFV.$$ -e NotifySilentFV.$$.stderr -o NotifySilentFV.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-	} else
-	{
+	}
+	else {
 		my $cmd =
 "$BSUB -q $queue -cwd $outdir -J FilterSilentVariants.$$ -o FilterSilentVariants.$$.%J.stdout -e FilterSilentVariants.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold\"";
 		$logger->debug("COMMAND : $cmd");
@@ -4786,16 +4593,15 @@ sub AnnotateSNPsAndIndels
 	`cp $filteredExonicVariants annotated_silent_variants.txt`;
 	$somaticMutIndelFile = $poolName
 	  . "_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedNonPanelSilent.txt";
-	if ( $CLUSTER eq "SGE" )
-	{
+	if ( $CLUSTER eq "SGE" ) {
 		my $cmd =
 "$QSUB -q $queue -V -wd $outdir -N FilterNpsVariants.$$ -o FilterVariants.$$.stdout -e FilterVariants.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold ";
 		$logger->debug("COMMAND : $cmd");
 		@notifyNames = ();
 `$QSUB -q $queue -V -wd $outdir -N FilterNpsVariants.$$ -o FilterSilentVariants.$$.stdout -e FilterSilentVariants.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid FilterNpsVariants.$$ -N NotifyNpsFV.$$ -e NotifySilentFV.$$.stderr -o NotifyNpsFV.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-	} else
-	{
+	}
+	else {
 		my $cmd =
 "$BSUB -q $queue -cwd $outdir -J FilterNpsVariants.$$ -o FilterSilentVariants.$$.%J.stdout -e FilterSilentVariants.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $filterGenotypedVariants -i $outdir/$somaticMutIndelFile -h $HotspotMutations -ce $ClinicalExons -t $titleFile -dp_snv $dp_snv -ad_snv $ad_snv -vf_snv $vf_snv -dp_snvHS $dp_snvHS -ad_snvHS $ad_snvHS -vf_snvHS $vf_snvHS -dp_indel $dp_indel -ad_indel $ad_indel -vf_indel $vf_indel -dp_indelHS $dp_indelHS -ad_indelHS $ad_indelHS -vf_indelHS $vf_indelHS -occurrence $occurrencePercent -tn_ratio $TNfreqRatioThreshold -mt $MAFthreshold\"";
 		$logger->debug("COMMAND : $cmd");
@@ -4812,16 +4618,15 @@ sub AnnotateSNPsAndIndels
 	# Generate VCF files
 	$somaticMutIndelFile = $poolName
 	  . "_AllSomaticMutIndel_withAlleleDepth_annovarAnnotatedExonic.Filtered.txt";
-	if ( $CLUSTER eq "SGE" )
-	{
+	if ( $CLUSTER eq "SGE" ) {
 		my $cmd =
 "$QSUB -q $queue -V -wd $outdir -N GenerateVCFfiles.$$ -o GenerateVCFfiles.$$.stdout -e GenerateVCFfiles.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $createPatientVCFfile -v $somaticMutIndelFile -o $outdir -t $titleFile -j $JAVA_1_7 -it $IGVtools";
 		$logger->debug("COMMAND : $cmd");
 		@notifyNames = ();
 `$QSUB -q $queue -V -wd $outdir -N GenerateVCFfiles.$$ -o GenerateVCFfiles.$$.stdout -e GenerateVCFfiles.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $createPatientVCFfile -v $somaticMutIndelFile -o $outdir  -t $titleFile -j $JAVA_1_7 -it $IGVtools`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid GenerateVCFfiles.$$ -N NotifyGenVCF.$$ -e NotifyGenVCF.$$.stderr -o NotifyGenVCF.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-	} else
-	{
+	}
+	else {
 		my $cmd =
 "$BSUB -q $queue -cwd $outdir -J GenerateVCFfiles.$$ -o GenerateVCFfiles.$$.%J.stdout -e GenerateVCFfiles.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $createPatientVCFfile -v $somaticMutIndelFile -o $outdir  -t $titleFile -j $JAVA_1_7 -it $IGVtools\"";
 		$logger->debug("COMMAND : $cmd");
@@ -4839,16 +4644,15 @@ sub AnnotateSNPsAndIndels
 	my $intragenicLevelCNfile =
 	  $poolName . "_copynumber_segclusp.intragenic.txt";
 	my $normalsUSed = $poolName . "_NormalUsedInMutationCalling.txt";
-	if ( $CLUSTER eq "SGE" )
-	{
+	if ( $CLUSTER eq "SGE" ) {
 		my $cmd =
 "$QSUB -q $queue -V -wd $outdir -N GenerateVCFfiles.$$ -o GenerateVCFfiles.$$.stdout -e GenerateVCFfiles.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $createCoverageFiles -v $somaticMutIndelFile -o $outdir -nu $normalsUSed -t $titleFile -ss $sampleFile -id $intragenicLevelCNfile -gc $outdir/$geneCoverage -cn $geneLevelCNfile -gi $GeneIntervalAnn -ec $outdir/$exonCoverage -cc $outdir/$canonicalExonCoverage -ve $validatedExons -ce $ClinicalExons -ei $exonIntervalsFile -tf $translationFolder  -ct $coverageThreshold";
 		$logger->debug("COMMAND : $cmd");
 		@notifyNames = ();
 `$QSUB -q $queue -V -wd $outdir -N GenerateCoverageFiles.$$ -o GenerateCoverageFiles.$$.stdout -e GenerateCoverageFiles.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y $PERL $createCoverageFiles -v $somaticMutIndelFile -o $outdir -nu $normalsUSed -t $titleFile -ss $sampleFile -id $intragenicLevelCNfile -gc $outdir/$geneCoverage -cn $geneLevelCNfile -gi $GeneIntervalAnn -ec $outdir/$exonCoverage -cc $outdir/$canonicalExonCoverage -ve $validatedExons -ce $ClinicalExons -ei $exonIntervalsFile -tf $translationFolder  -ct $coverageThreshold`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid GenerateCoverageFiles.$$ -N NotifyCovFile.$$ -e NotifyCovFile.$$.stderr -o NotifyCovFile.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-	} else
-	{
+	}
+	else {
 		my $cmd =
 "$BSUB -q $queue -cwd $outdir -J GenerateCoverageFiles.$$ -o GenerateCoverageFiles.$$.%J.stdout -e GenerateCoverageFiles.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $createCoverageFiles -v $somaticMutIndelFile -o $outdir -nu $normalsUSed -t $titleFile -ss $sampleFile -id $intragenicLevelCNfile -gc $outdir/$geneCoverage -cn $geneLevelCNfile -gi $GeneIntervalAnn -ec $outdir/$exonCoverage -cc $outdir/$canonicalExonCoverage -ve $validatedExons -ce $ClinicalExons -ei $exonIntervalsFile -tf $translationFolder  -ct $coverageThreshold\"";
 		$logger->debug("COMMAND : $cmd");
@@ -4871,25 +4675,21 @@ sub AnnotateSNPsAndIndels
 
 	#my @FilterVariantFiles = glob("$outdir/*annovarAnnotated*.Filtered.txt");
 	my $filecount = 0;
-	foreach my $filterFile ( glob "$outdir/*annovarAnnotated*.Filtered.txt" )
-	{
+	foreach my $filterFile ( glob "$outdir/*annovarAnnotated*.Filtered.txt" ) {
 		open( FH, "$filterFile" )
 		  or die(
 			$logger->fatal(
 				"MergeFilterVariants:Cannot open $outdir/$filterFile, Error:$!")
 		  );
-		if ( $filecount == 0 )
-		{
+		if ( $filecount == 0 ) {
 			my $header = <FH>;
 			print OFH "$header";
-			while (<FH>)
-			{
+			while (<FH>) {
 				print OFH "$_";
 			}
-		} else
-		{
-			while (<FH>)
-			{
+		}
+		else {
+			while (<FH>) {
 				next if ( $. == 1 );
 				print OFH "$_";
 			}
@@ -4903,29 +4703,28 @@ sub AnnotateSNPsAndIndels
 #####################################
 #####################################
 #Clip adapter sequences.
-sub RunTrimGalore
-{
+sub RunTrimGalore {
 	my ( $file1, $file2, $outdir, $adaptorList, $id ) = @_;
 	my %barcodeList = %$adaptorList;
-	my ($barcode)   = $file1 =~ /.*_(bc\d+)_.*/;
-	my $adapter1    = $barcodeList{$barcode};
+	my ($barcode) = $file1 =~ /.*_(bc\d+)_.*/;
+	my $adapter1 = $barcodeList{$barcode};
 	my $adapter2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT";
-	my ($basename1)  = $file1 =~ /(.*)\.fastq.gz/;
+	my ($basename1) = $file1 =~ /(.*)\.fastq.gz/;
 	my $outFilename1 = "$basename1" . "_cl.fastq.gz";
-	my ($basename2)  = $file2 =~ /(.*)\.fastq.gz/;
+	my ($basename2) = $file2 =~ /(.*)\.fastq.gz/;
 	my $outFilename2 = "$basename2" . "_cl.fastq.gz";
 
-	if (     ( -e "$outFilename1" )
-		 and ( ( -s "$outFilename1" ) != 0 )
-		 and ( -e "$outFilename2" )
-		 and ( ( -s "$outFilename2" ) != 0 ) )
+	if (    ( -e "$outFilename1" )
+		and ( ( -s "$outFilename1" ) != 0 )
+		and ( -e "$outFilename2" )
+		and ( ( -s "$outFilename2" ) != 0 ) )
 	{
 		$logger->info(
 "Files:\n$outFilename1\n$outFilename2\n they exists and process will not run to clip adapters in them."
 		);
 		return ( "$outFilename1", "$outFilename2", 'NULL' );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -4934,8 +4733,8 @@ sub RunTrimGalore
 				$logger->debug("COMMAND : $cmd");
 `$QSUB -q $queue -V -wd $outdir -N Clipping.$id.$$ -o Clipping.$id.$$.stdout -e Clipping.$id.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y "$PERL $TrimGalore --paired --gzip -q 1 --suppress_warn --stringency 3 -length 25 -o $outdir -a $adapter1 -a2 $adapter2 $file1 $file2"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid Clipping.$id.$$ -N NotifyCR.$id.$$ -e NotifyCR.$id.$$.stderr -o NotifyCR.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "`$BSUB -q $queue -cwd $outdir -J Clipping.$id.$$ -o Clipping.$id.$$.%J.stdout -e Clipping.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $TrimGalore --paired --gzip -q 1 --suppress_warn --stringency 3 -length 25 -o $outdir -a $adapter1 -a2 $adapter2 $file1 $file2\"";
 				$logger->debug("COMMAND : $cmd");
@@ -4943,8 +4742,7 @@ sub RunTrimGalore
 `$BSUB -q $queue -cwd $outdir -w "post_done(Clipping.$id.$$)" -J NotifyCR.$id.$$ -e NotifyCR.$id.$$.%J.stderr -o NotifyCR.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("Clipping:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -4954,19 +4752,17 @@ sub RunTrimGalore
 #####################################
 #####################################
 #BWA Find Suffix Array(SA) Co-ordinates
-sub RunBwaAln
-{
+sub RunBwaAln {
 	my ( $file, $outdir, $id, $readType ) = @_;
-	my ($basename)    = $file =~ /(.*)\.fastq.gz/;
+	my ($basename) = $file =~ /(.*)\.fastq.gz/;
 	my ($outFilename) = "$basename" . ".sai";
-	if ( ( -e "$outFilename" ) and ( ( -s "$outFilename" ) != 0 ) )
-	{
+	if ( ( -e "$outFilename" ) and ( ( -s "$outFilename" ) != 0 ) ) {
 		$logger->info(
 "Files:\n$outFilename\n they exists and process will not run to make \".sai\" file."
 		);
 		return ( "$outFilename", 'NULL' );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -4975,8 +4771,8 @@ sub RunBwaAln
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N bwaAln.$readType.$id.$$ -o bwaAln.$readType.$id.$$.stdout -e bwaAln.$readType.$id.$$.stderr -l h_vmem=5G,virtual_free=5G -pe smp 1 -b y "$BWA aln -f $outFilename $Reference $file"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid bwaAln.$readType.$id.$$ -N NotifyBwaAln.$id.$$ -e NotifyBwaAln.$readType.$id.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1 -o NotifyBwaAln.$readType.$id.$$.stat -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J bwaAln.$readType.$id.$$ -o bwaAln.$readType.$id.$$.%J.stdout -e bwaAln.$readType.$id.$$.%J.stderr -R \"rusage[mem=5]\" -M 8 -n 1 \"$BWA aln -f $outFilename $Reference $file\"";
 				$logger->debug("COMMAND: $cmd");
@@ -4984,8 +4780,7 @@ sub RunBwaAln
 `$BSUB -q $queue -cwd $outdir -w "post_done(bwaAln.$readType.$id.$$)" -J NotifyBwaAln.$id.$$ -e NotifyBwaAln.$readType.$id.$$.%J.stderr -o NotifyBwaAln.$readType.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("BWA ALN:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -4995,27 +4790,24 @@ sub RunBwaAln
 #####################################
 #####################################
 #BWA SAMPE align SA.
-sub RunBwaSampe
-{
+sub RunBwaSampe {
 	my ( $clippedfile1, $clippedfile2, $SAfile1, $SAfile2, $outdir, $id ) = @_;
 	my ($basename) = $clippedfile1 =~ /(.*)_R1.*\.fastq.gz/;
 	my $outFilename = "$basename" . "_mrg_cl_aln.sam";
-	if ( $basename =~ /\// )
-	{
+	if ( $basename =~ /\// ) {
 		$basename = basename($basename);
 	}
 	my @sampleDetails = split( "_bc", $basename );
-	my $sampleId      = $sampleDetails[0];
-	my ($barcode)     = $basename =~ /.*_(bc\d+)_.*/;
-	my ($pool)        = $basename =~ /.*_bc\d+_(.*)_L\d{1,3}_.*/;
-	if ( ( -e "$outFilename" ) and ( ( -s "$outFilename" ) != 0 ) )
-	{
+	my $sampleId = $sampleDetails[0];
+	my ($barcode) = $basename =~ /.*_(bc\d+)_.*/;
+	my ($pool)    = $basename =~ /.*_bc\d+_(.*)_L\d{1,3}_.*/;
+	if ( ( -e "$outFilename" ) and ( ( -s "$outFilename" ) != 0 ) ) {
 		$logger->info(
 "Files:\n$outFilename\n they exists and process will not run to make \"_aln.sam\" file."
 		);
 		return ( "$outFilename", 'NULL' );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5026,8 +4818,8 @@ sub RunBwaSampe
 #`$QSUB -q $queue -V -wd $outdir -N bwaSampe.$id.$$ -o bwaSampe.$id.$$.stdout -e bwaSampe.$id.$$.stderr -b y "$BWA sampe -r \'\@RG\tID:$basename\tLB:$id\tSM:$sampleId\tPL:Illumina\tPU:$barcode\tCN:BergerLab_MSKCC\' -f $outFilename $Reference $SAfile1 $SAfile2 $clippedfile1 $clippedfile2"`;
 `$QSUB -q $queue -V -wd $outdir -N bwaSampe.$id.$$ -o bwaSampe.$id.$$.stdout -e bwaSampe.$id.$$.stderr -l h_vmem=6G,virtual_free=6G -pe smp 1 -b y "$BWA sampe -f $outFilename $Reference $SAfile1 $SAfile2 $clippedfile1 $clippedfile2"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid bwaSampe.$id.$$ -N NotifyBwaSampe.$id.$$ -e NotifyBwaSampe.$id.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1 -o NotifyBwaSampe.$id.$$.stat -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J bwaSampe.$id.$$ -o bwaSampe.$id.$$.%J.stdout -e bwaSampe.$id.$$.%J.stderr -R \"rusage[mem=6]\" -M 8 -n 1 \"$BWA sampe -f $outFilename $Reference $SAfile1 $SAfile2 $clippedfile1 $clippedfile2\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5035,8 +4827,7 @@ sub RunBwaSampe
 `$BSUB -q $queue -cwd $outdir -w "post_done(bwaSampe.$id.$$)" -J NotifyBwaSampe.$id.$$ -e NotifyBwaSampe.$id.$$.%J.stderr -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 -o NotifyBwaSampe.$id.$$.stat "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("BWA SAMPE:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -5046,27 +4837,24 @@ sub RunBwaSampe
 #####################################
 #####################################
 #BWA MEM to align fastq.
-sub RunBwaMem
-{
+sub RunBwaMem {
 	my ( $fastq1, $fastq2, $outdir, $id ) = @_;
 	my ($basename) = $fastq1 =~ /(.*)_R1.*\.fastq.gz/;
 	my $outFilename = "$basename" . "_mrg_cl_aln.sam";
-	if ( $basename =~ /\// )
-	{
+	if ( $basename =~ /\// ) {
 		$basename = basename($basename);
 	}
 	my @sampleDetails = split( "_bc", $basename );
-	my $sampleId      = $sampleDetails[0];
-	my ($barcode)     = $basename =~ /.*_(bc\d+)_.*/;
-	my ($pool)        = $basename =~ /.*bc\d+_(.*)_L\d{1,3}_.*/;
-	if ( ( -e "$outFilename" ) and ( ( -s "$outFilename" ) != 0 ) )
-	{
+	my $sampleId = $sampleDetails[0];
+	my ($barcode) = $basename =~ /.*_(bc\d+)_.*/;
+	my ($pool)    = $basename =~ /.*bc\d+_(.*)_L\d{1,3}_.*/;
+	if ( ( -e "$outFilename" ) and ( ( -s "$outFilename" ) != 0 ) ) {
 		$logger->info(
 "Files:\n$outFilename\n they exists and process will not run to make \"_aln.sam\" file."
 		);
 		return ( "$outFilename", 'NULL' );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5075,8 +4863,8 @@ sub RunBwaMem
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -wd $outdir -N bwaMem.$id.$$ -l h_vmem=10G,virtual_free=10G -pe smp 4 -o $outFilename -e /dev/null -b y "$BWA mem -t 4 -PM -R \'\@RG\tID:$basename\tLB:$id\tSM:$sampleId\tPL:Illumina\tPU:$barcode\tCN:BergerLab_MSKCC\' $Reference $fastq1 $fastq2"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid bwaMem.$id.$$ -N NotifyBwaMem.$id.$$ -l h_vmem=2G,virtual_free=2G -pe smp 1 -e /dev/null -o NotifyBwaMem.$id.$$.stat -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J bwaMem.$id.$$ -R \"rusage[mem=10]\" -M 40 -n 4 -o bwaMem.$id.$$.stdout -e bwaMem.$id.$$.stderr \"$BWA mem -t 4 -PM -R \'\@RG\tID:$basename\tLB:$id\tSM:$sampleId\tPL:Illumina\tPU:$barcode\tCN:BergerLab_MSKCC\' $Reference $fastq1 $fastq2 > $outFilename\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5084,8 +4872,7 @@ sub RunBwaMem
 `$BSUB -q $queue -cwd $outdir -w "post_done(bwaMem.$id.$$)" -J NotifyBwaMem.$id.$$ -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 2 -n 1 -o NotifyBwaMem.$id.$$.stat "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("BEA MEM:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -5095,26 +4882,24 @@ sub RunBwaMem
 #####################################
 #####################################
 #Sort Sam file
-sub RunSortSam
-{
+sub RunSortSam {
 	my ( $samFile, $outdir, $id ) = @_;
 	my ($basename) = $samFile =~ /(.*)_mrg_cl_aln.sam/;
 	my $outFilename = $samFile;
 	$outFilename =~ s/\.sam/_srt\.bam/g;
 	my @sampleDetails = split( "_bc", $basename );
-	my $sampleId      = $sampleDetails[0];
-	my ($barcode)     = $basename =~ /.*_(bc\d+)_.*/;
-	my ($pool)        = $basename =~ /.*_bc\d+_(.*)_L\d{1,3}_.*/;
-	my $platform      = "Illumina";
+	my $sampleId = $sampleDetails[0];
+	my ($barcode) = $basename =~ /.*_(bc\d+)_.*/;
+	my ($pool)    = $basename =~ /.*_bc\d+_(.*)_L\d{1,3}_.*/;
+	my $platform  = "Illumina";
 
-	if ( ( -e "$outFilename" ) and ( ( -s "$outFilename" ) != 0 ) )
-	{
+	if ( ( -e "$outFilename" ) and ( ( -s "$outFilename" ) != 0 ) ) {
 		$logger->info(
 "Files:\n$outFilename\n they exists and process will not run to make \"_srt.bam\" file."
 		);
 		return ( "$outFilename", 'NULL' );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5123,8 +4908,8 @@ sub RunSortSam
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N SortSam.$id.$$ -o SortSam.$id.$$.stdout -e SortSam.$id.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 1 -b y "$JAVA_1_7 -Xmx4g -jar $PICARD/AddOrReplaceReadGroups.jar I=$samFile O=$outFilename SO=coordinate RGID=$basename RGLB=$id RGPL=$platform RGPU=$barcode RGSM=$sampleId RGCN=MSKCC TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid SortSam.$id.$$ -N NotifySortSam.$id.$$ -e NotifySortSam.$id.$$.stderr -o NotifySortSam.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J SortSam.$id.$$ -o SortSam.$id.$$.%J.stdout -e SortSam.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/AddOrReplaceReadGroups.jar I=$samFile O=$outFilename SO=coordinate RGID=$basename RGLB=$id RGPL=$platform RGPU=$barcode RGSM=$sampleId RGCN=MSKCC TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5132,8 +4917,7 @@ sub RunSortSam
 `$BSUB -q $queue -cwd $outdir -w "post_done(SortSam.$id.$$)" -J NotifySortSam.$id.$$ -e NotifySortSam.$id.$$.%J.stderr -o NotifySortSam.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("SortSam:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -5143,19 +4927,17 @@ sub RunSortSam
 #####################################
 #####################################
 #FxMate information & sort file
-sub RunFixMateInformation
-{
+sub RunFixMateInformation {
 	my ( $bamFile, $outdir, $id ) = @_;
 	my $outFilename = $bamFile;
 	$outFilename =~ s/\.bam/_FX\.bam/g;
-	if ( ( -e "$outFilename" ) and ( ( -s "$outFilename" ) != 0 ) )
-	{
+	if ( ( -e "$outFilename" ) and ( ( -s "$outFilename" ) != 0 ) ) {
 		$logger->info(
 "Files:\n$outFilename\n they exists and process will not run to make \"_srt.bam\" file."
 		);
 		return ( "$outFilename", 'NULL' );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5164,8 +4946,8 @@ sub RunFixMateInformation
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N FixMate.$id.$$ -o FixMate.$id.$$.stdout -e FixMate.$id.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 4 -b y "$JAVA_1_7 -Xmx24g -jar $PICARD/FixMateInformation.jar I=$bamFile O=$outFilename SO=coordinate TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid FixMate.$id.$$ -N NotifyFixMate.$id.$$ -e NotifyFixMate.$id.$$.stderr -o NotifyFixMate.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J FixMate.$id.$$ -o FixMate.$id.$$.%J.stdout -e FixMate.$id.$$.%J.stderr -R \"rusage[mem=32]\" -M 40 -n 4 \"$JAVA_1_7 -Xmx24g -jar $PICARD/FixMateInformation.jar I=$bamFile O=$outFilename SO=coordinate TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5173,8 +4955,7 @@ sub RunFixMateInformation
 `$BSUB -q $queue -cwd $outdir -w "post_done(FixMate.$id.$$)" -J NotifyFixMate.$id.$$ -e NotifyFixMate.$id.$$.%J.stderr -o NotifyFixMate.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("FixMate:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -5184,22 +4965,21 @@ sub RunFixMateInformation
 #####################################
 #####################################
 #Mark Duplicates in Bam
-sub RunMarkDuplicates
-{
+sub RunMarkDuplicates {
 	my ( $bamFile, $outdir, $id ) = @_;
 	my $outFilename     = $bamFile;
 	my $metricsFilename = $bamFile;
-	$outFilename =~ s/\.bam/_MD\.bam/g;
+	$outFilename     =~ s/\.bam/_MD\.bam/g;
 	$metricsFilename =~ s/\.bam/_MD\.metrics/g;
-	if (     ( -e "$outdir/$outFilename" )
-		 and ( ( -s "$outdir/$outFilename" ) != 0 ) )
+	if (    ( -e "$outdir/$outFilename" )
+		and ( ( -s "$outdir/$outFilename" ) != 0 ) )
 	{
 		$logger->info(
 "Files:\n$outFilename\n they exists and process will not run to make \"_MD.bam\" file."
 		);
 		return ( "$outFilename", 'NULL' );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5208,8 +4988,8 @@ sub RunMarkDuplicates
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N MD.$id.$$ -o MD.$id.$$.stdout -e MD.$id.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 1 -b y "$JAVA_1_7 -Xmx4g -jar $PICARD/MarkDuplicates.jar I=$bamFile O=$outFilename ASSUME_SORTED=true METRICS_FILE=$metricsFilename TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid MD.$id.$$ -N NotifyMD.$id.$$ -e NotifyMD.$id.$$.stderr -o NotifyMD.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J MD.$id.$$ -o MD.$id.$$.%J.stdout -e MD.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/MarkDuplicates.jar I=$bamFile O=$outFilename ASSUME_SORTED=true METRICS_FILE=$metricsFilename TMP_DIR=$TMPDIR COMPRESSION_LEVEL=0 CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5217,8 +4997,7 @@ sub RunMarkDuplicates
 `$BSUB -q $queue -cwd $outdir -w "post_done(MD.$id.$$)" -J NotifyMD.$id.$$ -e NotifyMD.$id.$$.%J.stderr -o NotifyMD.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("MarkDuplicates:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -5228,20 +5007,19 @@ sub RunMarkDuplicates
 #####################################
 #####################################
 #Running Realign Target Creator from GATK
-sub RunRealignerTargetCreator
-{
+sub RunRealignerTargetCreator {
 	my ( $outFilename, $inputFiles, $outdir ) = @_;
 	$inputFiles =~ s/,/ /g;
 	my ($jobName) = $outFilename =~ /(.*)_IndelRealigner.intervals/;
-	if (     ( -e "$outdir/$outFilename" )
-		 and ( ( -s "$outdir/$outFilename" ) != 0 ) )
+	if (    ( -e "$outdir/$outFilename" )
+		and ( ( -s "$outdir/$outFilename" ) != 0 ) )
 	{
 		$logger->info(
 "Files:\n$outFilename\n they exists and process will not run to make \"_IndelRealigner.intervals\" file."
 		);
 		return ("NULL");
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5250,8 +5028,8 @@ sub RunRealignerTargetCreator
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N RTC.$jobName.$$ -o RTC.$jobName.$$.stdout -e RTC.$jobName.$$.stderr -l h_vmem=12G,virtual_free=12G -pe smp 2 -b y "$JAVA_1_7 -Xmx20g -jar $GATK -T RealignerTargetCreator -I $outdir/$inputFiles -R $Reference -L $GeneInterval -o $outFilename --known $Mills_1000G_Indels"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid RTC.$jobName.$$ -N NotifyRTC.$jobName.$$ -e NotifyRTC.$jobName.$$.stderr -o NotifyRTC.$jobName.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "`$BSUB -q $queue -cwd $outdir -J RTC.$jobName.$$ -o RTC.$jobName.$$.%J.stdout -e RTC.$jobName.$$.%J.stderr -R \"rusage[mem=12]\" -M 24 -n 2 \"$JAVA_1_7 -Xmx20g -jar $GATK -T RealignerTargetCreator -I $outdir/$inputFiles -R $Reference -L $GeneInterval -o $outFilename --known $Mills_1000G_Indels\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5259,10 +5037,9 @@ sub RunRealignerTargetCreator
 `$BSUB -q $queue -cwd $outdir -w "post_done(RTC.$jobName.$$)" -J NotifyRTC.$jobName.$$ -e NotifyRTC.$jobName.$$.%J.stderr -o NotifyRTC.$jobName.$$.%J.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal(
-						"RealignTargetCreator:Job Submission Failed, Error:$@");
+				"RealignTargetCreator:Job Submission Failed, Error:$@");
 			exit(1);
 		}
 	}
@@ -5270,20 +5047,19 @@ sub RunRealignerTargetCreator
 }
 ##########################################################################
 #Running Indel Realignment from GATK
-sub RunIndelRealigner
-{
+sub RunIndelRealigner {
 	my ( $file, $interval, $outdir, $id ) = @_;
 	my ($basename) = $file =~ /(.*)\.bam/;
 	my $outFilename = $basename . "_IR.bam";
-	if (     ( -e "$outdir/$outFilename" )
-		 and ( ( -s "$outdir/$outFilename" ) != 0 ) )
+	if (    ( -e "$outdir/$outFilename" )
+		and ( ( -s "$outdir/$outFilename" ) != 0 ) )
 	{
 		$logger->info(
 "Files:\n$outFilename\n they exists and process will not run to make \"_IR.bam\" file."
 		);
 		return ( "$outFilename", 'NULL' );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5292,8 +5068,8 @@ sub RunIndelRealigner
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N IR.$id.$$ -o IR.$id.$$.stdout -e IR.$id.$$.stderr -l h_vmem=12G,virtual_free=12G -pe smp 2 -b y "$JAVA_1_7 -Xmx20g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T IndelRealigner -I $file -R $Reference -targetIntervals $interval -o $outFilename -baq RECALCULATE -known $Mills_1000G_Indels"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid IR.$id.$$ -N NotifyIR.$id.$$ -e NotifyIR.$id.$$.stderr -o NotifyIR.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J IR.$id.$$ -o IR.$id.$$.%J.stdout -e IR.$id.$$.%J.stderr -R \"rusage[mem=12]\" -M 30 -n 2 \"$JAVA_1_7 -Xmx20g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T IndelRealigner -I $file -R $Reference -targetIntervals $interval -o $outFilename -baq RECALCULATE -known $Mills_1000G_Indels\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5301,8 +5077,7 @@ sub RunIndelRealigner
 `$BSUB -q $queue -cwd $outdir -w "post_done(IR.$id.$$)" -J NotifyIR.$id.$$ -e NotifyIR.$id.$$.%J.stderr -o NotifyIR.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("IndelRealigner:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -5312,29 +5087,27 @@ sub RunIndelRealigner
 #####################################
 #####################################
 #Running Base Quality Recalibration from GATK
-sub RunBaseQualityRecalibration
-{
+sub RunBaseQualityRecalibration {
 	my ( $files, $outdir, $id ) = @_;
 	my $basename;
 	my $outFilename1;
 
 	# my $outFilename2;
 	#my $plot_pdf;
-	if ( $id eq "LaneLevel" )
-	{
+	if ( $id eq "LaneLevel" ) {
 		$outFilename1 = "recalibration-report.grp";
 
 		#$outFilename2 = "recalibration-report.tmp";
 		#$plot_pdf = "recalibration-report-plot.pdf";
-		if (     ( -e "$outdir/$outFilename1" )
-			 and ( ( -s "$outdir/$outFilename1" ) != 0 ) )
+		if (    ( -e "$outdir/$outFilename1" )
+			and ( ( -s "$outdir/$outFilename1" ) != 0 ) )
 		{
 			$logger->info(
-				 "Files:\n$outFilename1\n they exists and process will not run."
+				"Files:\n$outFilename1\n they exists and process will not run."
 			);
 			return ( "$outFilename1", 'NULL' );
-		} else
-		{
+		}
+		else {
 			eval {
 				if ( $CLUSTER eq "SGE" )
 				{
@@ -5345,8 +5118,8 @@ sub RunBaseQualityRecalibration
 
 #`$QSUB -q $queue -V -wd $outdir -l mem_free=10G -pe alloc 8 -o /dev/null -e /dev/null -hold_jid BQSR1.$id.$$ -N BQSR2.$id.$$ -b y "$JAVA_1_7 -Xmx20g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T BaseRecalibrator -nct 8 -I $files -plots $plot_pdf -R $Reference -knownSites $dbSNP -knownSites $Mills_1000G_Indels -o $outFilename2 -BQSR $outdir/$outFilename1"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid BQSR1.$id.$$ -N NotifyBQSR.$id.$$ -e NotifyBQSR.$id.$$.stderr -o NotifyBQSR.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-				} else
-				{
+				}
+				else {
 					my $cmd =
 "$BSUB -q $queue -cwd $outdir -o BQSR1.$id.$$.%J.stdout -e BQSR1.$id.$$.%J.stderr -J BQSR1.$id.$$ -R \"rusage[mem=3]\" -M 36 -n 10 \"$JAVA_1_7 -Xmx20g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T BaseRecalibrator -nct 10 -I $files -plots -R $Reference -knownSites $dbSNP -knownSites $Mills_1000G_Indels -rf BadCigar -o $outFilename1\"";
 					$logger->debug("COMMAND: $cmd");
@@ -5354,29 +5127,28 @@ sub RunBaseQualityRecalibration
 `$BSUB -q $queue -cwd $outdir -w "post_done(BQSR1.$id.$$)" -J NotifyBQSR.$id.$$ -e NotifyBQSR.$id.$$.%J.stderr -o NotifyBQSR.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 				}
 			};
-			if ($@)
-			{
+			if ($@) {
 				$logger->fatal(
-							"RunBQSRLaneLevel:Job Submission Failed, Error:$@");
+					"RunBQSRLaneLevel:Job Submission Failed, Error:$@");
 				exit(1);
 			}
 		}
-	} else
-	{
+	}
+	else {
 		($basename) = $files =~ /(.*)\.bam/;
 		$outFilename1 = $basename . "_recalReport.grp";
 
 		#$outFilename2 = $basename . "_recalReport.tmp";
 		#$plot_pdf  = $basename . "_recalPlot.pdf";
-		if (     ( -e "$outdir/$outFilename1" )
-			 and ( ( -s "$outdir/$outFilename1" ) != 0 ) )
+		if (    ( -e "$outdir/$outFilename1" )
+			and ( ( -s "$outdir/$outFilename1" ) != 0 ) )
 		{
 			$logger->info(
 "Files:\n$outFilename1\n they exists and process will not run to make \"-recal.grp\" file."
 			);
 			return ( "$outFilename1", 'NULL' );
-		} else
-		{
+		}
+		else {
 			eval {
 				if ( $CLUSTER eq "SGE" )
 				{
@@ -5387,8 +5159,8 @@ sub RunBaseQualityRecalibration
 
 #`$QSUB -q $queue -V -wd $outdir -l mem_free=10G -o /dev/null -e /dev/null -hold_jid BQSR1.$id.$$ -N BQSR2.$id.$$ -b y "$JAVA_1_7 -Xmx20g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T BaseRecalibrator -I $files -plots $plot_pdf -R $Reference -knownSites $dbSNP -knownSites $Mills_1000G_Indels -o $outFilename2 -BQSR $outdir/$outFilename1"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid BQSR1.$id.$$ -N NotifyBQSR.$id.$$ -e NotifyBQSR.$id.$$.stderr -o NotifyBQSR.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-				} else
-				{
+				}
+				else {
 					my $cmd =
 "$BSUB -q $queue -cwd $outdir -R \"rusage[mem=8]\" -M 44 -n 5 -o BQSR1.$id.$$.%J.stdout -e BQSR1.$id.$$.%J.stderr -J BQSR1.$id.$$ \"$JAVA_1_7 -Xmx30g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T BaseRecalibrator -I $files -R $Reference -knownSites $dbSNP -knownSites $Mills_1000G_Indels -rf BadCigar -o $outFilename1 -nct 3\"";
 					$logger->debug("COMMAND: $cmd");
@@ -5396,10 +5168,9 @@ sub RunBaseQualityRecalibration
 `$BSUB -q $queue -cwd $outdir -w "post_done(BQSR1.$id.$$)" -J NotifyBQSR.$id.$$ -e NotifyBQSR.$id.$$.%J.stderr -o NotifyBQSR.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 				}
 			};
-			if ($@)
-			{
+			if ($@) {
 				$logger->fatal(
-						  "RunBQSRSampleLevel:Job Submission Failed, Error:$@");
+					"RunBQSRSampleLevel:Job Submission Failed, Error:$@");
 				exit(1);
 			}
 		}
@@ -5409,20 +5180,19 @@ sub RunBaseQualityRecalibration
 #####################################
 #####################################
 #Running PrintReads from GATK
-sub PrintBQSRreads
-{
+sub PrintBQSRreads {
 	my ( $file, $BQSRtable, $outdir, $id ) = @_;
 	my ($basename) = $file =~ /(.*)\.bam/;
 	my $outFilename = $basename . "_BR.bam";
-	if (     ( -e "$outdir/$outFilename" )
-		 and ( ( -s "$outdir/$outFilename" ) != 0 ) )
+	if (    ( -e "$outdir/$outFilename" )
+		and ( ( -s "$outdir/$outFilename" ) != 0 ) )
 	{
 		$logger->info(
 "Files:\n$outFilename\n they exists and process will not run to make \"-BR.bam\" file."
 		);
 		return ( "$outFilename", 'NULL' );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5431,8 +5201,8 @@ sub PrintBQSRreads
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N PrintBQSR.$id.$$ -o PrintBQSR.$id.$$.stdout -e PrintBQSR.$id.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 3 -b y "$JAVA_1_7 -Xmx4g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T PrintReads -I $file -R $Reference -baq RECALCULATE -BQSR $BQSRtable -nct 8 -EOQ -o $outFilename"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid PrintBQSR.$id.$$ -N NotifyPrintBQSR.$id.$$ -e NotifyPrintBQSR.$id.$$.stderr -o NotifyPrintBQSR.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J PrintBQSR.$id.$$ -o PrintBQSR.$id.$$.%J.stdout -e PrintBQSR.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 30 -n 3 \"$JAVA_1_7 -Xmx4g -Djava.io.tmpdir=$TMPDIR -jar $GATK -T PrintReads -I $file -R $Reference -baq RECALCULATE -BQSR $BQSRtable -nct 8 -EOQ -o $outFilename\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5440,8 +5210,7 @@ sub PrintBQSRreads
 `$BSUB -q $queue -cwd $outdir -w "post_done(PrintBQSR.$id.$$)" -J NotifyPrintBQSR.$id.$$ -e NotifyPrintBQSR.$id.$$.stderr -o NotifyPrintBQSR.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("PrintReads:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -5451,10 +5220,9 @@ sub PrintBQSRreads
 #####################################
 #####################################
 #Metrics Calculations for Bam
-sub RunMetricsCalculations
-{
+sub RunMetricsCalculations {
 	my ( $bamFile, $outdir, $id ) = @_;
-	my ($basename)                = $bamFile =~ /(.*)\.bam/;
+	my ($basename) = $bamFile =~ /(.*)\.bam/;
 	my $HSmetricsFilename         = $basename . ".HSmetrics.txt";
 	my $perTargetCoverageFilename = $basename . ".target.covg";
 	my $InsertSizeMetricsFilename = $basename . ".insert_size_metrics";
@@ -5477,16 +5245,16 @@ sub RunMetricsCalculations
 	my @metricsOutput = ();
 
 	#Calculate Hybrid Selection specific metrics
-	if (     ( -e "$outdir/$HSmetricsFilename" )
-		 and ( ( -s "$outdir/$HSmetricsFilename" ) != 0 ) )
+	if (    ( -e "$outdir/$HSmetricsFilename" )
+		and ( ( -s "$outdir/$HSmetricsFilename" ) != 0 ) )
 	{
 		$logger->info(
 "Files:\n$HSmetricsFilename\n they exists and process will not run to make \"-BR.HSmetrics.txt\" file."
 		);
 		push( @notifynames,   "NULL" );
 		push( @metricsOutput, $HSmetricsFilename );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5495,8 +5263,8 @@ sub RunMetricsCalculations
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N HSmetrics.$id.$$ -o /dev/null -e /dev/null -l h_vmem=8G,virtual_free=8G -pe smp 1 -b y "$JAVA_1_7 -Xmx4g -jar $PICARD/CalculateHsMetrics.jar I=$bamFile O=$HSmetricsFilename BI=$BaitInterval TI=$TargetInterval REFERENCE_SEQUENCE=$Reference PER_TARGET_COVERAGE=$perTargetCoverageFilename TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid HSmetrics.$id.$$ -N NotifyHSmetrics.$id.$$ -e /dev/null -o NotifyHSmetrics.$id.$$.stat -l h_vmem=5G,virtual_free=5G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J HSmetrics.$id.$$ -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/CalculateHsMetrics.jar I=$bamFile O=$HSmetricsFilename BI=$BaitInterval TI=$TargetInterval REFERENCE_SEQUENCE=$Reference PER_TARGET_COVERAGE=$perTargetCoverageFilename TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5504,8 +5272,7 @@ sub RunMetricsCalculations
 `$BSUB -q $queue -cwd $outdir -w "post_done(HSmetrics.$id.$$)" -J NotifyHSmetrics.$id.$$ -o NotifyHSmetrics.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("HSmetrics:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -5514,10 +5281,10 @@ sub RunMetricsCalculations
 	}
 
 	#Collect Insert Size and Mean Quality by Cycle metrics
-	if (     ( -e "$outdir/$InsertSizeMetricsFilename" )
-		 and ( ( -s "$outdir/$InsertSizeMetricsFilename" ) != 0 )
-		 and ( -e "$outdir/$BaseQualitiesFilename" )
-		 and ( ( -s "$outdir/$BaseQualitiesFilename" ) != 0 ) )
+	if (    ( -e "$outdir/$InsertSizeMetricsFilename" )
+		and ( ( -s "$outdir/$InsertSizeMetricsFilename" ) != 0 )
+		and ( -e "$outdir/$BaseQualitiesFilename" )
+		and ( ( -s "$outdir/$BaseQualitiesFilename" ) != 0 ) )
 	{
 		$logger->info(
 "Files:\n$InsertSizeMetricsFilename\n$BaseQualitiesFilename\n they exists and process will not run to make \"-BR.insert_size_metrics\" and \"-BR.quality_by_cycle_metrics\" files."
@@ -5525,8 +5292,8 @@ sub RunMetricsCalculations
 		push( @notifynames,   "NULL" );
 		push( @metricsOutput, $InsertSizeMetricsFilename );
 		push( @metricsOutput, $BaseQualitiesFilename );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5539,8 +5306,8 @@ sub RunMetricsCalculations
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N MeanQualityByCycle.$id.$$ -o MeanQualityByCycle.$id.$$.stdout -e MeanQualityByCycle.$id.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 1 -b y "$JAVA_1_7 -Xmx4g -jar $PICARD/CollectMultipleMetrics.jar I=$bamFile O=$basename PROGRAM=null PROGRAM=MeanQualityByCycle ASSUME_SORTED=true TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid "InsertSizeMetrics.$id.$$,MeanQualityByCycle.$id.$$" -N NotifyMultipleMetrics.$id.$$ -e NotifyMultipleMetrics.$id.$$.stderr -o NotifyMultipleMetrics.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J InsertSizeMetrics.$id.$$ -o InsertSizeMetrics.$id.$$.%J.stdout -e InsertSizeMetrics.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $PICARD/CollectMultipleMetrics.jar I=$bamFile O=$basename PROGRAM=null PROGRAM=CollectInsertSizeMetrics ASSUME_SORTED=true TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=LENIENT\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5552,10 +5319,9 @@ sub RunMetricsCalculations
 `$BSUB -q $queue -cwd $outdir -w "post_done(InsertSizeMetrics.$id.$$) && post_done(MeanQualityByCycle.$id.$$)" -J NotifyMultipleMetrics.$id.$$ -e NotifyMultipleMetrics.$id.$$.%J.stderr -o NotifyMultipleMetrics.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal(
-					  "InsertSize_MeanQuality:Job Submission Failed, Error:$@");
+				"InsertSize_MeanQuality:Job Submission Failed, Error:$@");
 			exit(1);
 		}
 		push( @notifynames,   "NotifyMultipleMetrics.$id.$$.stat" );
@@ -5572,8 +5338,8 @@ sub RunMetricsCalculations
 		);
 		push( @notifynames,   "NULL" );
 		push( @metricsOutput, $geneCount );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5586,21 +5352,20 @@ sub RunMetricsCalculations
 				);
 `$QSUB -q $queue -V -wd $outdir -hold_jid GeneCoverage.$id.$$ -N ExonToGeneCov.$id.$$ -o $geneCount -e ExonToGeneCov.$id.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid ExonToGeneCov.$id.$$ -N NotifyGeneCoverage.$id.$$ -e NotifyGeneCoverage.$id.$$.stderr -o NotifyGeneCoverage.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J GeneCoverage.$id.$$ -o GeneCoverage.$id.$$.%J.stdout -e GeneCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $geneCoverage -L $GeneInterval  -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
 				$logger->debug("COMMAND: $cmd");
 `$BSUB -q $queue -cwd $outdir -J GeneCoverage.$id.$$ -o GeneCoverage.$id.$$.%J.stdout -e GeneCoverage.$id.$$.%J.stderr -We 0:59 -R "rusage[mem=8]" -M 12 -n 1 "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $geneCoverage -L $GeneInterval  -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
 				$cmd =
-				  "$BSUB -q $queue -cwd $outdir -w \"done(GeneCoverage.$id.$$)\" -J ExonToGeneCov.$id.$$ -o ExonToGeneCov.$id.$$.%J.stdout -e ExonToGeneCov.$id.$$.%J.stderr -R \"rusage[mem=2]\" -R \"rusage[iounits=0]\" -M 4 -n 1 \"$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord > $geneCount\"";
+"$BSUB -q $queue -cwd $outdir -w \"done(GeneCoverage.$id.$$)\" -J ExonToGeneCov.$id.$$ -o ExonToGeneCov.$id.$$.%J.stdout -e ExonToGeneCov.$id.$$.%J.stderr -R \"rusage[mem=2]\" -R \"rusage[iounits=0]\" -M 4 -n 1 \"$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord > $geneCount\"";
 				$logger->debug("COMMAND: $cmd");
 `$BSUB -q $queue -cwd $outdir -w "post_done(GeneCoverage.$id.$$)" -J ExonToGeneCov.$id.$$ -o ExonToGeneCov.$id.$$.%J.stdout -e ExonToGeneCov.$id.$$.%J.stderr -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$PERL $ExonToGenCov $geneCoverage.sample_interval_summary $GeneCoord > $geneCount"`;
 `$BSUB -q $queue -cwd $outdir -w "post_done(ExonToGeneCov.$id.$$)" -J NotifyGeneCoverage.$id.$$ -e NotifyGeneCoverage.$id.$$.stderr -o NotifyGeneCoverage.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("GeneCoverage:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -5610,10 +5375,10 @@ sub RunMetricsCalculations
 
 	#Gene_Nomapq Coverage
 	if (
-		     ( -e "${outdir}/${gene_nomapqCoverage}.sample_interval_summary" )
-		 and
-		 ( ( -s "${outdir}/${gene_nomapqCoverage}.sample_interval_summary" )
-			!= 0 )
+		    ( -e "${outdir}/${gene_nomapqCoverage}.sample_interval_summary" )
+		and
+		( ( -s "${outdir}/${gene_nomapqCoverage}.sample_interval_summary" ) !=
+			0 )
 	  )
 	{
 		$logger->info(
@@ -5621,9 +5386,9 @@ sub RunMetricsCalculations
 		);
 		push( @notifynames, "NULL" );
 		push( @metricsOutput,
-			  "${gene_nomapqCoverage}.sample_interval_summary" );
-	} else
-	{
+			"${gene_nomapqCoverage}.sample_interval_summary" );
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5632,8 +5397,8 @@ sub RunMetricsCalculations
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N GeneNomapqCoverage.$id.$$ -o GeneNomapqCoverage.$id.$$.stdout -e GeneNomapqCoverage.$id.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 1 -b y "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $gene_nomapqCoverage -L $GeneInterval  -rf BadCigar -mmq 0 -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid GeneNomapqCoverage.$id.$$ -N NotifyGeneNomapqCoverage.$id.$$ -e NotifyGeneNomapqCoverage.$id.$$.stderr -o NotifyGeneNomapqCoverage.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J GeneNomapqCoverage.$id.$$ -o GeneNomapqCoverage.$id.$$.%J.stdout -e GeneNomapqCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $gene_nomapqCoverage -L $GeneInterval  -rf BadCigar -mmq 0 -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5641,28 +5406,27 @@ sub RunMetricsCalculations
 `$BSUB -q $queue -cwd $outdir -w "post_done(GeneNomapqCoverage.$id.$$)" -J NotifyGeneNomapqCoverage.$id.$$ -e NotifyGeneNomapqCoverage.$id.$$.%J.stderr -o NotifyGeneNomapqCoverage.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal(
-						  "GeneNomapqCoverage:Job Submission Failed, Error:$@");
+				"GeneNomapqCoverage:Job Submission Failed, Error:$@");
 			exit(1);
 		}
 		push( @notifynames, "NotifyGeneNomapqCoverage.$id.$$.stat" );
 		push( @metricsOutput,
-			  "${gene_nomapqCoverage}.sample_interval_summary" );
+			"${gene_nomapqCoverage}.sample_interval_summary" );
 	}
 
 	#Canonical Exon Coverage
-	if (     ( -e "$outdir/$canonicalExonCoverageOutput" )
-		 and ( ( -s "$outdir/$canonicalExonCoverageOutput" ) != 0 ) )
+	if (    ( -e "$outdir/$canonicalExonCoverageOutput" )
+		and ( ( -s "$outdir/$canonicalExonCoverageOutput" ) != 0 ) )
 	{
 		$logger->info(
 "File:\$canonicalExonCoverage\n they exists and process will not run to make \"-BR.canonical.exon.covg\" file."
 		);
 		push( @notifynames,   "NULL" );
 		push( @metricsOutput, $canonicalExonCoverageOutput );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5671,8 +5435,8 @@ sub RunMetricsCalculations
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N CanonicalExonCoverage.$id.$$ -o CanonicalExonCoverage.$id.$$.stdout -e CanonicalExonCoverage.$id.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 1 -b y "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $canonicalExonCoverage -L $canonicalExonIntervalsFile -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid CanonicalExonCoverage.$id.$$ -N NotifyCanonicalExonCoverage.$id.$$ -e NotifyCanonicalExonCoverage.$id.$$.stderr -o NotifyCanonicalExonCoverage.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J CanonicalExonCoverage.$id.$$ -o CanonicalExonCoverage.$id.$$.%J.stdout -e CanonicalExonCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $canonicalExonCoverage -L $canonicalExonIntervalsFile -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5680,10 +5444,9 @@ sub RunMetricsCalculations
 `$BSUB -q $queue -cwd $outdir -w "post_done(CanonicalExonCoverage.$id.$$)" -J NotifyCanonicalExonCoverage.$id.$$ -e NotifyCanonicalExonCoverage.$id.$$.%J.stderr -o NotifyCanonicalExonCoverage.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal(
-					   "CanonicalExonCoverage:Job Submission Failed, Error:$@");
+				"CanonicalExonCoverage:Job Submission Failed, Error:$@");
 			exit(1);
 		}
 		push( @notifynames,   "NotifyCanonicalExonCoverage.$id.$$.stat" );
@@ -5691,16 +5454,16 @@ sub RunMetricsCalculations
 	}
 
 	#Tiling Coverage
-	if (     ( -e "$outdir/$tilingCoverageOutput" )
-		 and ( ( -s "$outdir/$tilingCoverageOutput" ) != 0 ) )
+	if (    ( -e "$outdir/$tilingCoverageOutput" )
+		and ( ( -s "$outdir/$tilingCoverageOutput" ) != 0 ) )
 	{
 		$logger->info(
 "File:\n$tilingCoverage\nthey exists and process will not run to make \"-BR.tiling.covg\" file."
 		);
 		push( @notifynames,   "NULL" );
 		push( @metricsOutput, $tilingCoverageOutput );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5709,8 +5472,8 @@ sub RunMetricsCalculations
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N TilingCoverage.$id.$$ -o TilingCoverage.$id.$$.stdout -e TilingCoverage.$id.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 1 -b y "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $tilingCoverage -L $TilingInterval -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid TilingCoverage.$id.$$ -N NotifyTilingCoverage.$id.$$ -e NotifyTilingCoverage.$id.$$.stderr -o NotifyTilingCoverage.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J TilingCoverage.$id.$$ -o TilingCoverage.$id.$$.%J.stdout -e TilingCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $tilingCoverage -L $TilingInterval -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5718,8 +5481,7 @@ sub RunMetricsCalculations
 `$BSUB -q $queue -cwd $outdir -w "post_done(TilingCoverage.$id.$$)" -J NotifyTilingCoverage.$id.$$ -e NotifyTilingCoverage.$id.$$.stderr -o NotifyTilingCoverage.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("TitlingCoverage:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -5729,9 +5491,9 @@ sub RunMetricsCalculations
 
 	#Tiling_Nomapq Coverage
 	if (
-		     ( -e "${outdir}/${tiling_nomapqCoverage}.sample_interval_summary" )
-		 and
-		 ( ( -s "${outdir}/${tiling_nomapqCoverage}.sample_interval_summary" )
+		    ( -e "${outdir}/${tiling_nomapqCoverage}.sample_interval_summary" )
+		and
+		( ( -s "${outdir}/${tiling_nomapqCoverage}.sample_interval_summary" )
 			!= 0 )
 	  )
 	{
@@ -5740,9 +5502,9 @@ sub RunMetricsCalculations
 		);
 		push( @notifynames, "NULL" );
 		push( @metricsOutput,
-			  "${tiling_nomapqCoverage}.sample_interval_summary" );
-	} else
-	{
+			"${tiling_nomapqCoverage}.sample_interval_summary" );
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5751,8 +5513,8 @@ sub RunMetricsCalculations
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N TilingNomapqCoverage.$id.$$ -o TilingNomapqCoverage.$id.$$.stdout -e TilingNomapqCoverage.$id.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 1 -b y "$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $tiling_nomapqCoverage -L $TilingInterval  -rf BadCigar -mmq 0 -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid TilingNomapqCoverage.$id.$$ -N NotifyTilingNomapqCoverage.$id.$$ -e NotifyTilingNomapqCoverage.$id.$$.stderr -o NotifyTilingNomapqCoverage.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J TilingNomapqCoverage.$id.$$ -o TilingNomapqCoverage.$id.$$.%J.stdout -e TilingNomapqCoverage.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $tiling_nomapqCoverage -L $TilingInterval  -rf BadCigar -mmq 0 -mbq $BASQ -omitLocusTable -omitSampleSummary -omitBaseOutput\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5760,28 +5522,27 @@ sub RunMetricsCalculations
 `$BSUB -q $queue -cwd $outdir -w "post_done(TilingNomapqCoverage.$id.$$)" -J NotifyTilingNomapqCoverage.$id.$$ -e NotifyTilingNomapqCoverage.$id.$$.stderr -o NotifyTilingNomapqCoverage.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal(
-						"TilingNomapqCoverage:Job Submission Failed, Error:$@");
+				"TilingNomapqCoverage:Job Submission Failed, Error:$@");
 			exit(1);
 		}
 		push( @notifynames, "NotifyTilingNomapqCoverage.$id.$$.stat" );
 		push( @metricsOutput,
-			  "${tiling_nomapqCoverage}.sample_interval_summary" );
+			"${tiling_nomapqCoverage}.sample_interval_summary" );
 	}
 
 	#FingerPrint Counts
-	if (     ( -e "$outdir/$fingerprintSummary" )
-		 and ( ( -s "$outdir/$fingerprintSummary" ) != 0 ) )
+	if (    ( -e "$outdir/$fingerprintSummary" )
+		and ( ( -s "$outdir/$fingerprintSummary" ) != 0 ) )
 	{
 		$logger->info(
 "File:\n$fingerprintSummary\n they exists and process will not run to make \"-BR.FP.summary.txt\" file."
 		);
 		push( @notifynames,   "NULL" );
 		push( @metricsOutput, $fingerprintSummary );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5794,8 +5555,8 @@ sub RunMetricsCalculations
 				);
 `$QSUB -q $queue -V -wd $outdir -hold_jid FingerPrint.$id.$$ -N FingerPrintSummary.$id.$$ -o $fingerprintSummary -e FingerPrint.$id.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$PERL $FPGenotypesScript $fingerprintCounts $FP_genotypes"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid FingerPrintSummary.$id.$$ -N NotifyFingerPrintSummary.$id.$$ -e NotifyFingerPrintSummary.$id.$$.stderr -o NotifyFingerPrintSummary.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J FingerPrint.$id.$$ -o FingerPrint.$id.$$.%J.stdout -e FingerPrint.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T DepthOfCoverage -R $Reference -I $bamFile -o $fingerprintCounts -L $FingerPrintInterval -rf BadCigar -mmq $MAPQ -mbq $BASQ -omitLocusTable -omitSampleSummary -omitIntervals -baseCounts\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5807,8 +5568,7 @@ sub RunMetricsCalculations
 `$BSUB -q $queue -cwd $outdir -w "post_done(FingerPrintSummary.$id.$$)" -J NotifyFingerPrintSummary.$id.$$ -e NotifyFingerPrintSummary.$id.$$.%J.stderr -o NotifyFingerPrintSummary.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("FingerPrint:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -5844,35 +5604,32 @@ sub RunMetricsCalculations
 		push( @metricsOutput, $countErrors );
 	}
 =cut
+
 	return ( \@metricsOutput, \@notifynames );
 }
 #####################################
 #####################################
 #Compiling BAM metrics
-sub CompileMetrics
-{
+sub CompileMetrics {
 	my ( $recalibratedBams, $titleFile, $outdir ) = @_;
 	my @bams    = @$recalibratedBams;
 	my $allBams = "$outdir/RecalibrationInputBams.list";
-	if ( -e "$outdir/$allBams" )
-	{
+	if ( -e "$outdir/$allBams" ) {
 		$logger->info(
-					 "File $allBams exists and the program will overwrite it.");
+			"File $allBams exists and the program will overwrite it.");
 		open( FH, ">", $allBams )
 		  or die(
-			  $logger->fatal("CompileMetrics:Cannot open $allBams, Error:$!") );
-		foreach my $file (@bams)
-		{
+			$logger->fatal("CompileMetrics:Cannot open $allBams, Error:$!") );
+		foreach my $file (@bams) {
 			print FH "$outdir/$file\n";
 		}
 		close(FH);
-	} else
-	{
+	}
+	else {
 		open( FH, ">", $allBams )
 		  or die(
-			  $logger->fatal("CompileMetrics:Cannot open $allBams, Error:$!") );
-		foreach my $file (@bams)
-		{
+			$logger->fatal("CompileMetrics:Cannot open $allBams, Error:$!") );
+		foreach my $file (@bams) {
 			print FH "$outdir/$file\n";
 		}
 		close(FH);
@@ -5885,8 +5642,8 @@ sub CompileMetrics
 			$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N CompileMetrics.$$ -o CompileMetrics.$$.stdout -e CompileMetrics.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1  -b y "$PERL $CompileMetrics -i $allBams -t $titleFile -am $AllMetrics -cn $BestCopyNumber -ncn $NormVsNormCopyNumber -ce $exonIntervalsFile -gcb $GCBiasFile -snlo $StdNormalLoess_TM -snlon $StdNormalLoess_NVN -gia $GeneIntervalAnn -tia $TilingIntervalAnn -ln $LoessNormalization -o $outdir -q $queue -qsub $QSUB -p $PERL -rh $RHOME -rl $RLIBS -ms $GenerateMetricsFilesScript"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid CompileMetrics.$$ -N NotifyCM.$$ -e NotifyCM.$$.stderr -o NotifyCM.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-		} else
-		{
+		}
+		else {
 			my $cmd =
 "$BSUB -q $queue -cwd $outdir -J CompileMetrics.$$ -o CompileMetrics.$$.%J.stdout -e CompileMetrics.$$.%J.stderr -We 0:59 -R \"rusage[mem=2]\" -R \"rusage[iounits=0]\" -M 4 -n 1 \"$PERL $CompileMetrics -i $allBams -t $titleFile -am $AllMetrics -cn $BestCopyNumber -ncn $NormVsNormCopyNumber -ce $exonIntervalsFile -gcb $GCBiasFile -snlo $StdNormalLoess_TM -snlon $StdNormalLoess_NVN -gia $GeneIntervalAnn -tia $TilingIntervalAnn -ln $LoessNormalization -o $outdir -q $queue -bsub $BSUB -p $PERL -rh $RHOME -rl $RLIBS -ms $GenerateMetricsFilesScript\"";
 			$logger->debug("COMMAND: $cmd");
@@ -5894,8 +5651,7 @@ sub CompileMetrics
 `$BSUB -q $queue -cwd $outdir -w "post_done(CompileMetrics.$$)" -J NotifyCM.$$ -e NotifyCM.$$.%J.stderr -o NotifyCM.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 		}
 	};
-	if ($@)
-	{
+	if ($@) {
 		$logger->fatal("CompileMetrics:Job Submission Failed, Error:$@");
 		exit(1);
 	}
@@ -5904,24 +5660,23 @@ sub CompileMetrics
 #####################################
 #####################################
 #Call Germline mutations and indels
-sub RunUnifiedGenotyper
-{
+sub RunUnifiedGenotyper {
 	my ( $bamFile, $outdir, $id ) = @_;
 	my $outFilename1 = $bamFile;
 	my $outFilename2 = $bamFile;
 	$outFilename1 =~ s/\.bam/_GLM\.vcf/g;
 	$outFilename2 =~ s/\.bam/_GLI\.vcf/g;
-	if (     ( -e "$outdir/$outFilename1" )
-		 and ( ( -s "$outdir/$outFilename1" ) != 0 )
-		 and ( -e "$outdir/$outFilename2" )
-		 and ( ( -s "$outdir/$outFilename2" ) != 0 ) )
+	if (    ( -e "$outdir/$outFilename1" )
+		and ( ( -s "$outdir/$outFilename1" ) != 0 )
+		and ( -e "$outdir/$outFilename2" )
+		and ( ( -s "$outdir/$outFilename2" ) != 0 ) )
 	{
 		$logger->info(
 "Files:\n$outFilename1\n$outFilename2\n they exists and process will not run to make \"_GLM.vcf\" and \"_GLI.vcf\"file."
 		);
 		return ( "$outFilename1,$outFilename2", 'NULL' );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -5934,8 +5689,8 @@ sub RunUnifiedGenotyper
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N UGI.$id.$$ -o UGI.$id.$$.stdout -e UGI.$id.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 1 -b y "$JAVA_1_7 -Xmx4g -jar $GATK -T UnifiedGenotyper -R $Reference -I $bamFile -o $outFilename2  -rf BadCigar --dbsnp $dbSNP -glm INDEL -dcov 50000 -L $GeneInterval"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid "UGM.$id.$$,UGI.$id.$$" -N NotifyUG.$id.$$ -e NotifyUG.$id.$$.stderr -o NotifyUG.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J UGM.$id.$$ -o UGM.$id.$$.%J.stdout -e UGM.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_7 -Xmx4g -jar $GATK -T UnifiedGenotyper -R $Reference -I $bamFile -o $outFilename1  -rf BadCigar --dbsnp $dbSNP -glm SNP -dcov 50000 -L $GeneInterval\"";
 				$logger->debug("COMMAND: $cmd");
@@ -5947,8 +5702,7 @@ sub RunUnifiedGenotyper
 `$BSUB -q $queue -cwd $outdir -w "post_done(UGM.$id.$$) && post_done(UGI.$id.$$)" -J NotifyUG.$id.$$ -e NotifyUG.$id.$$.%J.stderr -o NotifyUG.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("UnifiedGenotyper:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -5958,8 +5712,7 @@ sub RunUnifiedGenotyper
 #####################################
 #####################################
 #Call somatic mutations and indels
-sub RunMutect_SomaticIndelDetector
-{
+sub RunMutect_SomaticIndelDetector {
 	my ( $pID, $normalBamFile, $tumorBamFile, $pconfig, $outdir, $id ) = @_;
 
 	#MutectFiles
@@ -5975,16 +5728,15 @@ sub RunMutect_SomaticIndelDetector
 	$IndelBedOutFilename =~ s/\.bam/\.indel\.brief\.TN\.matched\.bed/g;
 	my $IndelVerboseOutFilename = $tumorBamFile;
 	$IndelVerboseOutFilename =~ s/\.bam/\.indel\.detailed\.TN\.matched\.txt/g;
-	my @notifynames      = ();
-	my ($tFileId)        = $tumorBamFile =~ /(.*)_bc\d+_/;
+	my @notifynames = ();
+	my ($tFileId) = $tumorBamFile =~ /(.*)_bc\d+_/;
 	my $targetFilePrefix = $pID . "_targetsToRealign";
 	my $targetFile = $outdir . "/" . $targetFilePrefix . "_covered_srt.list";
 
-	if ( -e $targetFile )
-	{
+	if ( -e $targetFile ) {
 		$targetFile = $targetFile;
-	} else
-	{
+	}
+	else {
 		$targetFile = $TargetRegionLIST;
 	}
 
@@ -6005,15 +5757,15 @@ sub RunMutect_SomaticIndelDetector
 	$PindelVCFOutFilename =~ s/\.bam/\.pindel\.detailed\.TN\.matched\.vcf/g;
 
 	#Mutect
-	if (     ( -e "$outdir/$MutationOutFilename" )
-		 and ( ( -s "$outdir/$MutationOutFilename" ) != 0 ) )
+	if (    ( -e "$outdir/$MutationOutFilename" )
+		and ( ( -s "$outdir/$MutationOutFilename" ) != 0 ) )
 	{
 		$logger->info(
 "Files:\n$MutationOutFilename they exists and process will not run to make \".callstats.TN.txt\" file."
 		);
 		push( @notifynames, "NULL" );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -6026,8 +5778,8 @@ sub RunMutect_SomaticIndelDetector
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -hold_jid MuTect.$id.$$ -N Triallelic.$id.$$ -o Triallelic.$id.$$.stdout -e Triallelic.$id.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$PERL $triallelic_fix --output_dir $outdir --mutect_raw_file $MutationVerboseOutFilename --mutect_vcf_file $MutationOutFilename"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid MuTect.$id.$$,Triallelic.$id.$$ -N NotifyMT.$id.$$ -e NotifyMT.$id.$$.stderr -o NotifyMT.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J MuTect.$id.$$ -o MuTect.$id.$$.%J.stdout -e MuTect.$id.$$.%J.stderr -We 24:00 -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_6 -Xmx4g -jar $Mutect -T MuTect --input_file:normal $normalBamFile --input_file:tumor $tumorBamFile --reference_sequence $Reference --dbsnp $dbSNP --cosmic $COSMIC -o $MutationVerboseOutFilename -vcf $MutationOutFilename --enable_extended_output  -dcov 50000 -rf BadCigar -rf MappingQuality -mmq $MAPQ\"";
 				$logger->debug("COMMAND: $cmd");
@@ -6039,8 +5791,7 @@ sub RunMutect_SomaticIndelDetector
 `$BSUB -q $queue -cwd $outdir -w "post_done(MuTect.$id.$$) && post_done(Triallelic.$id.$$)" -J NotifyMT.$id.$$ -e NotifyMT.$id.$$.%J.stderr -o NotifyMT.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("Mutect:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -6048,15 +5799,15 @@ sub RunMutect_SomaticIndelDetector
 	}
 
 	#Somatic Indel Detector
-	if (     ( -e "$outdir/$IndelVerboseOutFilename" )
-		 and ( ( -s "$outdir/$IndelVerboseOutFilename" ) != 0 ) )
+	if (    ( -e "$outdir/$IndelVerboseOutFilename" )
+		and ( ( -s "$outdir/$IndelVerboseOutFilename" ) != 0 ) )
 	{
 		$logger->info(
 "Files:\n$IndelVerboseOutFilename\n exists and process will not run to make \".indel.detailed.TN.matched.txt\" file."
 		);
 		push( @notifynames, "NULL" );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -6065,8 +5816,8 @@ sub RunMutect_SomaticIndelDetector
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N SID.$id.$$ -o SID.$id.$$.stdout -e SID.$id.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 1 -b y "$JAVA_1_6 -Xmx4g -jar $GATK_SomaticIndel -T SomaticIndelDetector -R $Reference -I:normal $normalBamFile -I:tumor $tumorBamFile -filter 'T_COV<10||N_COV<4||T_INDEL_F<0.0001||T_INDEL_CF<0.7' -verbose $IndelVerboseOutFilename -o $IndelOutFilename -refseq $Refseq --maxNumberOfReads 100000 -rf DuplicateRead -rf FailsVendorQualityCheck -rf NotPrimaryAlignment -rf BadMate -rf MappingQualityUnavailable -rf UnmappedRead -rf BadCigar -rf MappingQuality -mmq $MAPQ -L $targetFile"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid SID.$id.$$ -N NotifySID.$id.$$ -e NotifySID.$id.$$.stderr -o NotifySID.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J SID.$id.$$ -o SID.$id.$$.%J.stdout -e SID.$id.$$.%J.stderr -R \"rusage[mem=8]\" -M 12 -n 1 \"$JAVA_1_6 -Xmx4g -jar $GATK_SomaticIndel -T SomaticIndelDetector -R $Reference -I:normal $normalBamFile -I:tumor $tumorBamFile -filter 'T_COV<10||N_COV<4||T_INDEL_F<0.0001||T_INDEL_CF<0.7' -verbose $IndelVerboseOutFilename -o $IndelOutFilename -refseq $Refseq --maxNumberOfReads 100000 -rf DuplicateRead -rf FailsVendorQualityCheck -rf NotPrimaryAlignment -rf BadMate -rf MappingQualityUnavailable -rf UnmappedRead -rf BadCigar -rf MappingQuality -mmq $MAPQ -L $targetFile\"";
 				$logger->debug("COMMAND: $cmd");
@@ -6074,25 +5825,24 @@ sub RunMutect_SomaticIndelDetector
 `$BSUB -q $queue -cwd $outdir -w "post_done(SID.$id.$$)" -J NotifySID.$id.$$ -e NotifySID.$id.$$.%J.stderr -o NotifySID.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal(
-						"SomaticIndelDetector:Job Submission Failed, Error:$@");
+				"SomaticIndelDetector:Job Submission Failed, Error:$@");
 			exit(1);
 		}
 		push( @notifynames, "NotifySID.$id.$$.stat" );
 	}
 
 	#Pindel
-	if (     ( -e "$outdir/$PindelVCFOutFilename" )
-		 and ( ( -s "$outdir/$PindelVCFOutFilename" ) != 0 ) )
+	if (    ( -e "$outdir/$PindelVCFOutFilename" )
+		and ( ( -s "$outdir/$PindelVCFOutFilename" ) != 0 ) )
 	{
 		$logger->info(
 "Files:\n$PindelVCFOutFilename\n exists and process will not run to make \".pindel.detailed.TN.matched.txt\" file."
 		);
 		push( @notifynames, "NULL" );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -6101,8 +5851,8 @@ sub RunMutect_SomaticIndelDetector
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N PID.$id.$$ -o PID.$id.$$.stdout -e PID.$id.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 1 -b y "$PYTHON $PindelWrapper -i $pconfig -pId $tFileId -t 5 -r $Reference -p $PINDELBIN -chr ALL -q $queue -qsub $QSUB -o $outdir -op $tFileId"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid PID.$id.$$ -N NotifyPID.$id.$$ -e NotifyPID.$id.$$.stderr -o NotifyPID.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J PID.$id.$$ -o PID.$id.$$.%J.stdout -e PID.$id.$$.%J.stderr -We 24:00 -R \"rusage[mem=8]\" -R \"rusage[iounits=0]\" -M 12 -n 1 \"$PYTHON $PindelWrapper -i $pconfig -pId $tFileId -t 5 -r $Reference -p $PINDELBIN -chr ALL -q $queue -bsub $BSUB -o $outdir -op $tFileId\"";
 				$logger->debug("COMMAND: $cmd");
@@ -6110,23 +5860,21 @@ sub RunMutect_SomaticIndelDetector
 `$BSUB -q $queue -cwd $outdir -w "post_done(PID.$id.$$)" -J NotifyPID.$id.$$ -e NotifyPID.$id.$$.%J.stderr -o NotifyPID.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("Pindel:Job Submission Failed, Error:$@");
 			exit(1);
 		}
 		push( @notifynames, "NotifyPID.$id.$$.stat" );
 	}
 	return (
-			 "$MutationOutFilename",  "$IndelVerboseOutFilename",
-			 "$PindelVCFOutFilename", \@notifynames
+		"$MutationOutFilename",  "$IndelVerboseOutFilename",
+		"$PindelVCFOutFilename", \@notifynames
 	);
 }
 #####################################
 #####################################
 #Filter somatic mutations and indels
-sub RunSomaticMutIndelFilter
-{
+sub RunSomaticMutIndelFilter {
 	my ( $tumorBamFile, $outdir, $id ) = @_;
 	my $MutationVerboseFilename = $tumorBamFile;
 	$MutationVerboseFilename =~ s/\.bam/\.callstats\.TN\.txt/g;
@@ -6158,15 +5906,15 @@ sub RunSomaticMutIndelFilter
 	my @notifynames = ();
 
 	#Filter Somatic Mutation
-	if (     ( -e "$outdir/$MutationOutVcfFilename" )
-		 and ( ( -s "$outdir/$MutationOutVcfFilename" ) != 0 ) )
+	if (    ( -e "$outdir/$MutationOutVcfFilename" )
+		and ( ( -s "$outdir/$MutationOutVcfFilename" ) != 0 ) )
 	{
 		$logger->info(
 "Files:\n$MutationOutVcfFilename they exists and process will not run to make \"_STDfilter.vcf\" file."
 		);
 		push( @notifynames, "NULL" );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -6175,8 +5923,8 @@ sub RunSomaticMutIndelFilter
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N FilterMuTect.$id.$$ -o FilterMuTect.$id.$$.stdout -e FilterMuTect.$id.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$PERL $filter_Mutect -t $outdir/$MutationVerboseFilename -v $outdir/$MutationVcfFilename -s $tFileId -o $outdir -dp $dp_MutectStdFilter -ad $ad_MutectStdFilter -vf $vf_MutectStdFilter -tnr $TNfreqRatio_MutectStdFilter"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid FilterMuTect.$id.$$ -N NotifyFMT.$id.$$ -e NotifyFMT.$id.$$.stderr -o NotifyFMT.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J FilterMuTect.$id.$$ -o FilterMuTect.$id.$$.%J.stdout -e FilterMuTect.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $filter_Mutect -t $outdir/$MutationVerboseFilename -v $outdir/$MutationVcfFilename -s $tFileId -o $outdir -dp $dp_MutectStdFilter -ad $ad_MutectStdFilter -vf $vf_MutectStdFilter -tnr $TNfreqRatio_MutectStdFilter\"";
 				$logger->debug("COMMAND: $cmd");
@@ -6184,8 +5932,7 @@ sub RunSomaticMutIndelFilter
 `$BSUB -q $queue -cwd $outdir -w "post_done(FilterMuTect.$id.$$)" -J NotifyFMT.$id.$$ -e NotifyFMT.$id.$$.%J.stderr -o NotifyFMT.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("FilerMutect:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -6193,15 +5940,15 @@ sub RunSomaticMutIndelFilter
 	}
 
 	#Filter Somatic Indel
-	if (     ( -e "$outdir/$IndelOutVcfFilename" )
-		 and ( ( -s "$outdir/$IndelOutVcfFilename" ) != 0 ) )
+	if (    ( -e "$outdir/$IndelOutVcfFilename" )
+		and ( ( -s "$outdir/$IndelOutVcfFilename" ) != 0 ) )
 	{
 		$logger->info(
 "Files:$IndelOutVcfFilename\nthey exists and process will not run to make \"_STDfilter.vcf\" file."
 		);
 		push( @notifynames, "NULL" );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -6210,8 +5957,8 @@ sub RunSomaticMutIndelFilter
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N FilterSID.$id.$$ -o FilterSID.$id.$$.stdout -e FilterSID.$id.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$PERL $filter_SomaticIndel -t $outdir/$IndelVerboseFilename -v $outdir/$IndelVcfFilename -s $tFileId -o $outdir -dp $dp_SomIndelStdFilter -ad $ad_SomIndelStdFilter -vf $vf_SomIndelStdFilter -tnr $TNfreqRatio_SomIndelStdFilter"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid FilterSID.$id.$$ -N NotifyFSID.$id.$$ -e NotifyFSID.$id.$$.stderr -o NotifySID.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J FilterSID.$id.$$ -o FilterSID.$id.$$.%J.stdout -e FilterSID.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PERL $filter_SomaticIndel -t $outdir/$IndelVerboseFilename -v $outdir/$IndelVcfFilename -s $tFileId -o $outdir -dp $dp_SomIndelStdFilter -ad $ad_SomIndelStdFilter -vf $vf_SomIndelStdFilter -tnr $TNfreqRatio_SomIndelStdFilter\"";
 				$logger->debug("COMMAND: $cmd");
@@ -6219,8 +5966,7 @@ sub RunSomaticMutIndelFilter
 `$BSUB -q $queue -cwd $outdir -w "post_done(FilterSID.$id.$$)" -J NotifyFSID.$id.$$ -e NotifyFSID.$id.$$.%J.stderr -o NotifySID.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("FilterIndel:Job Submission Failed, Error:$@");
 			exit(1);
 		}
@@ -6228,15 +5974,15 @@ sub RunSomaticMutIndelFilter
 	}
 
 	#Filter Somatic Pindel
-	if (     ( -e "$outdir/$PindelOutVcfFilename" )
-		 and ( ( -s "$outdir/$PindelOutVcfFilename" ) != 0 ) )
+	if (    ( -e "$outdir/$PindelOutVcfFilename" )
+		and ( ( -s "$outdir/$PindelOutVcfFilename" ) != 0 ) )
 	{
 		$logger->info(
 "Files:$PindelOutVcfFilename\nthey exists and process will not run to make \"_STDfilter.vcf\" file."
 		);
 		push( @notifynames, "NULL" );
-	} else
-	{
+	}
+	else {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -6245,8 +5991,8 @@ sub RunSomaticMutIndelFilter
 				$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N FilterPID.$id.$$ -o FilterPID.$id.$$.stdout -e FilterPID.$id.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$PYTHON $filter_Pindel -i $outdir/$PindelVcfFilename -tsn $tFileId -o $outdir -dp $dp_SomIndelStdFilter -ad $ad_SomIndelStdFilter -vf $vf_SomIndelStdFilter -tnr $TNfreqRatio_SomIndelStdFilter -min $Pindel_Min_Indel_Len -max $Pindel_Max_Indel_Len -o $outdir"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid FilterPID.$id.$$ -N NotifyFPID.$id.$$ -e NotifyFPID.$id.$$.stderr -o NotifyPID.$id.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J FilterPID.$id.$$ -o FilterPID.$id.$$.%J.stdout -e FilterPID.$id.$$.%J.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$PYTHON $filter_Pindel -i $outdir/$PindelVcfFilename -tsn $tFileId -o $outdir -dp $dp_SomIndelStdFilter -ad $ad_SomIndelStdFilter -vf $vf_SomIndelStdFilter -tnr $TNfreqRatio_SomIndelStdFilter -min $Pindel_Min_Indel_Len -max $Pindel_Max_Indel_Len -o $outdir\"";
 				$logger->debug("COMMAND: $cmd");
@@ -6254,31 +6000,28 @@ sub RunSomaticMutIndelFilter
 `$BSUB -q $queue -cwd $outdir -w "post_done(FilterPID.$id.$$)" -J NotifyFPID.$id.$$ -e NotifyFPID.$id.$$.%J.stderr -o NotifyPID.$id.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("FilterPindel:Job Submission Failed, Error:$@");
 			exit(1);
 		}
 		push( @notifynames, "NotifyPID.$id.$$.stat" );
 	}
 	return (
-			 "$MutationOutVcfFilename", "$MutationOutTxtFilename",
-			 "$IndelOutVcfFilename",    "$IndelOutTxtFilename",
-			 "$PindelOutVcfFilename",   "$PindelOutTxtFilename",
-			 \@notifynames
+		"$MutationOutVcfFilename", "$MutationOutTxtFilename",
+		"$IndelOutVcfFilename",    "$IndelOutTxtFilename",
+		"$PindelOutVcfFilename",   "$PindelOutTxtFilename",
+		\@notifynames
 	);
 }
 #####################################
 #####################################
 #Calll Structural Variant Pipeline
-sub CallSV
-{
+sub CallSV {
 	$logger->info("Starting Structural Variant Pipeline");
 	my ($filenames) = @_;
 	my @names = ();
 	if ($filenames) { (@names) = @$filenames; }
-	if ( ( scalar @names == 0 ) and ($fof) )
-	{
+	if ( ( scalar @names == 0 ) and ($fof) ) {
 		@names = &GetNames( $fof, $outdir );
 	}
 	my (@sortedparseFilenames) =
@@ -6293,8 +6036,8 @@ sub CallSV
 			$logger->debug("COMMAND: $cmd");
 `$QSUB -q $queue -V -wd $outdir -N RunSV.$$ -o RunSV.$$.stdout -e RunSV.$$.stderr -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$PERL $SVpipeline -c $sv_config_file -d $datadir -o $outdir"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid RunSV.$$ -N NotifyRunSV.$$ -e NotifyRunSV.$$.stderr -o NotifyRunSV.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-		} else
-		{
+		}
+		else {
 			my $cmd =
 "$BSUB -q $queue -cwd $outdir -J RunSV.$$ -o RunSV.$$.%J.stdout -e RunSV.$$.%J.stderr -R \"rusage[mem=2]\" -R \"rusage[iounits=0]\" -M 4 -n 1 \"$PERL $SVpipeline -c $sv_config_file -d $datadir -o $outdir\"";
 			$logger->debug("COMMAND: $cmd");
@@ -6302,14 +6045,12 @@ sub CallSV
 `$BSUB -q $queue -cwd $outdir -w "post_done(RunSV.$$)" -J NotifyRunSV.$$ -e NotifyRunSV.$$.%J.stderr -o NotifyRunSV.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 		}
 	};
-	if ($@)
-	{
+	if ($@) {
 		$logger->fatal("RunSV:Job Submission Failed, Error:$@");
 		exit(1);
 	}
 	push( @notifynames, "NotifyRunSV.$$.stat" );
-	if ($fof)
-	{
+	if ($fof) {
 		&WaitToFinish( $outdir, @notifynames );
 	}
 	return ( \@names );
@@ -6317,8 +6058,7 @@ sub CallSV
 #####################################
 #####################################
 #Calll Structural Variant Pipeline
-sub RunABRA
-{
+sub RunABRA {
 	$logger->info("Running ABRA realignment");
 	my ( $inputFiles, $patientID, $outdir, $i ) = @_;
 	my @notifynames      = ();
@@ -6330,22 +6070,19 @@ sub RunABRA
 	open( FH, $inputFiles )
 	  or die( $logger->fatal("RunABRA:Cannot open $inputFiles, Error:$!") );
 
-	while (<FH>)
-	{
+	while (<FH>) {
 		chomp($_);
 		my $outFilename = $_;
 		$outFilename =~ s/\.bam/_IR\.bam/;
-		if ( ( -e "$outFilename" ) and ( ( -s "$outFilename" ) != 0 ) )
-		{
+		if ( ( -e "$outFilename" ) and ( ( -s "$outFilename" ) != 0 ) ) {
 			push( @processed, $outFilename );
-		} else
-		{
+		}
+		else {
 			push( @unprocessed, $outFilename );
 		}
 	}
 	close(FH);
-	if (@unprocessed)
-	{
+	if (@unprocessed) {
 		eval {
 			if ( $CLUSTER eq "SGE" )
 			{
@@ -6358,8 +6095,8 @@ sub RunABRA
 `$QSUB -q $queue -V -wd $outdir -N RunFindCoveredInterval_IR.$i.$$ -o RunFindCoveredInterval_IR.$i.$$.stdout -e RunFindCoveredInterval.$i.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 1 -b y "$PYTHON $FindCoveredIntervals -i $inputFiles -of $targetFilePrefix -t 4 -r $Reference -g $GATK -j $JAVA_1_7 -q $queue -qsub $QSUB -o $outdir"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid RunFindCoveredInterval_IR.$i.$$ -N RunABRA_IR.$i.$$ -o RunABRA_IR.$i.$$.stdout -e RunABRA_IR.$i.$$.stderr -l h_vmem=8G,virtual_free=8G -pe smp 1 -b y "$PYTHON $ABRAwrapper -i $inputFiles -p $patientID -t 12 -k 43 53 63 83 93 -r $Reference -tr $targetFile -j $JAVA_1_7 -b $BWA_PATH -a $ABRA -q $queue -qsub $QSUB -o $outdir -temp $TMPDIR"`;
 `$QSUB -q $queue -V -wd $outdir -hold_jid RunABRA_IR.$i.$$ -N NotifyRunABRA_IR.$i.$$ -e NotifyRunABRA_IR.$i.$$.stderr -o NotifyRunABRA_IR.$i.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
-			} else
-			{
+			}
+			else {
 				my $cmd =
 "$BSUB -q $queue -cwd $outdir -J RunFindCoveredInterval_IR.$i.$$ -o RunFindCoveredInterval_IR.$i.$$.%J.stdout -e RunFindCoveredInterval.$i.$$.%J.stderr -R \"rusage[mem=8]\" -R \"rusage[iounits=0]\" -M 12 -n 1 \"$PYTHON $FindCoveredIntervals -i $inputFiles -of $targetFilePrefix -t 4 -r $Reference -g $GATK -j $JAVA_1_7 -q $queue -bsub $BSUB -o $outdir\"";
 				$logger->debug("COMMAND: $cmd");
@@ -6371,14 +6108,13 @@ sub RunABRA
 `$BSUB -q $queue -cwd $outdir -w "post_done(RunABRA_IR.$i.$$)" -J NotifyRunABRA_IR.$i.$$ -e NotifyRunABRA_IR.$i.$$.%J.stderr -o NotifyRunABRA_IR.$i.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 			}
 		};
-		if ($@)
-		{
+		if ($@) {
 			$logger->fatal("RunABRA:Job Submission Failed, Error:$@");
 			exit(1);
 		}
 		return ("NotifyRunABRA_IR.$i.$$.stat");
-	} else
-	{
+	}
+	else {
 		$logger->info(
 "Files:@processed\nthey exists and process will not run to make \"_IR.bam\" file."
 		);
@@ -6388,22 +6124,18 @@ sub RunABRA
 #####################################
 #####################################
 #Delete Intermediate files
-sub DeleteFiles
-{
+sub DeleteFiles {
 	my ($filesToDelete) = @_;
-	foreach my $file (@$filesToDelete)
-	{
+	foreach my $file (@$filesToDelete) {
 		chomp($file);
-		if ( -e $file )
-		{
+		if ( -e $file ) {
 			eval { `rm $file`; };
-			if ($@)
-			{
+			if ($@) {
 				$logger->warn(
-						 "DeleteFile:Sorry not able to delete $file, Error:$@");
+					"DeleteFile:Sorry not able to delete $file, Error:$@");
 			}
-		} else
-		{
+		}
+		else {
 			next;
 		}
 	}
@@ -6412,8 +6144,7 @@ sub DeleteFiles
 #####################################
 #####################################
 #Make Folder and Move files
-sub RunHouseKeeping
-{
+sub RunHouseKeeping {
 	my ( $outdir, $pool ) = @_;
 	my (@poolNames)      = @$pool;
 	my $poolName         = $poolNames[0];
@@ -6430,36 +6161,32 @@ sub RunHouseKeeping
 		if ( -d $FinalBams )
 		{
 			$logger->info("DIR:$FinalBams exits and won\'t be created.");
-		} else
-		{
+		}
+		else {
 			`mkdir $FinalBams`;
 		}
-		if ( -d $Results )
-		{
+		if ( -d $Results ) {
 			$logger->info("DIR:$Results exits and won\'t be created.");
-		} else
-		{
+		}
+		else {
 			`mkdir $Results`;
 		}
-		if ( -d $CompileMetrics )
-		{
+		if ( -d $CompileMetrics ) {
 			$logger->info("DIR:$CompileMetrics exits and won\'t be created.");
-		} else
-		{
+		}
+		else {
 			`mkdir $CompileMetrics`;
 		}
-		if ( -d $AlleleDepth )
-		{
+		if ( -d $AlleleDepth ) {
 			$logger->info("DIR:$AlleleDepth exits and won\'t be created.");
-		} else
-		{
+		}
+		else {
 			`mkdir $AlleleDepth`;
 		}
-		if ( -d $AllSampleResults )
-		{
+		if ( -d $AllSampleResults ) {
 			$logger->info("DIR:$AllSampleResults exits and won\'t be created.");
-		} else
-		{
+		}
+		else {
 			`mkdir $AllSampleResults`;
 		}
 
@@ -6471,23 +6198,20 @@ sub RunHouseKeeping
 		#{
 		#    `mkdir $vcfs`;
 		#}
-		if ( -d $mutations )
-		{
+		if ( -d $mutations ) {
 			$logger->info("DIR:$mutations exits and won\'t be created.");
-		} else
-		{
+		}
+		else {
 			`mkdir $mutations`;
 		}
-		if ( -d $StdLogFiles )
-		{
+		if ( -d $StdLogFiles ) {
 			$logger->info("DIR:$StdLogFiles exits and won\'t be created.");
-		} else
-		{
+		}
+		else {
 			`mkdir $StdLogFiles`;
 		}
 	};
-	if ($@)
-	{
+	if ($@) {
 		$logger->warn("MoveFiles:Error while making folders. Error:$@");
 	}
 	eval {
@@ -6528,20 +6252,16 @@ sub RunHouseKeeping
 		my $stderrFiles = "*.stderr";
 		my @stderrData  = <$outdir/$stderrFiles>;
 		my $QCfigures   = "figure";
-		if ( scalar(@BAMData) > 0 )
-		{
+		if ( scalar(@BAMData) > 0 ) {
 			`mv $outdir/$BAMFiles $FinalBams`;
 		}
-		if ( scalar(@BedData) > 0 )
-		{
+		if ( scalar(@BedData) > 0 ) {
 			`mv $outdir/$BedFiles $FinalBams`;
 		}
-		if ( scalar(@mutectData) > 0 )
-		{
+		if ( scalar(@mutectData) > 0 ) {
 			`mv $outdir/$mutectFiles $mutations`;
 		}
-		if ( scalar(@indelData) > 0 )
-		{
+		if ( scalar(@indelData) > 0 ) {
 			`mv $outdir/$indelFiles $mutations`;
 		}
 
@@ -6553,27 +6273,22 @@ sub RunHouseKeeping
 		#{
 		#    `mv $outdir/$gIfiles $vcfs`;
 		#}
-		if ( -d $QCfigures )
-		{
+		if ( -d $QCfigures ) {
 			`mv $outdir/$QCfigures/ Results/`;
 		}
-		if ( scalar(@mvTitleData) > 0 )
-		{
+		if ( scalar(@mvTitleData) > 0 ) {
 			`mv $outdir/$mvTitleFiles $Results`;
 		}
 		my @mvCMPData = <$outdir/$mvCMPFiles>;
-		if ( scalar(@mvCMPData) > 0 )
-		{
+		if ( scalar(@mvCMPData) > 0 ) {
 			`mv $outdir/$mvCMPFiles $Results`;
 		}
 		my @mvCMPData_All = <$outdir/$mvCMPFiles_All>;
-		if ( scalar(@mvCMPData_All) > 0 )
-		{
+		if ( scalar(@mvCMPData_All) > 0 ) {
 			`mv $outdir/$mvCMPFiles_All $Results`;
 		}
 		my @mvCopyNumberFiles = glob("$outdir/$mvCopyNumber");
-		if ( scalar(@mvCopyNumberFiles) > 0 )
-		{
+		if ( scalar(@mvCopyNumberFiles) > 0 ) {
 			`mv $outdir/$mvCopyNumber $Results`;
 			my $src1 =
 			  $Results . "/" . $poolName . "_copynumber_segclusp.probes.txt";
@@ -6585,58 +6300,47 @@ sub RunHouseKeeping
 			`ln -s $src2 $dest2`;
 		}
 		my @mvNormVsNormFiles = <$outdir/$mvNormVsNorm>;
-		if ( scalar(@mvNormVsNormFiles) > 0 )
-		{
+		if ( scalar(@mvNormVsNormFiles) > 0 ) {
 			`mv $outdir/$mvNormVsNorm $Results`;
 		}
 		my @mvLoessNormFiles = <$outdir/$mvLoessNorm>;
-		if ( scalar(@mvLoessNormFiles) > 0 )
-		{
+		if ( scalar(@mvLoessNormFiles) > 0 ) {
 			`mv $outdir/$mvLoessNorm $Results`;
 		}
-		if ( scalar(@MetricsResultsData) > 0 )
-		{
+		if ( scalar(@MetricsResultsData) > 0 ) {
 			`mv $outdir/$MetricsResultsFiles $AllSampleResults`;
 		}
-		if ( scalar(@ClippingData) > 0 )
-		{
+		if ( scalar(@ClippingData) > 0 ) {
 			`mv $outdir/$ClippingResults $AllSampleResults`;
 		}
-		if ( scalar(@DuplicationData) > 0 )
-		{
+		if ( scalar(@DuplicationData) > 0 ) {
 			`mv $outdir/$DuplicationResults $AllSampleResults`;
 		}
-		if ( scalar(@SegmentationData) > 0 )
-		{
+		if ( scalar(@SegmentationData) > 0 ) {
 			`mv $outdir/$SegmentationResults $AllSampleResults`;
 		}
-		if ( scalar(@cnvJson_arr) > 0 )
-		{
+		if ( scalar(@cnvJson_arr) > 0 ) {
 			`mv $outdir/$cnvJsons $AllSampleResults`;
 		}
-		if ( scalar(@ADData) > 0 )
-		{
+		if ( scalar(@ADData) > 0 ) {
 			`mv $outdir/$ADfiles $AlleleDepth`;
 		}
-		if ( scalar(@stdoutData) > 0 )
-		{
+		if ( scalar(@stdoutData) > 0 ) {
 			`mv $outdir/$stdoutFiles $StdLogFiles`;
 		}
-		if ( scalar(@stderrData) > 0 )
-		{
+		if ( scalar(@stderrData) > 0 ) {
 			`mv $outdir/$stderrFiles $StdLogFiles`;
 		}
 		`mv $outdir/SampleSheet.csv $Results`;
 	};
-	if ($@)
-	{
+	if ($@) {
 		$logger->warn("MoveFiles:Error while moving files. Error:$@");
 	}
 	eval {
+
 		#`rm $outdir/*.csh`;
 	};
-	if ($@)
-	{
+	if ($@) {
 		$logger->warn("MoveFiles:Error while removing .csh files. Error:$@");
 	}
 	return;
