@@ -98,6 +98,8 @@
 ##08/25/2015
 #v3.0
 #RS: Adding funtionality to run on LSF
+#v3.0.1
+#RS: Can merge samples without index.
 #############################
 use strict;
 use Getopt::Long;
@@ -239,7 +241,7 @@ my (
 );
 
 sub VersionMessage {
-	our $VERSION = version->declare("v3.0.0");
+	our $VERSION = version->declare("v3.0.1");
 	print "You are running $0 version : $VERSION\n";
 	exit();
 }
@@ -443,6 +445,9 @@ else {
 	}
 	elsif ( $fastqSource eq "GCL" ) {
 		$logger->info("Fastq files are from GCL");
+	}
+	elsif ( $fastqSource eq "TFB" ) {
+		$logger->info("Fastq files are from TFB");
 	}
 	else {
 		$logger->fatal("Please indicate fastqSource. See Usage");
