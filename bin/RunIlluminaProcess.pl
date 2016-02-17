@@ -1864,7 +1864,7 @@ sub MergeDataFromDirectory {
 			my $name =
 			    $titleSampleId[$sampleNum] . "_"
 			  . $titleBarcode[$sampleNum] . "_"
-			  . $titlePool[$SampleNum];
+			  . $titlePool[$sampleNum];
 
 			my $read1ListName =
 			    $datadir . "/"
