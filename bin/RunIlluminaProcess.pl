@@ -1907,35 +1907,35 @@ sub MergeDataFromDirectory {
 					if ( $CLUSTER eq "SGE" )
 					{
 						my $cmd =
-"$QSUB -q $queue -V -wd $outdir -N MergeRead1.$newIndex.$sampleNum.$$ -e MergeRead1.$newIndex.$sampleNum.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y \"$ZCAT $read1ListName | gzip > $read1Name\"";
+"$QSUB -q $queue -V -wd $outdir -N MergeRead1.$titleBarcode[$sampleNum].$sampleNum.$$ -e MergeRead1.$titleBarcode[$sampleNum].$sampleNum.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y \"$ZCAT $read1ListName | gzip > $read1Name\"";
 						$logger->debug("COMMAND: $cmd");
 
 						#Read1
-`$QSUB -q $queue -V -wd $outdir -N MergeRead1.$newIndex.$sampleNum.$$ -e MergeRead1.$newIndex.$sampleNum.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$ZCAT $read1ListName | gzip > $read1Name"`;
-`$QSUB -q $queue -V -wd $outdir -hold_jid MergeRead1.$newIndex.$sampleNum.$$ -N NotifyMR.Read1.$sampleNum.$$ -e NotifyMR.Read1.$sampleNum.$$.stderr -o NotifyMR.Read1.$sampleNum.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
+`$QSUB -q $queue -V -wd $outdir -N MergeRead1.$titleBarcode[$sampleNum].$sampleNum.$$ -e MergeRead1.$titleBarcode[$sampleNum].$sampleNum.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$ZCAT $read1ListName | gzip > $read1Name"`;
+`$QSUB -q $queue -V -wd $outdir -hold_jid MergeRead1.$titleBarcode[$sampleNum].$sampleNum.$$ -N NotifyMR.Read1.$sampleNum.$$ -e NotifyMR.Read1.$sampleNum.$$.stderr -o NotifyMR.Read1.$sampleNum.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
 						$cmd =
-"$QSUB -q $queue -V -wd $outdir -N MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y \"$ZCAT $read2ListName | gzip > $read2Name\"";
+"$QSUB -q $queue -V -wd $outdir -N MergeRead2.$titleBarcode[$sampleNum].$sampleNum.$$ -e MergeRead2.$titleBarcode[$sampleNum].$sampleNum.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y \"$ZCAT $read2ListName | gzip > $read2Name\"";
 						$logger->debug("COMMAND: $cmd");
 
 						#Read2
-`$QSUB -q $queue -V -wd $outdir -N MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$ZCAT $read2ListName | gzip > $read2Name"`;
-`$QSUB -q $queue -V -wd $outdir -hold_jid MergeRead2.$newIndex.$sampleNum.$$ -N NotifyMR.Read2.$sampleNum.$$ -e NotifyMR.Read2.$sampleNum.$$.stderr -o NotifyMR.Read2.$sampleNum.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
+`$QSUB -q $queue -V -wd $outdir -N MergeRead2.$titleBarcode[$sampleNum].$sampleNum.$$ -e MergeRead2.$titleBarcode[$sampleNum].$sampleNum.$$.stderr -o /dev/null -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$ZCAT $read2ListName | gzip > $read2Name"`;
+`$QSUB -q $queue -V -wd $outdir -hold_jid MergeRead2.$titleBarcode[$sampleNum].$sampleNum.$$ -N NotifyMR.Read2.$sampleNum.$$ -e NotifyMR.Read2.$sampleNum.$$.stderr -o NotifyMR.Read2.$sampleNum.$$.stat -l h_vmem=2G,virtual_free=2G -pe smp 1 -b y "$outdir/Notify.csh"`;
 					}
 					else {
 
 						#Read1
 						my $cmd =
-"$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$sampleNum.$$ -e MergeRead1.$newIndex.$sampleNum.$$.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read1ListName | gzip > $read1Name\"";
+"$BSUB -q $queue -cwd $outdir -J MergeRead1.$titleBarcode[$sampleNum].$sampleNum.$$ -e MergeRead1.$titleBarcode[$sampleNum].$sampleNum.$$.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read1ListName | gzip > $read1Name\"";
 						$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J MergeRead1.$newIndex.$sampleNum.$$ -e MergeRead1.$newIndex.$sampleNum.$$.stderr -We 0:59 -R "rusage[mem=2]" -M 4 -n 1 "$ZCAT $read1ListName | gzip > $read1Name"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead1.$newIndex.$sampleNum.$$)" -J MergeRead1.$newIndex.$sampleNum.$$ -e NotifyMR.Read1.$sampleNum.$$.%J.stderr -o NotifyMR.Read1.$sampleNum.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J MergeRead1.$titleBarcode[$sampleNum].$sampleNum.$$ -e MergeRead1.$titleBarcode[$sampleNum].$sampleNum.$$.stderr -We 0:59 -R "rusage[mem=2]" -M 4 -n 1 "$ZCAT $read1ListName | gzip > $read1Name"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead1.$titleBarcode[$sampleNum].$sampleNum.$$)" -J MergeRead1.$titleBarcode[$sampleNum].$sampleNum.$$ -e NotifyMR.Read1.$sampleNum.$$.%J.stderr -o NotifyMR.Read1.$sampleNum.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 
 						#Read2
 						$cmd =
-"$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read2ListName | gzip > $read2Name\"";
+"$BSUB -q $queue -cwd $outdir -J MergeRead2.$titleBarcode[$sampleNum].$sampleNum.$$ -e MergeRead2.$titleBarcode[$sampleNum].$sampleNum.$$.stderr -R \"rusage[mem=2]\" -M 4 -n 1 \"$ZCAT $read2ListName | gzip > $read2Name\"";
 						$logger->debug("COMMAND: $cmd");
-`$BSUB -q $queue -cwd $outdir -J MergeRead2.$newIndex.$sampleNum.$$ -e MergeRead2.$newIndex.$sampleNum.$$.stderr -We 0:59 -R "rusage[mem=2]" -M 4 -n 1 "$ZCAT $read2ListName | gzip > $read2Name"`;
-`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead2.$newIndex.$sampleNum.$$)" -J MergeRead2.$newIndex.$sampleNum.$$ -e NotifyMR.Read2.$sampleNum.$$.%J.stderr -o NotifyMR.Read2.$sampleNum.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
+`$BSUB -q $queue -cwd $outdir -J MergeRead2.$titleBarcode[$sampleNum].$sampleNum.$$ -e MergeRead2.$titleBarcode[$sampleNum].$sampleNum.$$.stderr -We 0:59 -R "rusage[mem=2]" -M 4 -n 1 "$ZCAT $read2ListName | gzip > $read2Name"`;
+`$BSUB -q $queue -cwd $outdir -w "post_done(MergeRead2.$titleBarcode[$sampleNum].$sampleNum.$$)" -J MergeRead2.$titleBarcode[$sampleNum].$sampleNum.$$ -e NotifyMR.Read2.$sampleNum.$$.%J.stderr -o NotifyMR.Read2.$sampleNum.$$.stat -We 0:59 -R "rusage[mem=2]" -R "rusage[iounits=0]" -M 4 -n 1 "$outdir/Notify.csh"`;
 					}
 				};
 				if ($@) {
@@ -1944,10 +1944,10 @@ sub MergeDataFromDirectory {
 				}
 				push( @notifyNames, "NotifyMR.Read1.$sampleNum.$$.stat" );
 				push( @checkErrorFiles,
-					"MergeRead1.$newIndex.$sampleNum.$$.err" );
+					"MergeRead1.$titleBarcode[$sampleNum].$sampleNum.$$.err" );
 				push( @notifyNames, "NotifyMR.Read2.$sampleNum.$$.stat" );
 				push( @checkErrorFiles,
-					"MergeRead2.$newIndex.$sampleNum.$$.err" );
+					"MergeRead2.$titleBarcode[$sampleNum].$sampleNum.$$.err" );
 				push( @parseFilenames, "$read1Name,$read2Name" );
 			}
 		}
