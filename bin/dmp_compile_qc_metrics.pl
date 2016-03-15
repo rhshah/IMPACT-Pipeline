@@ -395,11 +395,11 @@ sub lowestNumber
     if($files =~ /,/)
     {
 	@filenames = split(",",$files);
-	($number) = $filenames[0] =~ m/.*_bc(\d{1,2})_.*/g;
+	($number) = $filenames[0] =~ m/.*_bc(\d+)_.*/g;
     }
     else
     {
-	($number) = $files =~ m/.*_bc(\d{1,2})_.*/g;
+	($number) = $files =~ m/.*_bc(\d+)_.*/g;
     }
     return $number;
 }
@@ -411,7 +411,7 @@ sub lowestNumberBC
 {
     my $lines = shift;
     my @filenames = split("\t",$lines);
-    my ($number) = $filenames[0] =~ m/.*bc(\d{1,2}).*/g;
+    my ($number) = $filenames[0] =~ m/.*bc(\d+).*/g;
     return $number;
 }
 #####################################
