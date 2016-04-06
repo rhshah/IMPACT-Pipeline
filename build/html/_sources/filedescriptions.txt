@@ -2,13 +2,7 @@
 File Description
 ================
 
-
-**The following files are output by the CMO bioinformatics pipeline and are organized in the data delivery drives as outlined below. Detailed descriptions of all results files are provided. Of particular importance are the following key results files:**
--	CompiledMetrics/Proj_*_ALL_Metrics.pdf		[summary of QC metrics]
--	Variants/annotated_exonic_variants.txt		[all variants and allele counts]
--	CopyNumber/Proj_*_copynumber_segclusp.pdf	[copy number plots]
--	SampleInfo/Proj_*_title_file.txt				[sample IDs and limited metadata]
-
+Here is small description for each of the important output files.
 
 
 ----------------
