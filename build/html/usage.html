@@ -27,8 +27,8 @@
     <link rel="next" title="Description of sub-scripts" href="subscripts.html" />
     <link rel="prev" title="Requirements" href="requirements.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -40,14 +40,14 @@
         <li class="right" >
           <a href="requirements.html" title="Requirements"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">IMPACT-Pipeline 1.0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">IMPACT-Pipeline 1.0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
@@ -237,40 +237,40 @@
 Which looks like this:</p>
 <div class="sidebar">
 <p class="first sidebar-title">Note:</p>
-<p class="last">Please comment out the lines using (<tt class="docutils literal"><span class="pre">#</span></tt>) according to the cluster type and analysis type.</p>
+<p class="last">Please comment out the lines using (<code class="docutils literal"><span class="pre">#</span></code>) according to the cluster type and analysis type.</p>
 </div>
-<div class="highlight-sh"><div class="highlight"><pre><span class="c">##Run_Pipeline_Example.sh</span>
-<span class="c">#author:Ronak H Shah</span>
-<span class="c">#v1.0.1</span>
-<span class="c">##Path where the fastq are stored</span>
-<span class="nb">export </span><span class="nv">DATADIR</span><span class="o">=</span>&lt;Path <span class="k">for</span> Data Directory&gt;
-<span class="c">##Path where the output shoud be written</span>
-<span class="nb">export </span><span class="nv">OUTDIR</span><span class="o">=</span>&lt;Path To Output Directory&gt;
-<span class="c">##Path to the IMPACT-Pipeline script</span>
-<span class="nb">export </span><span class="nv">PipelineScript</span><span class="o">=</span>&lt;Path to IMPACT-Pipeline Script&gt;
-<span class="c">##Path to Perl installation</span>
-<span class="nb">export </span><span class="nv">Perl</span><span class="o">=</span>&lt;Path to Perl&gt;
-<span class="c">##Project associated with the Run</span>
-<span class="nb">export </span><span class="nv">ProjectName</span><span class="o">=</span>&lt;ProjectName&gt;
-<span class="c">##Path to working directory where you will write the LSF/SGE outputs</span>
-<span class="nb">export </span><span class="nv">WorkingDir</span><span class="o">=</span>&lt;Path to write sge/lsf files&gt;
-<span class="c">##Path to configfile for running main IMPACT pipeline</span>
-<span class="nb">export </span><span class="nv">CONFIGFILE</span><span class="o">=</span>&lt;Path To Pipeline Configuration File&gt;
-<span class="c">##Path to structural variants pipeline configuration file</span>
-<span class="nb">export </span><span class="nv">SV_ConfigFile</span><span class="o">=</span>&lt;Path to SV detection configuration file&gt;
+<div class="highlight-sh"><div class="highlight"><pre><span class="c1">##Run_Pipeline_Example.sh</span>
+<span class="c1">#author:Ronak H Shah</span>
+<span class="c1">#v1.0.1</span>
+<span class="c1">##Path where the fastq are stored</span>
+<span class="nb">export</span> <span class="nv">DATADIR</span><span class="o">=</span>&lt;Path <span class="k">for</span> Data Directory&gt;
+<span class="c1">##Path where the output shoud be written</span>
+<span class="nb">export</span> <span class="nv">OUTDIR</span><span class="o">=</span>&lt;Path To Output Directory&gt;
+<span class="c1">##Path to the IMPACT-Pipeline script</span>
+<span class="nb">export</span> <span class="nv">PipelineScript</span><span class="o">=</span>&lt;Path to IMPACT-Pipeline Script&gt;
+<span class="c1">##Path to Perl installation</span>
+<span class="nb">export</span> <span class="nv">Perl</span><span class="o">=</span>&lt;Path to Perl&gt;
+<span class="c1">##Project associated with the Run</span>
+<span class="nb">export</span> <span class="nv">ProjectName</span><span class="o">=</span>&lt;ProjectName&gt;
+<span class="c1">##Path to working directory where you will write the LSF/SGE outputs</span>
+<span class="nb">export</span> <span class="nv">WorkingDir</span><span class="o">=</span>&lt;Path to write sge/lsf files&gt;
+<span class="c1">##Path to configfile for running main IMPACT pipeline</span>
+<span class="nb">export</span> <span class="nv">CONFIGFILE</span><span class="o">=</span>&lt;Path To Pipeline Configuration File&gt;
+<span class="c1">##Path to structural variants pipeline configuration file</span>
+<span class="nb">export</span> <span class="nv">SV_ConfigFile</span><span class="o">=</span>&lt;Path to SV detection configuration file&gt;
 
-<span class="c">##Run both IMPACT-Pipeline &amp; SV Process on LSF</span>
-<span class="nb">echo </span>bsub -q sol -cwd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -J <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -e<span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stderr -o <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stdout -We 24:00 -R <span class="s2">&quot;rusage[mem=2]&quot;</span> -M <span class="m">4</span> <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -sc <span class="o">{</span><span class="nv">$SV_ConfigFile</span><span class="o">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
-bsub -q sol -cwd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -J <span class="si">${</span><span class="nv">PoolName</span><span class="si">}</span> -e<span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stderr -o <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stdout -We 24:00 -R <span class="s2">&quot;rusage[mem=2]&quot;</span> -M <span class="m">4</span> <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -sc <span class="o">{</span><span class="nv">$SV_ConfigFile</span><span class="o">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
-<span class="c">##Run IMPACT-Pipeline on LSF</span>
-<span class="nb">echo </span>bsub -q sol -cwd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -J <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -e<span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stderr -o <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stdout -We 24:00 -R <span class="s2">&quot;rusage[mem=2]&quot;</span> -M <span class="m">4</span> <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
+<span class="c1">##Run both IMPACT-Pipeline &amp; SV Process on LSF</span>
+<span class="nb">echo</span> bsub -q sol -cwd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -J <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -e<span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stderr -o <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stdout -We 24:00 -R <span class="s2">&quot;rusage[mem=2]&quot;</span> -M <span class="m">4</span> <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -sc <span class="o">{</span>$SV_ConfigFile<span class="o">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
+bsub -q sol -cwd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -J <span class="si">${</span><span class="nv">PoolName</span><span class="si">}</span> -e<span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stderr -o <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stdout -We 24:00 -R <span class="s2">&quot;rusage[mem=2]&quot;</span> -M <span class="m">4</span> <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -sc <span class="o">{</span>$SV_ConfigFile<span class="o">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
+<span class="c1">##Run IMPACT-Pipeline on LSF</span>
+<span class="nb">echo</span> bsub -q sol -cwd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -J <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -e<span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stderr -o <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stdout -We 24:00 -R <span class="s2">&quot;rusage[mem=2]&quot;</span> -M <span class="m">4</span> <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
 bsub -q sol -cwd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -J <span class="si">${</span><span class="nv">PoolName</span><span class="si">}</span> -e<span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stderr -o <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span>.stdout -We 24:00 -R <span class="s2">&quot;rusage[mem=2]&quot;</span> -M <span class="m">4</span> <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
 
-<span class="c">##Run both IMPACT-Pipeline &amp; SV Process on SGE</span>
-<span class="nb">echo </span>qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -N <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -l <span class="nv">hvmem</span><span class="o">=</span>2G,virtual_free<span class="o">=</span>2G -pe smp <span class="m">1</span> -b y <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -sc <span class="si">${</span><span class="nv">SV_ConfigFile</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
+<span class="c1">##Run both IMPACT-Pipeline &amp; SV Process on SGE</span>
+<span class="nb">echo</span> qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -N <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -l <span class="nv">hvmem</span><span class="o">=</span>2G,virtual_free<span class="o">=</span>2G -pe smp <span class="m">1</span> -b y <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -sc <span class="si">${</span><span class="nv">SV_ConfigFile</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
 qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -N <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -l <span class="nv">hvmem</span><span class="o">=</span>2G,virtual_free<span class="o">=</span>2G -pe smp <span class="m">1</span> -b y <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -sc <span class="si">${</span><span class="nv">SV_ConfigFile</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
-<span class="c">##Run both IMPACT-Pipeline on SGE</span>
-<span class="nb">echo </span>qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -N <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -l <span class="nv">hvmem</span><span class="o">=</span>2G,virtual_free<span class="o">=</span>2G -pe smp <span class="m">1</span> -b y <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
+<span class="c1">##Run both IMPACT-Pipeline on SGE</span>
+<span class="nb">echo</span> qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -N <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -l <span class="nv">hvmem</span><span class="o">=</span>2G,virtual_free<span class="o">=</span>2G -pe smp <span class="m">1</span> -b y <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
 qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><span class="si">}</span> -N <span class="si">${</span><span class="nv">ProjectName</span><span class="si">}</span> -l <span class="nv">hvmem</span><span class="o">=</span>2G,virtual_free<span class="o">=</span>2G -pe smp <span class="m">1</span> -b y <span class="se">\&quot;</span><span class="si">${</span><span class="nv">Perl</span><span class="si">}</span> <span class="si">${</span><span class="nv">PipelineScript</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">CONFIGFILE</span><span class="si">}</span> -d <span class="si">${</span><span class="nv">DATADIR</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span><span class="se">\&quot;</span>
 </pre></div>
 </div>
@@ -282,7 +282,7 @@ qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
@@ -304,12 +304,14 @@ qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><
   <h4>Next topic</h4>
   <p class="topless"><a href="subscripts.html"
                         title="next chapter">Description of sub-scripts</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/usage.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/usage.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -326,7 +328,7 @@ qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -338,12 +340,12 @@ qsub -q test.q -wd <span class="si">${</span><span class="nv">WorkingDir</span><
         <li class="right" >
           <a href="requirements.html" title="Requirements"
              >previous</a> |</li>
-        <li><a href="index.html">IMPACT-Pipeline 1.0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">IMPACT-Pipeline 1.0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2015, Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijazuddin Syed, Raghu Chandramohan, Meera Prasad.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>

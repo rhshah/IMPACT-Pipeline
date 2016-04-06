@@ -12,9 +12,39 @@ Please see template.conf file in the configuration folder.
 :python: `v2.7.8 <https://www.python.org/download/releases/2.7.8/>`_
 :R: `v3.1.2 <http://cran.r-project.org/src/base/R-3/R-3.1.2.tar.gz>`_
 
+Required Perl Packages
+----------------------
+
+.. sidebar:: Note:
+
+	For **MSKCC_DMP_Logger** is wriiten internally. To get this please contact us.
+	
+**Getopt::Long**
+**IO::File**
+**Tie::Autotie 'Tie::IxHash'**
+**Statistics::Lite qw(:all)**
+**MSKCC_DMP_Logger**
+
+Required Python Packages
+------------------------
+
+**pandas**
+
+Required R Packages
+-------------------
+
+**knitr**
+**ggplot2** 
+**plyr**
+**reshape** 
+**scales** 
+**xtable**
+**RColorBrewer**
+**gplots** 
+**googleVis**
 
 Purpose and Tools Used
-======================
+=======================
 
 .. sidebar:: Note:
 

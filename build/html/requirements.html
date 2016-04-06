@@ -27,8 +27,8 @@
     <link rel="next" title="Usage" href="usage.html" />
     <link rel="prev" title="Installation" href="install.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -40,14 +40,14 @@
         <li class="right" >
           <a href="install.html" title="Installation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">IMPACT-Pipeline 1.0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">IMPACT-Pipeline 1.0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="requirements">
 <h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
@@ -68,8 +68,35 @@
 </tr>
 </tbody>
 </table>
+<div class="section" id="required-perl-packages">
+<h2>Required Perl Packages<a class="headerlink" href="#required-perl-packages" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">Note:</p>
+<p class="last">For <strong>MSKCC_DMP_Logger</strong> is wriiten internally. To get this please contact us.</p>
+</div>
+<p><strong>Getopt::Long</strong>
+<strong>IO::File</strong>
+<strong>Tie::Autotie &#8216;Tie::IxHash&#8217;</strong>
+<strong>Statistics::Lite qw(:all)</strong>
+<strong>MSKCC_DMP_Logger</strong></p>
+</div>
+<div class="section" id="required-python-packages">
+<h2>Required Python Packages<a class="headerlink" href="#required-python-packages" title="Permalink to this headline">¶</a></h2>
+<p><strong>pandas</strong></p>
+</div>
+<div class="section" id="required-r-packages">
+<h2>Required R Packages<a class="headerlink" href="#required-r-packages" title="Permalink to this headline">¶</a></h2>
+<p><strong>knitr</strong>
+<strong>ggplot2</strong>
+<strong>plyr</strong>
+<strong>reshape</strong>
+<strong>scales</strong>
+<strong>xtable</strong>
+<strong>RColorBrewer</strong>
+<strong>gplots</strong>
+<strong>googleVis</strong></p>
 <div class="section" id="purpose-and-tools-used">
-<h2>Purpose and Tools Used<a class="headerlink" href="#purpose-and-tools-used" title="Permalink to this headline">¶</a></h2>
+<h3>Purpose and Tools Used<a class="headerlink" href="#purpose-and-tools-used" title="Permalink to this headline">¶</a></h3>
 <div class="sidebar">
 <p class="first sidebar-title">Note:</p>
 <p class="last">For Timmomatic we are using a custom old version which uses <a class="reference external" href="https://cutadapt.readthedocs.org">cutadapt v1.1</a> internally. To get this please contact us.</p>
@@ -110,7 +137,7 @@
 </table>
 </div>
 <div class="section" id="inside-the-config-file">
-<h2>Inside the config file<a class="headerlink" href="#inside-the-config-file" title="Permalink to this headline">¶</a></h2>
+<h3>Inside the config file<a class="headerlink" href="#inside-the-config-file" title="Permalink to this headline">¶</a></h3>
 <p>There are three sections:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -131,17 +158,19 @@
 </tr>
 </tbody>
 </table>
-<p>All of this section start with <tt class="docutils literal"><span class="pre">&gt;</span></tt> sign.</p>
+<p>All of this section start with <code class="docutils literal"><span class="pre">&gt;</span></code> sign.</p>
 <p>Inside each of the section here are the things that need to be set:</p>
+</div>
+</div>
 <div class="section" id="locations">
-<h3>Locations<a class="headerlink" href="#locations" title="Permalink to this headline">¶</a></h3>
+<h2>Locations<a class="headerlink" href="#locations" title="Permalink to this headline">¶</a></h2>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">ZCAT:</th><td class="field-body">Location of the <tt class="docutils literal"><span class="pre">zcat</span></tt> program on linux</td>
+<tr class="field-odd field"><th class="field-name">ZCAT:</th><td class="field-body">Location of the <code class="docutils literal"><span class="pre">zcat</span></code> program on linux</td>
 </tr>
-<tr class="field-even field"><th class="field-name">TMPDIR:</th><td class="field-body">Set the temporary directory for all tools please set somthing other then <tt class="docutils literal"><span class="pre">/tmp</span></tt></td>
+<tr class="field-even field"><th class="field-name">TMPDIR:</th><td class="field-body">Set the temporary directory for all tools please set somthing other then <code class="docutils literal"><span class="pre">/tmp</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">JAVA_1_6:</th><td class="field-body">Set JAVA version 1.6</td>
 </tr>
@@ -173,13 +202,13 @@
 </tr>
 <tr class="field-even field"><th class="field-name">SVpipeline:</th><td class="field-body">Path to structural variant framework (only required if running the structural variant detection framework)</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">CAT:</th><td class="field-body">Location of <tt class="docutils literal"><span class="pre">cat</span></tt> program on Linux</td>
+<tr class="field-odd field"><th class="field-name">CAT:</th><td class="field-body">Location of <code class="docutils literal"><span class="pre">cat</span></code> program on Linux</td>
 </tr>
-<tr class="field-even field"><th class="field-name">PYTHON:</th><td class="field-body">Location of <tt class="docutils literal"><span class="pre">python</span></tt> program on Linux (Python version 2.7.8)</td>
+<tr class="field-even field"><th class="field-name">PYTHON:</th><td class="field-body">Location of <code class="docutils literal"><span class="pre">python</span></code> program on Linux (Python version 2.7.8)</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">TrimGalore:</th><td class="field-body">Path to trimgalore tool</td>
 </tr>
-<tr class="field-even field"><th class="field-name">PERL:</th><td class="field-body">Location of <tt class="docutils literal"><span class="pre">perl</span></tt> program on Linux (Perl version 5.20.2)</td>
+<tr class="field-even field"><th class="field-name">PERL:</th><td class="field-body">Location of <code class="docutils literal"><span class="pre">perl</span></code> program on Linux (Perl version 5.20.2)</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">BWA:</th><td class="field-body">Path to bwa tool</td>
 </tr>
@@ -279,7 +308,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">RLIBS:</th><td class="field-body">Path to R library directory</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">RSYNC:</th><td class="field-body">Path to <tt class="docutils literal"><span class="pre">rsyn</span></tt> on system</td>
+<tr class="field-odd field"><th class="field-name">RSYNC:</th><td class="field-body">Path to <code class="docutils literal"><span class="pre">rsyn</span></code> on system</td>
 </tr>
 <tr class="field-even field"><th class="field-name">BarcodeKey:</th><td class="field-body">Path to barcode key file</td>
 </tr>
@@ -292,7 +321,7 @@
 </table>
 </div>
 <div class="section" id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
 <p>Set the parameters to different file/folders/values required by the IMPACT pipeline</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -305,7 +334,7 @@
 </tr>
 <tr class="field-odd field"><th class="field-name">Process:</th><td class="field-body">Which process to run the pipeline on ( can be 1,2,3,4,5,6,7 independently or continuous combination in ascending order )</td>
 </tr>
-<tr class="field-even field"><th class="field-name">FastqSource:</th><td class="field-body">Where are the fastq file from (can be <tt class="docutils literal"><span class="pre">GCL</span></tt> or <tt class="docutils literal"><span class="pre">DMP</span></tt>)</td>
+<tr class="field-even field"><th class="field-name">FastqSource:</th><td class="field-body">Where are the fastq file from (can be <code class="docutils literal"><span class="pre">GCL</span></code> or <code class="docutils literal"><span class="pre">DMP</span></code>)</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">MAPQ:</th><td class="field-body">Mapping Quality Threshold (Used by DMP-IMPACT:0.2)0</td>
 </tr>
@@ -408,7 +437,7 @@
 </tr>
 <tr class="field-odd field"><th class="field-name">QUEUE_NAME:</th><td class="field-body">Name of the queue on the SGE or LSF</td>
 </tr>
-<tr class="field-even field"><th class="field-name">CLUSTER:</th><td class="field-body">Flag for what cluster to be used (can <tt class="docutils literal"><span class="pre">SGE</span></tt> or <tt class="docutils literal"><span class="pre">LSF</span></tt>)</td>
+<tr class="field-even field"><th class="field-name">CLUSTER:</th><td class="field-body">Flag for what cluster to be used (can <code class="docutils literal"><span class="pre">SGE</span></code> or <code class="docutils literal"><span class="pre">LSF</span></code>)</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">runABRA:</th><td class="field-body">Flag to whether use ABRA or GATK indel realignment(can be 1(True) or 2(False))</td>
 </tr>
@@ -416,16 +445,14 @@
 </table>
 </div>
 <div class="section" id="versions">
-<h3>Versions<a class="headerlink" href="#versions" title="Permalink to this headline">¶</a></h3>
+<h2>Versions<a class="headerlink" href="#versions" title="Permalink to this headline">¶</a></h2>
 <div class="sidebar">
 <p class="first sidebar-title">Note:</p>
 <p class="last">This section is just to print what version of things you are using so you can have all the dependencies with the respective versions listed here.</p>
 </div>
 <p>Inside the version there are version that are being used for each tool. This is just for consistency in reports.</p>
-</div>
-</div>
 <div class="section" id="description-for-title-file-txt">
-<h2>Description for title_file.txt<a class="headerlink" href="#description-for-title-file-txt" title="Permalink to this headline">¶</a></h2>
+<h3>Description for title_file.txt<a class="headerlink" href="#description-for-title-file-txt" title="Permalink to this headline">¶</a></h3>
 <p>Headers for this tab-delimited file should be exactly with this names:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -437,7 +464,7 @@
 </tr>
 <tr class="field-odd field"><th class="field-name">Sample_ID:</th><td class="field-body">Can be any string <strong>joined by ``-``</strong> and <strong>not ``_``</strong></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Collab_ID:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-even field"><th class="field-name">Collab_ID:</th><td class="field-body">Can be any string or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -453,31 +480,31 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Class:</th><td class="field-body">Can be Tumor or Normal.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Sample_type:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Sample_type:</th><td class="field-body">Can be any string or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Input_ng:</th><td class="field-body">Can be any float or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-even field"><th class="field-name">Input_ng:</th><td class="field-body">Can be any float or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Library_yield:</th><td class="field-body">Can be float or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Library_yield:</th><td class="field-body">Can be float or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Pool_input:</th><td class="field-body">Can be float or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-even field"><th class="field-name">Pool_input:</th><td class="field-body">Can be float or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Bait_version:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Bait_version:</th><td class="field-body">Can be any string or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Gender:</th><td class="field-body">Can be any Male/Female or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-even field"><th class="field-name">Gender:</th><td class="field-body">Can be any Male/Female or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">PatientName:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-odd field"><th class="field-name">PatientName:</th><td class="field-body">Can be any string or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">MAccession:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-even field"><th class="field-name">MAccession:</th><td class="field-body">Can be any string or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Extracted_DNA_Yield:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Can be a float or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Can be a float or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
 </tbody>
 </table>
-<p>For analysis to start the <strong>outputDirectory</strong> will be required to have this file with <tt class="docutils literal"><span class="pre">title_file.txt</span></tt> as the name or this file needs to be present in the <strong>configuration</strong> file with either <tt class="docutils literal"><span class="pre">title_file.txt</span></tt> as then name or <tt class="docutils literal"><span class="pre">Pool_title.txt</span></tt> as the name where <strong>Pool</strong> is the string used above for that category.</p>
+<p>For analysis to start the <strong>outputDirectory</strong> will be required to have this file with <code class="docutils literal"><span class="pre">title_file.txt</span></code> as the name or this file needs to be present in the <strong>configuration</strong> file with either <code class="docutils literal"><span class="pre">title_file.txt</span></code> as then name or <code class="docutils literal"><span class="pre">Pool_title.txt</span></code> as the name where <strong>Pool</strong> is the string used above for that category.</p>
 </div>
 <div class="section" id="description-for-samplesheet-csv">
-<h2>Description for SampleSheet.csv<a class="headerlink" href="#description-for-samplesheet-csv" title="Permalink to this headline">¶</a></h2>
+<h3>Description for SampleSheet.csv<a class="headerlink" href="#description-for-samplesheet-csv" title="Permalink to this headline">¶</a></h3>
 <p>This is a comma separated file is created by the illumina sequencer and it is used to merge the fastq files.</p>
 <p>Headers for this tab-delimited file should be exactly with this names:</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -496,23 +523,23 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Description:</th><td class="field-body">Description of the samples</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Control:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Control:</th><td class="field-body">Can be any string or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Recipe:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-even field"><th class="field-name">Recipe:</th><td class="field-body">Can be any string or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Operator:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Operator:</th><td class="field-body">Can be any string or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">SampleProject:</th><td class="field-body">Can be any string or <tt class="docutils literal"><span class="pre">-</span></tt></td>
+<tr class="field-even field"><th class="field-name">SampleProject:</th><td class="field-body">Can be any string or <code class="docutils literal"><span class="pre">-</span></code></td>
 </tr>
 </tbody>
 </table>
-<p>For analysis to start the <strong>outputDirectory</strong> will be required to have this file with <tt class="docutils literal"><span class="pre">SampleSheet.csv</span></tt> as the name or this file needs to be present in the <strong>configuration</strong> file with <tt class="docutils literal"><span class="pre">SampleSheet.csv</span></tt> as the name.</p>
+<p>For analysis to start the <strong>outputDirectory</strong> will be required to have this file with <code class="docutils literal"><span class="pre">SampleSheet.csv</span></code> as the name or this file needs to be present in the <strong>configuration</strong> file with <code class="docutils literal"><span class="pre">SampleSheet.csv</span></code> as the name.</p>
 </div>
 <div class="section" id="description-for-adaptor-file-in-the-configuration-file">
-<h2>Description for adaptor file in the configuration file<a class="headerlink" href="#description-for-adaptor-file-in-the-configuration-file" title="Permalink to this headline">¶</a></h2>
+<h3>Description for adaptor file in the configuration file<a class="headerlink" href="#description-for-adaptor-file-in-the-configuration-file" title="Permalink to this headline">¶</a></h3>
 <p>The adaptor file is the tab-delimited file with two columns:</p>
 <ol class="arabic simple">
-<li>Barcode Key to which the adaptor belongs which should always start with <tt class="docutils literal"><span class="pre">bc</span></tt></li>
+<li>Barcode Key to which the adaptor belongs which should always start with <code class="docutils literal"><span class="pre">bc</span></code></li>
 <li>Adaptor sequence itself</li>
 </ol>
 <p>There is <strong>no header</strong> in this file.</p>
@@ -532,7 +559,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="description-for-barcode-file-in-the-configuration-file">
-<h2>Description for barcode file in the configuration file<a class="headerlink" href="#description-for-barcode-file-in-the-configuration-file" title="Permalink to this headline">¶</a></h2>
+<h3>Description for barcode file in the configuration file<a class="headerlink" href="#description-for-barcode-file-in-the-configuration-file" title="Permalink to this headline">¶</a></h3>
 <p>The barcode file is the tab-delimited file with two columns:</p>
 <ol class="arabic simple">
 <li>Barcode Sequece</li>
@@ -561,27 +588,33 @@
 </dl>
 </div>
 </div>
+</div>
 
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Requirements</a><ul>
+<li><a class="reference internal" href="#required-perl-packages">Required Perl Packages</a></li>
+<li><a class="reference internal" href="#required-python-packages">Required Python Packages</a></li>
+<li><a class="reference internal" href="#required-r-packages">Required R Packages</a><ul>
 <li><a class="reference internal" href="#purpose-and-tools-used">Purpose and Tools Used</a></li>
-<li><a class="reference internal" href="#inside-the-config-file">Inside the config file</a><ul>
-<li><a class="reference internal" href="#locations">Locations</a></li>
-<li><a class="reference internal" href="#parameters">Parameters</a></li>
-<li><a class="reference internal" href="#versions">Versions</a></li>
+<li><a class="reference internal" href="#inside-the-config-file">Inside the config file</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#locations">Locations</a></li>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#versions">Versions</a><ul>
 <li><a class="reference internal" href="#description-for-title-file-txt">Description for title_file.txt</a></li>
 <li><a class="reference internal" href="#description-for-samplesheet-csv">Description for SampleSheet.csv</a></li>
 <li><a class="reference internal" href="#description-for-adaptor-file-in-the-configuration-file">Description for adaptor file in the configuration file</a></li>
 <li><a class="reference internal" href="#description-for-barcode-file-in-the-configuration-file">Description for barcode file in the configuration file</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -592,12 +625,14 @@
   <h4>Next topic</h4>
   <p class="topless"><a href="usage.html"
                         title="next chapter">Usage</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/requirements.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/requirements.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -614,7 +649,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -626,12 +661,12 @@
         <li class="right" >
           <a href="install.html" title="Installation"
              >previous</a> |</li>
-        <li><a href="index.html">IMPACT-Pipeline 1.0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">IMPACT-Pipeline 1.0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2015, Ronak H Shah, Donavan Cheng, Ahmet Zehir, Aijazuddin Syed, Raghu Chandramohan, Meera Prasad.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>
