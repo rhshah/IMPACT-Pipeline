@@ -20,9 +20,13 @@ Required Perl Packages
 	For **MSKCC_DMP_Logger** is wriiten internally. To get this please contact us.
 	
 **Getopt::Long**
+
 **IO::File**
+
 **Tie::Autotie 'Tie::IxHash'**
+
 **Statistics::Lite qw(:all)**
+
 **MSKCC_DMP_Logger**
 
 Required Python Packages
@@ -34,13 +38,21 @@ Required R Packages
 -------------------
 
 **knitr**
+
 **ggplot2** 
+
 **plyr**
+
 **reshape** 
+
 **scales** 
+
 **xtable**
+
 **RColorBrewer**
+
 **gplots** 
+
 **googleVis**
 
 Purpose and Tools Used
