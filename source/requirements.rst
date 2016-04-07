@@ -19,41 +19,41 @@ Required Perl Packages
 
 	For **MSKCC_DMP_Logger** is wriiten internally. To get this please contact us.
 	
-**Getopt::Long**
+:Getopt\:\:Long: `Getopt\:\:Long <http://perldoc.perl.org/Getopt/Long.html>`_
 
-**IO::File**
+:IO\:\:File: `IO\:\:File <http://perldoc.perl.org/IO/File.html>`_
+ 
+:Tie\:\:Autotie: `Tie\:\:Autotie 'Tie\:\:IxHash' <http://search.cpan.org/~pinyan/Tie-Autotie-0.03/lib/Tie/Autotie.pm>`_
 
-**Tie::Autotie 'Tie::IxHash'**
+:Statistics\:\:Lite: `Statistics\:\:Lite qw(\:all) <http://search.cpan.org/~brianl/Statistics-Lite-3.62/Lite.pm>`_
 
-**Statistics::Lite qw(:all)**
-
-**MSKCC_DMP_Logger**
+:MSKCC_DMP_Logger: `Contact Us <rons.shah@gmail.com>`_
 
 Required Python Packages
 ------------------------
 
-**pandas**
+:pandas: `Pandas <http://pandas.pydata.org/>`_
 
 Required R Packages
 -------------------
 
-**knitr**
+:knitr: `knitr <http://yihui.name/knitr/>`_
 
-**ggplot2** 
+:ggplot2: `ggplot2 <http://ggplot2.org/>`_ 
 
-**plyr**
+:plyr: `pylr <https://cran.r-project.org/web/packages/plyr/index.html>`_
 
-**reshape** 
+:reshape: `reshape <https://cran.r-project.org/web/packages/reshape/index.html>`_ 
 
-**scales** 
+:scales: `scales <https://cran.r-project.org/web/packages/scales/index.html>`_
 
-**xtable**
+:xtable: `xtable <https://cran.r-project.org/web/packages/xtable/index.html>`_
 
-**RColorBrewer**
+:RColorBrewer: `RColorBrewer <https://cran.r-project.org/web/packages/RColorBrewer/index.html>`_
 
-**gplots** 
+:gplots: `gplots <https://cran.r-project.org/web/packages/gplots/index.html>`_
 
-**googleVis**
+:googleVis: `googleVis <https://cran.r-project.org/web/packages/googleVis/index.html>`_
 
 Purpose and Tools Used
 =======================
