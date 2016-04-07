@@ -130,8 +130,9 @@
 </tr>
 </tbody>
 </table>
+</div>
 <div class="section" id="purpose-and-tools-used">
-<h3>Purpose and Tools Used<a class="headerlink" href="#purpose-and-tools-used" title="Permalink to this headline">¶</a></h3>
+<h2>Purpose and Tools Used<a class="headerlink" href="#purpose-and-tools-used" title="Permalink to this headline">¶</a></h2>
 <div class="sidebar">
 <p class="first sidebar-title">Note:</p>
 <p class="last">For Timmomatic we are using a custom old version which uses <a class="reference external" href="https://cutadapt.readthedocs.org">cutadapt v1.1</a> internally. To get this please contact us.</p>
@@ -172,7 +173,7 @@
 </table>
 </div>
 <div class="section" id="inside-the-config-file">
-<h3>Inside the config file<a class="headerlink" href="#inside-the-config-file" title="Permalink to this headline">¶</a></h3>
+<h2>Inside the config file<a class="headerlink" href="#inside-the-config-file" title="Permalink to this headline">¶</a></h2>
 <p>There are three sections:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -195,10 +196,8 @@
 </table>
 <p>All of this section start with <code class="docutils literal"><span class="pre">&gt;</span></code> sign.</p>
 <p>Inside each of the section here are the things that need to be set:</p>
-</div>
-</div>
 <div class="section" id="locations">
-<h2>Locations<a class="headerlink" href="#locations" title="Permalink to this headline">¶</a></h2>
+<h3>Locations<a class="headerlink" href="#locations" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -356,7 +355,7 @@
 </table>
 </div>
 <div class="section" id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
 <p>Set the parameters to different file/folders/values required by the IMPACT pipeline</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -480,14 +479,16 @@
 </table>
 </div>
 <div class="section" id="versions">
-<h2>Versions<a class="headerlink" href="#versions" title="Permalink to this headline">¶</a></h2>
+<h3>Versions<a class="headerlink" href="#versions" title="Permalink to this headline">¶</a></h3>
 <div class="sidebar">
 <p class="first sidebar-title">Note:</p>
 <p class="last">This section is just to print what version of things you are using so you can have all the dependencies with the respective versions listed here.</p>
 </div>
 <p>Inside the version there are version that are being used for each tool. This is just for consistency in reports.</p>
+</div>
+</div>
 <div class="section" id="description-for-title-file-txt">
-<h3>Description for title_file.txt<a class="headerlink" href="#description-for-title-file-txt" title="Permalink to this headline">¶</a></h3>
+<h2>Description for title_file.txt<a class="headerlink" href="#description-for-title-file-txt" title="Permalink to this headline">¶</a></h2>
 <p>Headers for this tab-delimited file should be exactly with this names:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -539,7 +540,7 @@
 <p>For analysis to start the <strong>outputDirectory</strong> will be required to have this file with <code class="docutils literal"><span class="pre">title_file.txt</span></code> as the name or this file needs to be present in the <strong>configuration</strong> file with either <code class="docutils literal"><span class="pre">title_file.txt</span></code> as then name or <code class="docutils literal"><span class="pre">Pool_title.txt</span></code> as the name where <strong>Pool</strong> is the string used above for that category.</p>
 </div>
 <div class="section" id="description-for-samplesheet-csv">
-<h3>Description for SampleSheet.csv<a class="headerlink" href="#description-for-samplesheet-csv" title="Permalink to this headline">¶</a></h3>
+<h2>Description for SampleSheet.csv<a class="headerlink" href="#description-for-samplesheet-csv" title="Permalink to this headline">¶</a></h2>
 <p>This is a comma separated file is created by the illumina sequencer and it is used to merge the fastq files.</p>
 <p>Headers for this tab-delimited file should be exactly with this names:</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -571,7 +572,7 @@
 <p>For analysis to start the <strong>outputDirectory</strong> will be required to have this file with <code class="docutils literal"><span class="pre">SampleSheet.csv</span></code> as the name or this file needs to be present in the <strong>configuration</strong> file with <code class="docutils literal"><span class="pre">SampleSheet.csv</span></code> as the name.</p>
 </div>
 <div class="section" id="description-for-adaptor-file-in-the-configuration-file">
-<h3>Description for adaptor file in the configuration file<a class="headerlink" href="#description-for-adaptor-file-in-the-configuration-file" title="Permalink to this headline">¶</a></h3>
+<h2>Description for adaptor file in the configuration file<a class="headerlink" href="#description-for-adaptor-file-in-the-configuration-file" title="Permalink to this headline">¶</a></h2>
 <p>The adaptor file is the tab-delimited file with two columns:</p>
 <ol class="arabic simple">
 <li>Barcode Key to which the adaptor belongs which should always start with <code class="docutils literal"><span class="pre">bc</span></code></li>
@@ -594,7 +595,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="description-for-barcode-file-in-the-configuration-file">
-<h3>Description for barcode file in the configuration file<a class="headerlink" href="#description-for-barcode-file-in-the-configuration-file" title="Permalink to this headline">¶</a></h3>
+<h2>Description for barcode file in the configuration file<a class="headerlink" href="#description-for-barcode-file-in-the-configuration-file" title="Permalink to this headline">¶</a></h2>
 <p>The barcode file is the tab-delimited file with two columns:</p>
 <ol class="arabic simple">
 <li>Barcode Sequece</li>
@@ -623,7 +624,6 @@
 </dl>
 </div>
 </div>
-</div>
 
 
           </div>
@@ -636,20 +636,18 @@
 <li><a class="reference internal" href="#">Requirements</a><ul>
 <li><a class="reference internal" href="#required-perl-packages">Required Perl Packages</a></li>
 <li><a class="reference internal" href="#required-python-packages">Required Python Packages</a></li>
-<li><a class="reference internal" href="#required-r-packages">Required R Packages</a><ul>
+<li><a class="reference internal" href="#required-r-packages">Required R Packages</a></li>
 <li><a class="reference internal" href="#purpose-and-tools-used">Purpose and Tools Used</a></li>
-<li><a class="reference internal" href="#inside-the-config-file">Inside the config file</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#inside-the-config-file">Inside the config file</a><ul>
 <li><a class="reference internal" href="#locations">Locations</a></li>
 <li><a class="reference internal" href="#parameters">Parameters</a></li>
-<li><a class="reference internal" href="#versions">Versions</a><ul>
+<li><a class="reference internal" href="#versions">Versions</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#description-for-title-file-txt">Description for title_file.txt</a></li>
 <li><a class="reference internal" href="#description-for-samplesheet-csv">Description for SampleSheet.csv</a></li>
 <li><a class="reference internal" href="#description-for-adaptor-file-in-the-configuration-file">Description for adaptor file in the configuration file</a></li>
 <li><a class="reference internal" href="#description-for-barcode-file-in-the-configuration-file">Description for barcode file in the configuration file</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

@@ -13,7 +13,7 @@ Please see template.conf file in the configuration folder.
 :R: `v3.1.2 <http://cran.r-project.org/src/base/R-3/R-3.1.2.tar.gz>`_
 
 Required Perl Packages
-----------------------
+======================
 
 .. sidebar:: Note:
 
@@ -30,12 +30,12 @@ Required Perl Packages
 :MSKCC_DMP_Logger: `Contact Us <rons.shah@gmail.com>`_
 
 Required Python Packages
-------------------------
+========================
 
 :pandas: `Pandas <http://pandas.pydata.org/>`_
 
 Required R Packages
--------------------
+===================
 
 :knitr: `knitr <http://yihui.name/knitr/>`_
 
