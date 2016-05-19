@@ -41,7 +41,7 @@ Required R Packages
 
 :ggplot2: `ggplot2 <http://ggplot2.org/>`_ 
 
-:plyr: `pylr <https://cran.r-project.org/web/packages/plyr/index.html>`_
+:plyr: `plyr <https://cran.r-project.org/web/packages/plyr/index.html>`_
 
 :reshape: `reshape <https://cran.r-project.org/web/packages/reshape/index.html>`_ 
 
