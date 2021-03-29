@@ -1,3 +1,7 @@
+.. DANGER::
+   **This codebase is deprected and is no maintained/used in its current form.**
+
+
 IMPACT-Pipeline: MSK-IMPACT assay data analysis framework to process data on LSF/SGE
 ====================================================================================
 
